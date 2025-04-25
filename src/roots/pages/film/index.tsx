@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
 
 interface Movie {
@@ -371,13 +371,13 @@ const FilmPage: React.FC = () => {
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                     <Button className="opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 bg-red-600 hover:bg-red-700">
-                      <a
-                        href={`/xem-phim/${movie.slug}`}
+                      <Link
+                        to={`/xem-phim/${movie.slug}`}
                         className="flex items-center"
                       >
                         <Play className="w-5 h-5 mr-2" />
                         Xem ngay
-                      </a>
+                      </Link>
                     </Button>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -144,9 +144,9 @@ const FilmSearchPage: React.FC = () => {
                     className="px-6 py-3"
                     asChild
                   >
-                    <a href={`/xem-phim/${movie.slug}`}>
+                    <Link to={`/xem-phim/${movie.slug}`}>
                       <i className="fas fa-play mr-2"></i>Xem ngay
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </div>
