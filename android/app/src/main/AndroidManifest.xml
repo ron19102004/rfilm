@@ -3,9 +3,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/filmlogo"
+        android:icon="@drawable/filmlogov2"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/filmlogo"
+        android:roundIcon="@drawable/filmlogov2"
         android:supportsRtl="true"
         android:screenOrientation="fullSensor"
         android:configChanges="orientation|screenSize"
