@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "@/components/custom/loading";
+import PullToRefresh from "@/components/custom/pull_to_refresh";
 
 interface Movie {
   name: string;
@@ -113,6 +114,7 @@ const WatchFilmPage: React.FC = () => {
 
   return (
     <div className="bg-[#0a0a0a] h-full">
+      <PullToRefresh/>
       <div ref={topRef} className="w-0 h-0" />
       <div className="container mx-auto">
         {/* Video Player */}
@@ -127,6 +129,7 @@ const WatchFilmPage: React.FC = () => {
                   episodes[activeServer]?.server_data[activeEpisode]?.link_embed
                 }
                 allowFullScreen
+                style={{ width: '100%', height: '100%', border: 'none' }}
                 className="absolute top-0 left-0 w-full h-full border-none"
               ></iframe>
             )}

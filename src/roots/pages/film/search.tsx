@@ -94,7 +94,12 @@ const FilmSearchPage: React.FC = () => {
   const renderSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {[...Array(10)].map((_, index) => (
-        <Card key={index} className="bg-[#0a0a0a] border-none" data-aos="fade-up" data-aos-delay={index * 50}>
+        <Card
+          key={index}
+          className="bg-[#0a0a0a] border-none"
+          data-aos="fade-up"
+          data-aos-delay={index * 50}
+        >
           <CardContent className="p-0">
             <div className="relative">
               <Skeleton className="w-full h-80 bg-[#1a1a1a]" />
@@ -139,11 +144,13 @@ const FilmSearchPage: React.FC = () => {
           >
             <CardContent className="p-0">
               <div className="relative group">
-                <img
-                  src={`${domain}/${movie.poster_url}`}
-                  alt={movie.name}
-                  className="w-full h-80 object-cover group-hover:opacity-80 transition-opacity duration-300 rounded-t-xl"
-                />
+                <Link to={`/xem-phim/${movie.slug}`}>
+                  <img
+                    src={`${domain}/${movie.poster_url}`}
+                    alt={movie.name}
+                    className="w-full h-80 object-cover group-hover:opacity-80 transition-opacity duration-300 rounded-t-xl"
+                  />
+                </Link>
                 <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
                   {movie.quality}
                 </div>
@@ -160,7 +167,7 @@ const FilmSearchPage: React.FC = () => {
               </div>
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-white mb-2 truncate">
-                  {movie.name}
+                  <Link to={`/xem-phim/${movie.slug}`}>{movie.name}</Link>
                 </h3>
                 <p className="text-sm text-gray-400 mb-2">
                   {movie.origin_name}
@@ -238,7 +245,11 @@ const FilmSearchPage: React.FC = () => {
     }
 
     return (
-      <div className="mt-8 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+      <div
+        className="mt-8 flex justify-center"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
         <nav className="flex items-center space-x-2">
           {currentPage > 1 && (
             <Button

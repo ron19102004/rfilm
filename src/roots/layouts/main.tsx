@@ -25,7 +25,7 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#0a0a0a] relative pb-20 md:pb-0">
+    <div className="bg-[#0a0a0a] relative pb-20 pt-10 md:pt-0 md:pb-0">
       <div ref={topRef} className="w-0 h-0" />
       <MainHeader />
       <main>

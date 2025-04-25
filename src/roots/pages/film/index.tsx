@@ -249,13 +249,16 @@ const FilmPage: React.FC = () => {
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
-      <div ref={topRef} className="w-0 h-0"/>
-      <PullToRefresh/>
+      <div ref={topRef} className="w-0 h-0" />
+      <PullToRefresh />
       {/* Loading Overlay */}
       {loading && <Loading />}
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4" data-aos="fade-down">
+        <div
+          className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4"
+          data-aos="fade-down"
+        >
           <h1 className="text-3xl font-bold text-white">Phim Mới Cập Nhật</h1>
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -281,7 +284,11 @@ const FilmPage: React.FC = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8 flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="100">
+        <div
+          className="mb-8 flex flex-wrap gap-4"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
           <Select
             value={selectedGenre}
             onValueChange={(value: string) => {
@@ -361,11 +368,14 @@ const FilmPage: React.FC = () => {
                 data-aos-delay={index * 100}
               >
                 <div className="relative group">
-                  <img
-                    src={movie.poster_url}
-                    alt={movie.name}
-                    className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity"
-                  />
+                  <Link to={`/xem-phim/${movie.slug}`}>
+                    <img
+                      src={movie.poster_url}
+                      alt={movie.name}
+                      className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity"
+                    />
+                  </Link>
+
                   <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
                     {movie.quality}
                   </div>
@@ -386,7 +396,11 @@ const FilmPage: React.FC = () => {
                 </div>
                 <CardContent className="p-4">
                   <h3 className="text-lg font-semibold text-white mb-2 truncate">
-                    {movie.name}
+                    <Link
+                      to={`/xem-phim/${movie.slug}`}
+                    >
+                      {movie.name}
+                    </Link>
                   </h3>
                   <p className="text-sm text-gray-400 mb-2">
                     {movie.origin_name}
@@ -425,7 +439,11 @@ const FilmPage: React.FC = () => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-8 flex justify-center" data-aos="fade-up" data-aos-delay="200">
+        <div
+          className="mt-8 flex justify-center"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
           <div className="flex items-center gap-1">
             {renderPagination().map((page, index) => (
               <div key={index}>{page}</div>
