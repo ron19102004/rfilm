@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
   createBrowserRouter,
   RouteObject,
@@ -9,6 +9,8 @@ import { index, layout, prefix, router } from "./index.custom";
 import FilmSearchPage from "@/roots/pages/film/search";
 import WatchFilmPage from "@/roots/pages/film/watch";
 import MainLayout from "@/roots/layouts/main";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -20,6 +22,13 @@ const users: RouteObject[] = [
   ]),
 ];
 const RouterRoot: FC = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+    });
+  }, []);
   return (
     <RouterProvider
       router={createBrowserRouter([

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import Loading from "@/components/custom/loading";
 
 interface Movie {
   name: string;
@@ -45,35 +44,34 @@ const WatchFilmPage: React.FC = () => {
   const [activeEpisode, setActiveEpisode] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const topRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      once: true,
-      offset: 100,
-    });
-
     const fetchMovie = async () => {
       try {
         const response = await fetch(`https://phimapi.com/phim/${slug}`);
         const data: MovieResponse = await response.json();
-        
+
         if (data.status) {
           setMovie(data.movie);
           setEpisodes(data.episodes);
           setIsLoading(false);
         } else {
-          setError('Failed to load movie data');
+          setError("Failed to load movie data");
           setIsLoading(false);
         }
       } catch (err) {
-        setError('An error occurred while fetching the movie');
+        setError("An error occurred while fetching the movie");
         setIsLoading(false);
       }
     };
 
     fetchMovie();
   }, [slug]);
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [movie]);
 
   const handleServerChange = (index: number) => {
     setActiveServer(index);
@@ -82,7 +80,9 @@ const WatchFilmPage: React.FC = () => {
 
   const handleEpisodeChange = (index: number, embedUrl: string) => {
     setActiveEpisode(index);
-    const videoPlayer = document.getElementById('videoPlayer') as HTMLIFrameElement;
+    const videoPlayer = document.getElementById(
+      "videoPlayer"
+    ) as HTMLIFrameElement;
     if (videoPlayer) {
       videoPlayer.src = embedUrl;
     }
@@ -111,18 +111,19 @@ const WatchFilmPage: React.FC = () => {
 
   return (
     <div className="bg-[#0a0a0a] h-full">
+      <div ref={topRef} className="w-0 h-0" />
       <div className="container mx-auto px-4 py-8">
         {/* Video Player */}
         <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12" data-aos="fade-up">
           <div className="relative pt-[56.25%] bg-black rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg sm:shadow-xl md:shadow-2xl border border-[#1d1d1d] overflow-hidden mx-2 sm:mx-4 md:mx-6 lg:mx-8">
             {isLoading ? (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-              </div>
+              <Loading />
             ) : (
               <iframe
                 id="videoPlayer"
-                src={episodes[activeServer]?.server_data[activeEpisode]?.link_embed}
+                src={
+                  episodes[activeServer]?.server_data[activeEpisode]?.link_embed
+                }
                 allowFullScreen
                 className="absolute top-0 left-0 w-full h-full border-none"
               ></iframe>
@@ -139,8 +140,8 @@ const WatchFilmPage: React.FC = () => {
                   <button
                     className={`inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-in-out hover:-translate-y-0.5 ${
                       index === activeServer
-                        ? 'border-red-600 text-red-600'
-                        : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-[#2a2a2a]'
+                        ? "border-red-600 text-red-600"
+                        : "border-transparent text-gray-400 hover:text-gray-300 hover:border-[#2a2a2a]"
                     }`}
                     onClick={() => handleServerChange(index)}
                     role="tab"
@@ -160,8 +161,8 @@ const WatchFilmPage: React.FC = () => {
                   key={index}
                   className={`px-5 py-2.5 rounded-lg border transition-all duration-200 ease-in-out hover:-translate-y-0.5 ${
                     index === activeEpisode
-                      ? 'bg-red-600 text-white border-red-600'
-                      : 'border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]'
+                      ? "bg-red-600 text-white border-red-600"
+                      : "border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]"
                   }`}
                   onClick={() => handleEpisodeChange(index, episode.link_embed)}
                 >
@@ -175,7 +176,11 @@ const WatchFilmPage: React.FC = () => {
         {/* Movie Info */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Movie Content */}
-          <div className="lg:col-span-2" data-aos="fade-up" data-aos-delay="200">
+          <div
+            className="lg:col-span-2"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
             <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
               <div className="flex flex-col sm:flex-row items-center gap-8 mb-8">
                 <img
@@ -184,9 +189,13 @@ const WatchFilmPage: React.FC = () => {
                   className="w-48 h-72 object-cover rounded-2xl shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
                 />
                 <div>
-                  <h1 className="text-4xl font-bold text-white mb-2">{movie.name}</h1>
-                  <p className="text-gray-400 text-2xl mb-4">{movie.origin_name}</p>
-                  
+                  <h1 className="text-4xl font-bold text-white mb-2">
+                    {movie.name}
+                  </h1>
+                  <p className="text-gray-400 text-2xl mb-4">
+                    {movie.origin_name}
+                  </p>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-[#2a2a2a] rounded-xl p-4 text-center">
                       <p className="text-gray-400 text-sm mb-1">Năm</p>
@@ -208,25 +217,39 @@ const WatchFilmPage: React.FC = () => {
                 </div>
               </div>
 
-              <h2 className="text-3xl font-bold mb-6 text-white">Nội dung phim</h2>
-              <p className="text-gray-300 leading-relaxed text-lg">{movie.content}</p>
+              <h2 className="text-3xl font-bold mb-6 text-white">
+                Nội dung phim
+              </h2>
+              <p className="text-gray-300 leading-relaxed text-lg">
+                {movie.content}
+              </p>
             </div>
           </div>
 
           {/* Movie Details */}
-          <div className="lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
+          <div
+            className="lg:col-span-1"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
             <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
               <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold text-xl mb-3 text-white">Thông tin phim</h3>
+                  <h3 className="font-semibold text-xl mb-3 text-white">
+                    Thông tin phim
+                  </h3>
                   <div className="space-y-3 text-gray-300">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Đạo diễn:</span>
-                      <span className="text-white">{movie.director.join(', ')}</span>
+                      <span className="text-white">
+                        {movie.director.join(", ")}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Quốc gia:</span>
-                      <span className="text-white">{movie.country.map(c => c.name).join(', ')}</span>
+                      <span className="text-white">
+                        {movie.country.map((c) => c.name).join(", ")}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Ngôn ngữ:</span>
@@ -238,13 +261,17 @@ const WatchFilmPage: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Lượt xem:</span>
-                      <span className="text-white">{movie.view.toLocaleString()}</span>
+                      <span className="text-white">
+                        {movie.view.toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-xl mb-3 text-white">Diễn viên</h3>
+                  <h3 className="font-semibold text-xl mb-3 text-white">
+                    Diễn viên
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {movie.actor.map((actor, index) => (
                       <span
@@ -258,7 +285,9 @@ const WatchFilmPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <h3 className="font-semibold text-xl mb-3 text-white">Thể loại</h3>
+                  <h3 className="font-semibold text-xl mb-3 text-white">
+                    Thể loại
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     {movie.category.map((cat, index) => (
                       <span
@@ -276,18 +305,24 @@ const WatchFilmPage: React.FC = () => {
         </div>
 
         {/* Additional Movie Info */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" data-aos="fade-up" data-aos-delay="400">
+        <div
+          className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          data-aos="fade-up"
+          data-aos-delay="400"
+        >
           <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
             <h3 className="text-xl font-semibold mb-4 text-white">Ngôn ngữ</h3>
             <p className="text-gray-300">{movie.lang}</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
             <h3 className="text-xl font-semibold mb-4 text-white">Đạo diễn</h3>
-            <p className="text-gray-300">{movie.director.join(', ')}</p>
+            <p className="text-gray-300">{movie.director.join(", ")}</p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
             <h3 className="text-xl font-semibold mb-4 text-white">Quốc gia</h3>
-            <p className="text-gray-300">{movie.country.map(c => c.name).join(', ')}</p>
+            <p className="text-gray-300">
+              {movie.country.map((c) => c.name).join(", ")}
+            </p>
           </div>
           <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
             <h3 className="text-xl font-semibold mb-4 text-white">Lượt xem</h3>

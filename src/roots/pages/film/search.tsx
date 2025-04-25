@@ -94,7 +94,7 @@ const FilmSearchPage: React.FC = () => {
   const renderSkeleton = () => (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {[...Array(10)].map((_, index) => (
-        <Card key={index} className="bg-[#0a0a0a] border-none">
+        <Card key={index} className="bg-[#0a0a0a] border-none" data-aos="fade-up" data-aos-delay={index * 50}>
           <CardContent className="p-0">
             <div className="relative">
               <Skeleton className="w-full h-80 bg-[#1a1a1a]" />
@@ -122,7 +122,7 @@ const FilmSearchPage: React.FC = () => {
   const renderMovies = () => {
     if (movies.length === 0) {
       return (
-        <div className="col-span-full text-center py-8">
+        <div className="col-span-full text-center py-8" data-aos="fade-up">
           <p className="text-gray-400">Không tìm thấy phim nào phù hợp</p>
         </div>
       );
@@ -130,17 +130,19 @@ const FilmSearchPage: React.FC = () => {
 
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {movies.map((movie) => (
+        {movies.map((movie, index) => (
           <Card
             key={movie.slug}
-            className="bg-[#1a1a1a] border-[#2a2a2a] border-none hover:shadow-lg transition-all duration-300 py-0"
+            className="bg-[#1a1a1a] border-[#333333] border-none hover:shadow-lg transition-all duration-300 py-0 rounded-t-xl"
+            data-aos="fade-up"
+            data-aos-delay={index * 50}
           >
             <CardContent className="p-0">
               <div className="relative group">
                 <img
                   src={`${domain}/${movie.poster_url}`}
                   alt={movie.name}
-                  className="w-full h-80 object-cover group-hover:opacity-80 transition-opacity duration-300"
+                  className="w-full h-80 object-cover group-hover:opacity-80 transition-opacity duration-300 rounded-t-xl"
                 />
                 <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm">
                   {movie.quality}
@@ -236,7 +238,7 @@ const FilmSearchPage: React.FC = () => {
     }
 
     return (
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center" data-aos="fade-up" data-aos-delay="200">
         <nav className="flex items-center space-x-2">
           {currentPage > 1 && (
             <Button
@@ -285,7 +287,7 @@ const FilmSearchPage: React.FC = () => {
     <section className="bg-[#0a0a0a] h-full">
       <div ref={topRef} className="w-0 h-0" />
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
+        <div className="mb-8" data-aos="fade-down">
           <form
             onSubmit={handleSearch}
             className="flex gap-2 max-w-2xl mx-auto"

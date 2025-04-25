@@ -241,6 +241,7 @@ const FilmPage: React.FC = () => {
     loadGenres();
     loadMovies();
   }, []);
+
   useEffect(() => {
     if (topRef.current) {
       topRef.current.scrollIntoView({ behavior: "smooth" });
@@ -249,12 +250,12 @@ const FilmPage: React.FC = () => {
 
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
-     <div ref={topRef} className="w-0 h-0"/>
+      <div ref={topRef} className="w-0 h-0"/>
       {/* Loading Overlay */}
       {loading && <Loading />}
 
       <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4" data-aos="fade-down">
           <h1 className="text-3xl font-bold text-white">Phim Mới Cập Nhật</h1>
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -280,7 +281,7 @@ const FilmPage: React.FC = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mb-8 flex flex-wrap gap-4">
+        <div className="mb-8 flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="100">
           <Select
             value={selectedGenre}
             onValueChange={(value: string) => {
@@ -348,14 +349,16 @@ const FilmPage: React.FC = () => {
         {/* Movie Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {movies.length === 0 ? (
-            <div className="col-span-full text-center py-8">
+            <div className="col-span-full text-center py-8" data-aos="fade-up">
               <p className="text-gray-400">Không tìm thấy phim nào phù hợp</p>
             </div>
           ) : (
-            movies.map((movie) => (
+            movies.map((movie, index) => (
               <Card
                 key={movie.slug}
                 className="bg-[#1a1a1a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0"
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
               >
                 <div className="relative group">
                   <img
@@ -422,7 +425,7 @@ const FilmPage: React.FC = () => {
         </div>
 
         {/* Pagination */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex justify-center" data-aos="fade-up" data-aos-delay="200">
           <div className="flex items-center gap-1">
             {renderPagination().map((page, index) => (
               <div key={index}>{page}</div>
