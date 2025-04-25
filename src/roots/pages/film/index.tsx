@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
+import PullToRefresh from "@/components/custom/pull_to_refresh";
 
 interface Movie {
   name: string;
@@ -249,6 +250,7 @@ const FilmPage: React.FC = () => {
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
       <div ref={topRef} className="w-0 h-0"/>
+      <PullToRefresh/>
       {/* Loading Overlay */}
       {loading && <Loading />}
 
