@@ -38,7 +38,7 @@ interface Genre {
   slug: string;
   name: string;
 }
-
+const URL_IMG = "https://phimimg.com/";
 const FilmPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -103,11 +103,29 @@ const FilmPage: React.FC = () => {
     let url = "https://phimapi.com/v1/api";
 
     if (type === "country") {
-      url += `/quoc-gia/${selectedCountry}?page=1&sort_field=_id&sort_type=asc&category=${selectedGenre}&year=${selectedYear}&limit=20`;
+      url += `/quoc-gia/${selectedCountry}?page=1&sort_field=_id&sort_type=asc&limit=20`;
+      if (selectedGenre !== "all") {
+        url += `&category=${selectedGenre}`;
+      }
+      if (selectedYear !== "all") {
+        url += `&year=${selectedYear}`;
+      }
     } else if (type === "genre") {
-      url += `/the-loai/${selectedGenre}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&country=${selectedCountry}&year=${selectedYear}&limit=20`;
+      url += `/the-loai/${selectedGenre}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&limit=20`;
+      if (selectedCountry !== "all") {
+        url += `&country=${selectedCountry}`;
+      }
+      if (selectedYear !== "all") {
+        url += `&year=${selectedYear}`;
+      }
     } else if (type === "year") {
-      url += `/nam/${selectedYear}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&category=${selectedGenre}&country=${selectedCountry}&limit=20`;
+      url += `/nam/${selectedYear}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&limit=20`;
+      if (selectedGenre !== "all") {
+        url += `&category=${selectedGenre}`;
+      }
+      if (selectedCountry !== "all") {
+        url += `&country=${selectedCountry}`;
+      }
     } else {
       navigate(`/tim-kiem?keyword=${searchKeyword}&page=1`);
       return;
@@ -121,6 +139,7 @@ const FilmPage: React.FC = () => {
         setCurrentPage(data.data.params.pagination.currentPage);
         setTotalPages(data.data.params.pagination.totalPages);
         setMovies(data.data.items);
+        console.log(data.data.items);
       }
     } catch (error) {
       console.error("Error searching movies:", error);
@@ -372,7 +391,12 @@ const FilmPage: React.FC = () => {
                 <div className="relative group">
                   <Link to={`/xem-phim/${movie.slug}`}>
                     <img
-                      src={movie.poster_url}
+                      src={
+                        movie.poster_url.startsWith("https") ||
+                        movie.poster_url.startsWith("https")
+                          ? movie.poster_url
+                          : `${URL_IMG}${movie.poster_url}`
+                      }
                       alt={movie.name}
                       className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity"
                     />
@@ -398,11 +422,7 @@ const FilmPage: React.FC = () => {
                 </div>
                 <CardContent className="p-4">
                   <h3 className="text-lg font-semibold text-white mb-2 truncate">
-                    <Link
-                      to={`/xem-phim/${movie.slug}`}
-                    >
-                      {movie.name}
-                    </Link>
+                    <Link to={`/xem-phim/${movie.slug}`}>{movie.name}</Link>
                   </h3>
                   <p className="text-sm text-gray-400 mb-2">
                     {movie.origin_name}
