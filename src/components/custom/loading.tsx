@@ -1,7 +1,8 @@
+import { useSystemContext } from "@/context";
 import React from "react";
-import "./loading.css";
 
 const Loading: React.FC = () => {
+  const { contentSpecial } = useSystemContext();
   return (
     <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
       <div className="relative w-40 h-60 md:w-48 md:h-96">
@@ -32,19 +33,15 @@ const Loading: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Welcome Text */}
-      <div className="mt-8 px-4 max-w-2xl">
-        <h2 className="welcome-text text-xl md:text-3xl mb-2">
-          Cùng RFilm Chào Mừng
-        </h2>
-        <h1 className="welcome-text text-2xl md:text-4xl">
-          50 Năm Thống Nhất Đất Nước
-        </h1>
-        <p className="welcome-text text-xl md:text-3xl mt-2">
-          30/04/1975 - 30/04/2025
-        </p>
-      </div>
+      {contentSpecial.length > 0 && (
+        <div className="mt-8 px-4 max-w-2xl">
+          <h2 className="welcome-text text-xl md:text-3xl mb-2 whitespace-pre-line text-center">
+            {contentSpecial.replace(/\\n\s*/g, "\n")}
+          </h2>
+        </div>
+      )}
     </div>
   );
 };

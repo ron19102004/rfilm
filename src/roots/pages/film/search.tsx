@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import PullToRefresh from "@/components/custom/pull_to_refresh";
 
 interface Movie {
   name: string;
@@ -296,6 +297,7 @@ const FilmSearchPage: React.FC = () => {
 
   return (
     <section className="bg-[#0a0a0a] h-full">
+      <PullToRefresh />
       <div ref={topRef} className="w-0 h-0" />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8" data-aos="fade-down">

@@ -9,8 +9,9 @@ import { index, layout, prefix, router } from "./index.custom";
 import FilmSearchPage from "@/roots/pages/film/search";
 import WatchFilmPage from "@/roots/pages/film/watch";
 import MainLayout from "@/roots/layouts/main";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import SystemContextProvider from "@/context/system.context";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -30,12 +31,14 @@ const RouterRoot: FC = () => {
     });
   }, []);
   return (
-    <RouterProvider
-      router={createBrowserRouter([
-        ...users,
-        { path: "*", element: <div>404</div> }, //
-      ])}
-    />
+    <SystemContextProvider>
+      <RouterProvider
+        router={createBrowserRouter([
+          ...users,
+          { path: "*", element: <div>404</div> }, //
+        ])}
+      />
+    </SystemContextProvider>
   );
 };
 export default RouterRoot;

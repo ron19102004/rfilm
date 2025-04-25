@@ -13,6 +13,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
 import PullToRefresh from "@/components/custom/pull_to_refresh";
+import { useSystemContext } from "@/context";
 
 interface Movie {
   name: string;
@@ -50,6 +51,7 @@ const FilmPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedYear, setSelectedYear] = useState("");
   const navigate = useNavigate();
+  const { isLoading: isLoadingSystem } = useSystemContext();
   const topRef = useRef<HTMLDivElement>(null);
 
   // Load countries
@@ -252,7 +254,7 @@ const FilmPage: React.FC = () => {
       <div ref={topRef} className="w-0 h-0" />
       <PullToRefresh />
       {/* Loading Overlay */}
-      {loading && <Loading />}
+      {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 
       <main className="container mx-auto px-4 py-8">
         <div
