@@ -97,8 +97,6 @@ const FilmPage: React.FC = () => {
   // Search movies
   const searchMovies = async (type: string) => {
     if (loading) return;
-    setLoading(true);
-
     let url = "https://phimapi.com/v1/api";
 
     if (type === "country") {
@@ -111,7 +109,7 @@ const FilmPage: React.FC = () => {
       navigate(`/tim-kiem?keyword=${searchKeyword}&page=1`);
       return;
     }
-
+    setLoading(true);
     try {
       const response = await fetch(url);
       const data = await response.json();
