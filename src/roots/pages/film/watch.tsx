@@ -45,6 +45,8 @@ const WatchFilmPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
+  const [showAllEpisodes, setShowAllEpisodes] = useState(false);
+
   useEffect(() => {
     const fetchMovie = async () => {
       try {
@@ -112,10 +114,10 @@ const WatchFilmPage: React.FC = () => {
   return (
     <div className="bg-[#0a0a0a] h-full">
       <div ref={topRef} className="w-0 h-0" />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto">
         {/* Video Player */}
         <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12" data-aos="fade-up">
-          <div className="relative pt-[56.25%] bg-black rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg sm:shadow-xl md:shadow-2xl border border-[#1d1d1d] overflow-hidden mx-2 sm:mx-4 md:mx-6 lg:mx-8">
+          <div className="relative pt-[56.25%] bg-black rounded-lg sm:rounded-xl md:rounded-2xl border border-[#202020] overflow-hidden mx-2 sm:mx-4 md:mx-6 lg:mx-8">
             {isLoading ? (
               <Loading />
             ) : (
@@ -155,8 +157,8 @@ const WatchFilmPage: React.FC = () => {
 
           {/* Episode List */}
           <div className="mt-8">
-            <div className="flex flex-wrap gap-3">
-              {episodes[activeServer]?.server_data.map((episode, index) => (
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-12 gap-3">
+              {episodes[activeServer]?.server_data.slice(0, showAllEpisodes ? undefined : 12).map((episode, index) => (
                 <button
                   key={index}
                   className={`px-5 py-2.5 rounded-lg border transition-all duration-200 ease-in-out hover:-translate-y-0.5 ${
@@ -170,6 +172,17 @@ const WatchFilmPage: React.FC = () => {
                 </button>
               ))}
             </div>
+            
+            {episodes[activeServer]?.server_data.length > 12 && (
+              <div className="mt-4 flex justify-center">
+                <button
+                  onClick={() => setShowAllEpisodes(!showAllEpisodes)}
+                  className="px-6 py-2 bg-[#1a1a1a] text-white rounded-lg border border-[#2a2a2a] hover:bg-[#2a2a2a] transition-all duration-200"
+                >
+                  {showAllEpisodes ? "Ẩn bớt" : "Xem thêm"}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

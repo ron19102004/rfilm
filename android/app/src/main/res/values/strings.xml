@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">r-film</string>
+    <string name="app_name">RFilm</string>
     <string name="title_activity_main">r-film</string>
     <string name="package_name">com.ronial.app</string>
     <string name="custom_url_scheme">com.ronial.app</string>
