@@ -7,6 +7,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/filmlogo"
         android:supportsRtl="true"
+        android:screenOrientation="fullSensor"
+        android:configChanges="orientation|screenSize"
         android:theme="@style/AppTheme">
 
         <activity

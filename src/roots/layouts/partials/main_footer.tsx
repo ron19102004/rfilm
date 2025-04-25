@@ -1,6 +1,7 @@
 import React from 'react'
-import { Mail, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react'
-
+import { Mail, Facebook, Twitter, Instagram, Linkedin, Smartphone } from 'lucide-react'
+import { Link } from 'react-router-dom'
+const URL_DOWNLOAD_APP = "https://drive.google.com/uc?export=download&id=1hu29j12BvEg1NjYr5thTsotl04_Vpl6l"
 const MainFooter: React.FC = () => {
   return (
     <footer className="bg-[#0a0a0a] text-gray-100 py-12">
@@ -23,9 +24,24 @@ const MainFooter: React.FC = () => {
             <h3 className="text-red-500 text-2xl font-bold tracking-wide">Liên Kết Nhanh</h3>
             <ul className="space-y-3">
               <li>
-                <a href="/" className="text-gray-300 hover:text-red-500 transition duration-300 flex items-center group">
+                <Link to="/" className="text-gray-300 hover:text-red-500 transition duration-300 flex items-center group">
                   <span className="w-2 h-2 bg-red-500 rounded-full mr-2 transform group-hover:scale-150 transition duration-300"></span>
                   Trang chủ
+                </Link>
+              </li>
+              <li>
+                <Link to="/tim-kiem" className="text-gray-300 hover:text-red-500 transition duration-300 flex items-center group">
+                  <span className="w-2 h-2 bg-red-500 rounded-full mr-2 transform group-hover:scale-150 transition duration-300"></span>
+                  Tìm kiếm
+                </Link>
+              </li>
+              <li>
+                <a 
+                  href={URL_DOWNLOAD_APP}
+                  className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-300 mt-4 gap-2"
+                >
+                  <Smartphone className="w-5 h-5" />
+                  Tải ứng dụng tại đây
                 </a>
               </li>
             </ul>
