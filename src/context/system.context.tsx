@@ -27,8 +27,6 @@ const useSystemContext = () => {
     }, 5000);
     try {
       await loadResources();
-      console.log("loadResources:", firebase.db);
-      
       const docRef = doc(firebase.db, "system", "contentSpecial");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {

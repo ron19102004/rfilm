@@ -4,9 +4,6 @@ const config: CapacitorConfig = {
   appId: "com.ronial.app",
   appName: "RFilm",
   webDir: "dist",
-  server:{
-    androidScheme:"rfilm"
-  },
   plugins: {
     GoogleAuth: {
       scopes: ["profile", "email"],

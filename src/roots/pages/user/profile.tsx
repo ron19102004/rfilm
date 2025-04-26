@@ -105,6 +105,18 @@ const ProfilePage: React.FC = () => {
                     {user?.sub || "Not available"}
                   </p>
                 </div>
+                <div className="space-y-3">
+                  <p className="text-gray-400 text-sm font-medium">Full Name</p>
+                  <p className="text-white/90 font-mono text-sm">
+                    {user?.name || "Not available"}
+                  </p>
+                </div>
+                <div className="space-y-3">
+                  <p className="text-gray-400 text-sm font-medium">Email</p>
+                  <p className="text-white/90 font-mono text-sm">
+                    {user?.email || "Not available"}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
