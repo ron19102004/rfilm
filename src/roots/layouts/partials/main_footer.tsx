@@ -2,10 +2,8 @@ import React from "react";
 import { Mail, Smartphone, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSystemContext } from "@/context";
-const URL_DOWNLOAD_APP =
-  "https://drive.google.com/uc?export=download&id=1hu29j12BvEg1NjYr5thTsotl04_Vpl6l";
 const MainFooter: React.FC = () => {
-  const { contentSpecial } = useSystemContext();
+  const { contentSpecial, urlDownloadAppAndroid } = useSystemContext();
   return (
     <footer className=" bg-[#0a0a0a]  text-gray-100 pb-16 pt-10 px-4 md:px-10">
       <div className="container mx-auto px-4">
@@ -51,7 +49,7 @@ const MainFooter: React.FC = () => {
               </li>
               <li>
                 <a
-                  href={URL_DOWNLOAD_APP}
+                  href={urlDownloadAppAndroid}
                   className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-300 mt-4 gap-2"
                 >
                   <Smartphone className="w-5 h-5" />
