@@ -1,47 +1,65 @@
-import { useSystemContext } from "@/context";
 import React from "react";
+import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 
 const Loading: React.FC = () => {
-  const { contentSpecial } = useSystemContext();
   return (
     <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
-      <div className="relative w-40 h-60 md:w-48 md:h-96">
-        {/* Flag pole */}
-        <div className="flag absolute left-0 w-2 h-full bg-gray-800 rounded-full"></div>
-
-        {/* Flag */}
-        <div className="flag absolute left-1 w-36 md:w-72 h-32 md:h-60 overflow-hidden">
-          {/* Red top half */}
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-red-600"></div>
-
-          {/* Blue bottom half */}
-          <div className="absolute bottom-0 left-0 w-full h-1/2 bg-blue-600"></div>
-
-          {/* Yellow star */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <svg
-              className="w-16 h-16 sm:w-20 sm:h-20 md:w-32 md:h-32"
-              viewBox="0 0 24 24"
+      <div className="relative">
+        <div className="flex justify-center">
+          {["R", "F", "I", "L", "M"].map((letter, index) => (
+            <motion.div
+              key={index}
+              className="text-6xl font-bold "
+              initial={{
+                opacity: 0,
+                x: 0,
+                y: 0,
+              }}
+              animate={{
+                opacity: 1,
+                x: (index - 2) * 25,
+                y: 0,
+              }}
+              transition={{
+                duration: 1.5,
+                delay: index * 0.15,
+                type: "spring",
+                stiffness: 50,
+                damping: 15,
+                mass: 1,
+              }}
+              style={{
+                background:
+                  "linear-gradient(90deg, #ff0000 0%, #ff4d4d 50%, #ff0000 100%)",
+                backgroundSize: "200% auto",
+                color: "transparent",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                textShadow: "0 0 15px rgba(255, 0, 0, 0.5)",
+                marginLeft: index === 0 ? "0" : "-5px",
+                animation: "shine 1s linear infinite",
+              }}
             >
-              <path
-                d="M12 2 L15.09 8.26 L22 9.27 L17 14.14 L18.18 21.02 L12 17.77 L5.82 21.02 L7 14.14 L2 9.27 L8.91 8.26 L12 2"
-                fill="#FFD700"
-                stroke="#FFD700"
-                strokeWidth="0.5"
-              />
-            </svg>
-          </div>
+              {letter}
+            </motion.div>
+          ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1.2 }}
+          transition={{
+            delay: 1.5,
+            duration: 0.5,
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+          }}
+          className="flex justify-center mt-10"
+        >
+          <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
+        </motion.div>
       </div>
-
-      {/* Welcome Text */}
-      {contentSpecial.length > 0 && (
-        <div className="mt-8 px-4 max-w-2xl">
-          <h2 className="welcome-text text-xl md:text-3xl mb-2 whitespace-pre-line text-center">
-            {contentSpecial.replace(/\\n\s*/g, "\n")}
-          </h2>
-        </div>
-      )}
     </div>
   );
 };

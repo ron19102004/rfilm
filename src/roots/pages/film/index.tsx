@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight, Film } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -128,6 +128,7 @@ const FilmPage: React.FC = () => {
         {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 
         <main className="container mx-auto px-4">
+          <FilmIntroSlider />
           {/* Search */}
           <div className="py-4 flex justify-end items-center">
             <div className="flex items-center gap-4">
@@ -154,8 +155,10 @@ const FilmPage: React.FC = () => {
               </Button>
             </div>
           </div>
-          <FilmIntroSlider />
-          <h1 className="text-3xl font-bold text-white py-4">Danh sách</h1>
+          <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+            <Film className="w-8 h-8" />
+            <span className="title-hover">Danh sách</span>
+          </h1>
           <div className="text-white overflow-hidden scrollbar-hide relative">
             <div
               className="flex gap-4 overflow-x-auto py-4 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
@@ -167,11 +170,11 @@ const FilmPage: React.FC = () => {
                 )}
                 render={(type, index) => {
                   const bgColors = [
-                    "bg-gradient-to-r from-red-900 to-red-800",
-                    "bg-gradient-to-r from-red-800 to-red-700",
-                    "bg-gradient-to-r from-red-700 to-red-600",
-                    "bg-gradient-to-r from-red-600 to-red-500",
-                    "bg-gradient-to-r from-red-500 to-red-400",
+                    "bg-gradient-to-r from-red-600 to-orange-600",
+                    "bg-gradient-to-r from-orange-600 to-amber-600",
+                    "bg-gradient-to-r from-amber-600 to-yellow-600",
+                    "bg-gradient-to-r from-yellow-600 to-orange-500",
+                    "bg-gradient-to-r from-orange-500 to-red-500",
                   ];
                   return (
                     <Link
@@ -181,12 +184,18 @@ const FilmPage: React.FC = () => {
                         bgColors[index % bgColors.length]
                       } px-6 py-3 rounded-lg 
                     hover:scale-105 transition-all duration-300 ease-in-out
-                    shadow-lg hover:shadow-red-500/20
-                    border border-red-900/30
+                    shadow-lg hover:shadow-orange-500/20
+                    border border-orange-900/30
                     whitespace-nowrap
-                    text-white font-medium flex items-center justify-center md:py-10 md:px-20`}
+                    text-white font-medium items-start justify-center md:py-10 md:px-20 flex flex-col`}
                     >
-                      {transFilmTypeToVN(type)}
+                      <h3 className="text-xl font-bold">
+                        {transFilmTypeToVN(type)}
+                      </h3>
+                      <h4 className="flex items-center gap-2">
+                        Xem thể loại
+                        <ChevronRight className="w-6 h-6" />
+                      </h4>
                     </Link>
                   );
                 }}
@@ -210,8 +219,9 @@ const FilmPage: React.FC = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
-          <h1 className="text-3xl font-bold text-white py-4">
-            Phim Mới Cập Nhật
+          <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
+            <Film className="w-8 h-8" />
+            <span className="title-hover">Phim Mới Hôm Nay</span>
           </h1>
           {/* Filter Section */}
           <div

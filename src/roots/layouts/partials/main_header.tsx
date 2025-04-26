@@ -30,7 +30,10 @@ const MainHeader: React.FC<MainHeaderProps> = () => {
     <header className="bg-[#0a0a0a] shadow-sm">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <a href="/" className="text-3xl font-bold text-red-500">
+          <a
+            href="/"
+            className="text-3xl font-extrabold bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent hover:from-red-600 hover:to-red-800 transition-all duration-300 transform hover:scale-105"
+          >
             RFilm
           </a>
           <div className="flex items-center gap-4">

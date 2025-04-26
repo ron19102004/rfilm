@@ -2,6 +2,7 @@ import { FilmTypeList } from "@/apis/index.d";
 import { transFilmTypeToVN } from "@/apis/trans.f";
 import ListView from "@/components/list";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import { ChevronRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -17,11 +18,11 @@ const AllTypeListPage: React.FC = () => {
             )}
             render={(type, index) => {
               const bgColors = [
-                "bg-gradient-to-r from-red-900 to-red-800",
-                "bg-gradient-to-r from-red-800 to-red-700",
-                "bg-gradient-to-r from-red-700 to-red-600",
-                "bg-gradient-to-r from-red-600 to-red-500",
-                "bg-gradient-to-r from-red-500 to-red-400",
+                "bg-gradient-to-r from-red-600 to-orange-600",
+                "bg-gradient-to-r from-orange-600 to-amber-600",
+                "bg-gradient-to-r from-amber-600 to-yellow-600",
+                "bg-gradient-to-r from-yellow-600 to-orange-500",
+                "bg-gradient-to-r from-orange-500 to-red-500",
               ];
               return (
                 <Link
@@ -34,9 +35,15 @@ const AllTypeListPage: React.FC = () => {
                     shadow-lg hover:shadow-red-500/20
                     border border-red-900/30
                     whitespace-nowrap
-                    text-white font-medium flex items-center justify-center py-10 md:px-20`}
+                    text-white font-medium flex items-center justify-center py-10 md:px-20 flex-col`}
                 >
-                  {transFilmTypeToVN(type)}
+                  <h3 className="text-xl font-bold">
+                    {transFilmTypeToVN(type)}
+                  </h3>
+                  <h4 className="flex items-center gap-2">
+                    Xem thể loại
+                    <ChevronRight className="w-4 h-4" />
+                  </h4>
                 </Link>
               );
             }}

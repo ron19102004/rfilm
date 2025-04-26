@@ -16,7 +16,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
       key={movie.slug}
       className="bg-[#1a1a1a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0"
       data-aos="fade-up"
-      data-aos-delay={index * 100}
+      data-aos-delay={index * 50}
     >
       <div className="relative group">
         <Link to={`/xem-phim/${movie.slug}`}>
