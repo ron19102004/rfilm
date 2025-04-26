@@ -21,6 +21,7 @@ import ProfilePage from "@/roots/pages/user/profile";
 import MyMovieContextProvider from "@/context/my_movie.hook";
 import LoginPage from "@/roots/pages/auth/login";
 import VerifyTokenGoogle from "@/roots/pages/auth/verify_token_google";
+import NotFoundPage from "@/roots/pages/err/not_found";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -37,6 +38,7 @@ const users: RouteObject[] = [
     ]),
   ]),
   router("/auth/verify", <VerifyTokenGoogle />),
+  router("*", <NotFoundPage />),
 ];
 const RouterRoot: FC = () => {
   useEffect(() => {
