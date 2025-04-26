@@ -21,13 +21,18 @@ const loadCountries = async () => {
   return response.data;
 };
 
-const getFilmsUpdate = async (page: number) => {
+const getFilmsUpdateV3 = async (page: number) => {
   const response = await axios.get<FilmUpdateResponse>(
     `${URL_API}danh-sach/phim-moi-cap-nhat-v3?page=${page}`
   );
   return response.data;
 };
-
+const getFilmsUpdateV2 = async (page?: number) => {
+  const response = await axios.get<FilmUpdateResponse>(
+    `${URL_API}danh-sach/phim-moi-cap-nhat-v2?page=${page || 1}`
+  );
+  return response.data;
+};
 const getFilmsBy = async (options: GetFilmsOptions) => {
   let url = "https://phimapi.com/v1/api";
   switch (options.type) {
@@ -94,7 +99,8 @@ const getFilmDetails = async (slug: string) => {
 };
 
 export default {
-  getFilmsUpdate,
+  getFilmsUpdateV3,
+  getFilmsUpdateV2,
   loadCountries,
   loadGenres,
   getFilmsBy,

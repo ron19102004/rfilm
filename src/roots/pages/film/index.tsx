@@ -19,6 +19,7 @@ import MovieCard from "@/components/custom/movie_card";
 import filmApi from "@/apis/film.api";
 import { transFilmTypeToEN, transFilmTypeToVN } from "@/apis/trans.f";
 import Pagination from "@/components/custom/pagination";
+import FilmIntroSlider from "@/components/custom/film_intro";
 
 const FilmPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -147,6 +148,7 @@ const FilmPage: React.FC = () => {
             </Button>
           </div>
         </div>
+        <FilmIntroSlider/>
         <h1 className="text-3xl font-bold text-white py-4">Danh sách</h1>
         <div className="text-white overflow-hidden scrollbar-hide relative">
           <div

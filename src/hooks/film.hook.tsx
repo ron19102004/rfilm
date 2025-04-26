@@ -14,7 +14,7 @@ const filmHook = (): FilmContextType => {
   const loadMovies = async (page = 1, start?: () => void, end?: () => void) => {
     try {
       start?.();
-      const response = await filmApi.getFilmsUpdate(page);
+      const response = await filmApi.getFilmsUpdateV3(page);
       if (response.status) {
         setFilmUpdateResponse(response);
       }
