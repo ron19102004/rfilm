@@ -20,6 +20,7 @@ import AuthProvider from "@/providers/auth.provider";
 import ProfilePage from "@/roots/pages/user/profile";
 import MyMovieContextProvider from "@/context/my_movie.hook";
 import LoginPage from "@/roots/pages/auth/login";
+import VerifyTokenGoogle from "@/roots/pages/auth/verify_token_google";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -35,6 +36,7 @@ const users: RouteObject[] = [
       router("/login", <LoginPage />),
     ]),
   ]),
+  router("/auth/verify", <VerifyTokenGoogle />),
 ];
 const RouterRoot: FC = () => {
   useEffect(() => {

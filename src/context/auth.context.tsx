@@ -2,11 +2,15 @@ import { createContext } from "react";
 import useAuth, { AuthContextType } from "@/hooks/auth.hook";
 
 export const AuthContext = createContext<AuthContextType>({
-    user: null,
-    signInWithGoogle: () => Promise.resolve(),
-    logout: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-    }
+  user: null,
+  signInWithGoogle: () => Promise.resolve(),
+  logout: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  signInUserInfoFromAccessToken: function (_: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  loading: true,
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {

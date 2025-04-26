@@ -41,7 +41,7 @@ const MainHeader: React.FC<MainHeaderProps> = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   <img
-                    src={user.photoURL || user.displayName || ""}
+                    src={user.picture || user.name || ""}
                     alt="Avatar"
                     className="w-10 h-10 rounded-full object-cover"
                   />

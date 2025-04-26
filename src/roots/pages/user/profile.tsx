@@ -67,18 +67,18 @@ const ProfilePage: React.FC = () => {
                   <div className="absolute inset-0 bg-[#1a1a1a] blur-xl rounded-full"></div>
                   <Avatar className="relative h-32 w-32 border-2 border-[#2a2a2a] ">
                     <AvatarImage
-                      src={user?.photoURL || ""}
-                      alt={user?.displayName || "User"}
+                      src={user?.picture || ""}
+                      alt={user?.name || "User"}
                       className="object-cover"
                     />
                     <AvatarFallback className="bg-red-500/10 text-red-500 text-3xl">
-                      {user?.displayName?.charAt(0) || "U"}
+                      {user?.name?.charAt(0) || "U"}
                     </AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="text-center space-y-2">
                   <h2 className="text-2xl font-bold text-white tracking-tight">
-                    {user?.displayName || "User Name"}
+                    {user?.name || "User Name"}
                   </h2>
                   <p className="text-red-400 font-medium">
                     {user?.email || "user@example.com"}
@@ -100,21 +100,9 @@ const ProfilePage: React.FC = () => {
             <CardContent className="relative">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <p className="text-gray-400 text-sm font-medium">User ID</p>
+                  <p className="text-gray-400 text-sm font-medium">Sub</p>
                   <p className="text-white/90 font-mono text-sm">
-                    {user?.uid || "Not available"}
-                  </p>
-                </div>
-                <div className="space-y-3 md:col-span-2">
-                  <p className="text-gray-400 text-sm font-medium">
-                    Last Sign In
-                  </p>
-                  <p className="text-white/90">
-                    {user?.metadata?.lastSignInTime
-                      ? new Date(
-                          user.metadata.lastSignInTime
-                        ).toLocaleDateString()
-                      : "Not available"}
+                    {user?.sub || "Not available"}
                   </p>
                 </div>
               </div>

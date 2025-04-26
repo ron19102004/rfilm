@@ -48,7 +48,7 @@ const useMyMovie = (): MyMovieContextType => {
       const watchedMoviesRef = collection(db, "watched_movies");
       const q = query(
         watchedMoviesRef,
-        where("userId", "==", user.uid),
+        where("userId", "==", user.sub),
         orderBy("watchedAt", "desc")
       );
 
@@ -83,7 +83,7 @@ const useMyMovie = (): MyMovieContextType => {
 
       const q = query(
         watchedMoviesRef,
-        where("userId", "==", user.uid),
+        where("userId", "==", user.sub),
         where("movie.movie._id", "==", movie.movie._id) // Lưu ý: movie.movie.name mới đúng
       );
 
@@ -102,7 +102,7 @@ const useMyMovie = (): MyMovieContextType => {
       } else {
         // Nếu chưa từng xem phim này
         await addDoc(watchedMoviesRef, {
-          userId: user.uid,
+          userId: user.sub,
           watchedAt: new Date(),
           movie,
         });
