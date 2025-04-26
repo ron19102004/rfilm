@@ -22,9 +22,6 @@ const useSystemContext = () => {
   };
   const init = async () => {
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
     try {
       await loadResources();
       const docRef = doc(firebase.db, "system", "contentSpecial");
@@ -36,6 +33,10 @@ const useSystemContext = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
     }
   };
   useEffect(() => {
