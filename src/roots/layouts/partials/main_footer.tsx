@@ -2,6 +2,8 @@ import React from "react";
 import { Mail, Smartphone, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSystemContext } from "@/context";
+import { cn } from "@/lib/utils";
+import { Capacitor } from "@capacitor/core";
 const MainFooter: React.FC = () => {
   const { contentSpecial, urlDownloadAppAndroid } = useSystemContext();
   return (
@@ -47,7 +49,11 @@ const MainFooter: React.FC = () => {
                   Tìm kiếm
                 </Link>
               </li>
-              <li>
+              <li
+                className={cn({
+                  hidden: Capacitor.isNativePlatform(),
+                })}
+              >
                 <a
                   href={urlDownloadAppAndroid}
                   className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-300 mt-4 gap-2"
