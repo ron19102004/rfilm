@@ -5,6 +5,7 @@ import PullToRefresh from "@/components/custom/pull_to_refresh";
 import { MovieDetails, Server } from "@/apis/index.d";
 import filmApi from "@/apis/film.api";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import { useMyMovieContext } from "@/context";
 
 const WatchFilmPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -16,27 +17,27 @@ const WatchFilmPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const [showAllEpisodes, setShowAllEpisodes] = useState(false);
+  const { saveOrUpdateMovie } = useMyMovieContext();
+  const fetchMovie = async () => {
+    if (!slug) return;
+    try {
+      const response = await filmApi.getFilmDetails(slug?.toString());
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      if (!slug) return;
-      try {
-        const response = await filmApi.getFilmDetails(slug?.toString());
-
-        if (response.status) {
-          setMovie(response.movie);
-          setEpisodes(response.episodes);
-          setIsLoading(false);
-        } else {
-          setError("Failed to load movie data");
-          setIsLoading(false);
-        }
-      } catch (err) {
-        setError("An error occurred while fetching the movie");
+      if (response.status) {
+        setMovie(response.movie);
+        setEpisodes(response.episodes);
+        setIsLoading(false);
+        await saveOrUpdateMovie(response);
+      } else {
+        setError("Failed to load movie data");
         setIsLoading(false);
       }
-    };
-
+    } catch (err) {
+      setError("An error occurred while fetching the movie");
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchMovie();
   }, [slug]);
   useEffect(() => {
@@ -83,12 +84,15 @@ const WatchFilmPage: React.FC = () => {
 
   return (
     <div className="bg-[#0a0a0a] h-full">
-      <PullToRefresh />
+      <PullToRefresh onRefresh={fetchMovie}/>
       <div ref={topRef} className="w-0 h-0" />
-      <MainBackMobile title={"Xem phim"} />
+      <MainBackMobile title={"Xem phim"} className="px-2 md:px-10"/>
       <div className="container mx-auto">
         {/* Video Player */}
-        <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-2 md:px-4" data-aos="fade-up">
+        <div
+          className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-2 md:px-4"
+          data-aos="fade-up"
+        >
           <div className="relative pt-[56.25%] bg-black rounded-lg sm:rounded-xl md:rounded-2xl border border-[#202020] overflow-hidden mx-2 sm:mx-4 md:mx-6 lg:mx-8">
             {isLoading ? (
               <Loading />

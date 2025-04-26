@@ -12,7 +12,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
 import PullToRefresh from "@/components/custom/pull_to_refresh";
-import { useSystemContext } from "@/context";
+import { useFilmContext, useSystemContext } from "@/context";
 import { FilmTypeList, GetFilmsType, Movie } from "@/apis/index.d";
 import ListView from "@/components/list";
 import MovieCard from "@/components/custom/movie_card";
@@ -38,6 +38,7 @@ const FilmPage: React.FC = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const { filmUpdateResponse ,loadMovies} = useFilmContext();
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -53,24 +54,6 @@ const FilmPage: React.FC = () => {
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
   }, []);
-
-  // Load movies
-  const loadMovies = async (page = 1) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const response = await filmApi.getFilmsUpdate(page);
-      if (response.status) {
-        setCurrentPage(response.pagination.currentPage);
-        setTotalPages(response.pagination.totalPages);
-        setMovies(response.items);
-      }
-    } catch (error) {
-      console.error("Error loading movies:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Search movies
   const searchMovies = async (type: GetFilmsType, value: string) => {
@@ -103,8 +86,12 @@ const FilmPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadMovies();
-  }, []);
+    if (filmUpdateResponse) {
+      setMovies(filmUpdateResponse.items);
+      setCurrentPage(filmUpdateResponse.pagination.currentPage);
+      setTotalPages(filmUpdateResponse.pagination.totalPages);
+    }
+  }, [filmUpdateResponse]);
 
   useEffect(() => {
     if (topRef.current) {
@@ -129,7 +116,9 @@ const FilmPage: React.FC = () => {
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
       <div ref={topRef} className="w-0 h-0" />
-      <PullToRefresh />
+      <PullToRefresh onRefresh={async()=>{
+        window.location.reload()
+      }}/>
       {/* Loading Overlay */}
       {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 
@@ -350,7 +339,11 @@ const FilmPage: React.FC = () => {
           currentPage={currentPage}
           totalPages={totalPages}
           loadMovies={(page) => {
-            loadMovies(page);
+            loadMovies(page, () => {
+              setLoading(true);
+            }, () => {
+              setLoading(false);
+            });
           }}
         />
       </main>

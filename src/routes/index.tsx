@@ -14,6 +14,12 @@ import "aos/dist/aos.css";
 import SystemContextProvider from "@/context/system.context";
 import TypeListPage from "@/roots/pages/film/search_by_type_list";
 import AllTypeListPage from "@/roots/pages/film/all_type_list";
+import FilmContextProvider from "@/context/film.context";
+import { Toaster } from "react-hot-toast";
+import AuthProvider from "@/providers/auth.provider";
+import ProfilePage from "@/roots/pages/user/profile";
+import MyMovieContextProvider from "@/context/my_movie.hook";
+import LoginPage from "@/roots/pages/auth/login";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -23,6 +29,10 @@ const users: RouteObject[] = [
       router("/xem-phim/:slug", <WatchFilmPage />),
       router("/danh-sach/:slug", <TypeListPage />),
       router("/tat-ca-danh-sach", <AllTypeListPage />),
+      layout(<AuthProvider />, [
+        router("/profile", <ProfilePage />),
+      ]),
+      router("/login", <LoginPage />),
     ]),
   ]),
 ];
@@ -35,14 +45,21 @@ const RouterRoot: FC = () => {
     });
   }, []);
   return (
-    <SystemContextProvider>
-      <RouterProvider
-        router={createBrowserRouter([
-          ...users,
-          { path: "*", element: <div>404</div> }, //
-        ])}
-      />
-    </SystemContextProvider>
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+      <SystemContextProvider>
+        <FilmContextProvider>
+          <MyMovieContextProvider>
+            <RouterProvider
+              router={createBrowserRouter([
+                ...users,
+                { path: "*", element: <div>404</div> }, //
+              ])}
+            />
+          </MyMovieContextProvider>
+        </FilmContextProvider>
+      </SystemContextProvider>
+    </>
   );
 };
 export default RouterRoot;

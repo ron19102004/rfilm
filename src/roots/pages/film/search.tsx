@@ -120,7 +120,9 @@ const FilmSearchPage: React.FC = () => {
 
   return (
     <section className="bg-[#0a0a0a] h-full">
-      <PullToRefresh />
+      <PullToRefresh onRefresh={async()=>{
+        window.location.reload()
+      }}/>
       <div ref={topRef} className="w-0 h-0" />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8" data-aos="fade-down">

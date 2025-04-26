@@ -24,6 +24,7 @@ export interface Movie {
   slug: string;
 }
 export interface MovieDetails {
+  _id: string;
   name: string;
   origin_name: string;
   year: string;
@@ -39,6 +40,7 @@ export interface MovieDetails {
   actor: string[];
   category: { name: string }[];
   poster_url: string;
+  slug: string;
 }
 
 export interface Episode {

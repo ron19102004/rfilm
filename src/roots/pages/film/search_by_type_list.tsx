@@ -72,7 +72,9 @@ const TypeListPage: React.FC = () => {
     <div className="bg-[#0a0a0a] min-h-screen">
       <div ref={topRef} className="w-0 h-0" />
       <MainBackMobile title={transFilmTypeToVN(slug?.toString() || "") || ""} />
-      <PullToRefresh />
+      <PullToRefresh onRefresh={async()=>{
+        window.location.reload()
+      }}/>
       {/* Loading Overlay */}
       {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 

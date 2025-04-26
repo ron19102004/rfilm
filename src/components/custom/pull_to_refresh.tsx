@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 
-const PullToRefresh = () => {
+interface PullToRefreshProps {
+  onRefresh: () => Promise<void>;
+}
+
+const PullToRefresh = ({ onRefresh }: PullToRefreshProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
@@ -33,10 +37,11 @@ const PullToRefresh = () => {
       }
     };
 
-    const onTouchEnd = () => {
+    const onTouchEnd = async () => {
       if (isPulled) {
         setIsRefreshing(true);
-        window.location.reload();
+        await onRefresh();
+        setIsRefreshing(false);
       }
     };
 

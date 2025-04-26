@@ -1,16 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { ClassValue } from "clsx";
+import { cn } from "@/lib/utils";
 interface MainBackMobileProps {
   title: string;
+  className?: ClassValue;
 }
-const MainBackMobile: React.FC<MainBackMobileProps> = ({ title }) => {
+const MainBackMobile: React.FC<MainBackMobileProps> = ({ title, className }) => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
   };
   return (
-    <div className="container mx-auto bg-white/300 backdrop-blur-sm py-2 flex justify-start gap-2 items-center px-2 transition-all">
+    <div className={cn("container mx-auto bg-white/300 backdrop-blur-sm py-2 flex justify-start gap-2 items-center px-2 transition-all", className)}>
       <button
         onClick={handleBack}
         className="flex items-center justify-center w-10 h-10 transition-all"
