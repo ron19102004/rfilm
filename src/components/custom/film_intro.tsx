@@ -353,7 +353,7 @@ const FilmIntroSlider: React.FC = () => {
         <Slider {...settings}>
           {secondHalfMovies.map((movie, index) => (
             <div key={index} className="px-2 py-4">
-              <motion.div whileHover={{ scale: 1.05, opacity: 0.9 }}>
+              <motion.div whileHover={{ scale: 1.05 }}>
                 <div className="bg-[#1a1a1a] border border-[#424242] shadow-lg rounded-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
                   <div className="relative transition-all">
                     <img
