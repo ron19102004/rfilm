@@ -119,7 +119,7 @@ const useAuth = (): AuthContextType => {
     setLoading(false);
   }, []);
   useEffect(() => {
-    const appUrlListener = App.addListener("appUrlOpen", (event: any) => {
+    App.addListener("appUrlOpen", (event: any) => {
       const url = event.url;
       if (url && url.includes("access_token")) {
         const accessToken = new URL(url).searchParams.get("access_token");
@@ -133,15 +133,15 @@ const useAuth = (): AuthContextType => {
       }
     });
     return () => {
-      appUrlListener.remove(); // Hủy listener khi component unmount
+      App.removeAllListeners();
     };
   }, []);
   return {
-    user:user,
-    signInWithGoogle:signInWithGoogle,
-    logout:logout,
+    user: user,
+    signInWithGoogle: signInWithGoogle,
+    logout: logout,
     signInUserInfoFromAccessToken: signInUserInfoFromAccessToken,
-    loading:loading,
+    loading: loading,
   };
 };
 

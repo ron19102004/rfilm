@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  getFirestore,
   collection,
   query,
   where,
@@ -12,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { MovieDetailsResponse } from "@/apis/index.d";
 import { useAuthContext } from "@/context";
+import firebase from "@/firebase";
 
 export interface MyMovieContextType {
   movies: WatchedMovieDoc[];
@@ -36,11 +36,10 @@ const useMyMovie = (): MyMovieContextType => {
   const [movies, setMovies] = useState<WatchedMovieDoc[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const db = getFirestore();
+  const db = firebase.db;
 
   const loadMyMovies = async (start?: () => void, end?: () => void) => {
     if (!user) return;
-
     try {
       start?.();
       setLoading(true);
