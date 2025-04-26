@@ -30,7 +30,7 @@ const MainHeader: React.FC<MainHeaderProps> = ({ user }) => {
     <header className="bg-[#0a0a0a] shadow-sm">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link to="/" className="text-2xl font-bold text-red-500">
+          <Link to="/" className="text-3xl font-bold text-red-500">
             RFilm
           </Link>
           <div className="flex items-center gap-4">

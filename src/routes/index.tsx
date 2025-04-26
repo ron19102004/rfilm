@@ -12,6 +12,8 @@ import MainLayout from "@/roots/layouts/main";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import SystemContextProvider from "@/context/system.context";
+import TypeListPage from "@/roots/pages/film/search_by_type_list";
+import AllTypeListPage from "@/roots/pages/film/all_type_list";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
@@ -19,6 +21,8 @@ const users: RouteObject[] = [
       index(<FilmPage />),
       router("/tim-kiem", <FilmSearchPage />),
       router("/xem-phim/:slug", <WatchFilmPage />),
+      router("/danh-sach/:slug", <TypeListPage />),
+      router("/tat-ca-danh-sach", <AllTypeListPage />),
     ]),
   ]),
 ];

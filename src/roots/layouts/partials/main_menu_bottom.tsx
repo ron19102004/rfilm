@@ -1,4 +1,4 @@
-import { HomeIcon, SearchIcon } from 'lucide-react';
+import { HomeIcon, ListIcon, SearchIcon } from 'lucide-react';
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 
@@ -18,6 +18,11 @@ const menuItems: MenuItem[] = [
     label: "Tìm kiếm",
     icon: <SearchIcon />,
     href: "/tim-kiem",
+  },
+  {
+    label: "Danh sách",
+    icon: <ListIcon />,
+    href: "/tat-ca-danh-sach",
   },
 ];
 

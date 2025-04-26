@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search, Play, ChevronLeft, ChevronRight } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,81 +13,57 @@ import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
 import PullToRefresh from "@/components/custom/pull_to_refresh";
 import { useSystemContext } from "@/context";
+import { FilmTypeList, GetFilmsType, Movie } from "@/apis/index.d";
+import ListView from "@/components/list";
+import MovieCard from "@/components/custom/movie_card";
+import filmApi from "@/apis/film.api";
+import { transFilmTypeToEN, transFilmTypeToVN } from "@/apis/trans.f";
+import Pagination from "@/components/custom/pagination";
 
-interface Movie {
-  name: string;
-  origin_name: string;
-  poster_url: string;
-  quality: string;
-  episode_current: string;
-  year: string;
-  time: string;
-  lang: string;
-  category: Array<{ name: string }>;
-  country: Array<{ name: string }>;
-  slug: string;
-}
-
-interface Country {
-  slug: string;
-  name: string;
-}
-
-interface Genre {
-  slug: string;
-  name: string;
-}
-const URL_IMG = "https://phimimg.com/";
 const FilmPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [genres, setGenres] = useState<Genre[]>([]);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("all");
+  const [selectedCountry, setSelectedCountry] = useState("all");
+  const [selectedYear, setSelectedYear] = useState("all");
+  const [selectedType, setSelectedType] = useState<FilmTypeList>(
+    FilmTypeList.ALL
+  );
   const navigate = useNavigate();
-  const { isLoading: isLoadingSystem } = useSystemContext();
+  const { isLoading: isLoadingSystem, countries, genres } = useSystemContext();
   const topRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
-  // Load countries
-  const loadCountries = async () => {
-    try {
-      const response = await fetch("https://phimapi.com/quoc-gia");
-      const data = await response.json();
-      setCountries(data);
-    } catch (error) {
-      console.error("Error loading countries:", error);
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
     }
   };
 
-  // Load genres
-  const loadGenres = async () => {
-    try {
-      const response = await fetch("https://phimapi.com/the-loai");
-      const data = await response.json();
-      setGenres(data);
-    } catch (error) {
-      console.error("Error loading genres:", error);
-    }
-  };
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
 
   // Load movies
   const loadMovies = async (page = 1) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://phimapi.com/danh-sach/phim-moi-cap-nhat-v3?page=${page}`
-      );
-      const data = await response.json();
-      if (data.status) {
-        setCurrentPage(data.pagination.currentPage);
-        setTotalPages(data.pagination.totalPages);
-        setMovies(data.items);
+      const response = await filmApi.getFilmsUpdate(page);
+      if (response.status) {
+        setCurrentPage(response.pagination.currentPage);
+        setTotalPages(response.pagination.totalPages);
+        setMovies(response.items);
       }
     } catch (error) {
       console.error("Error loading movies:", error);
@@ -98,48 +73,27 @@ const FilmPage: React.FC = () => {
   };
 
   // Search movies
-  const searchMovies = async (type: string) => {
+  const searchMovies = async (type: GetFilmsType, value: string) => {
     if (loading) return;
-    let url = "https://phimapi.com/v1/api";
-
-    if (type === "country") {
-      url += `/quoc-gia/${selectedCountry}?page=1&sort_field=_id&sort_type=asc&limit=20`;
-      if (selectedGenre !== "all") {
-        url += `&category=${selectedGenre}`;
-      }
-      if (selectedYear !== "all") {
-        url += `&year=${selectedYear}`;
-      }
-    } else if (type === "genre") {
-      url += `/the-loai/${selectedGenre}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&limit=20`;
-      if (selectedCountry !== "all") {
-        url += `&country=${selectedCountry}`;
-      }
-      if (selectedYear !== "all") {
-        url += `&year=${selectedYear}`;
-      }
-    } else if (type === "year") {
-      url += `/nam/${selectedYear}?page=1&sort_field=_id&sort_type=asc&sort_lang=long-tieng&limit=20`;
-      if (selectedGenre !== "all") {
-        url += `&category=${selectedGenre}`;
-      }
-      if (selectedCountry !== "all") {
-        url += `&country=${selectedCountry}`;
-      }
-    } else {
-      navigate(`/tim-kiem?keyword=${searchKeyword}&page=1`);
+    if (type === GetFilmsType.KEYWORD) {
+      navigate(`/tim-kiem?keyword=${value}&page=1`);
       return;
     }
     setLoading(true);
     try {
-      const response = await fetch(url);
-      const data = await response.json();
+      const response = await filmApi.getFilmsBy({
+        type,
+        value,
+        page: 1,
+        selectedCountry: selectedCountry,
+        selectedGenre: selectedGenre,
+        selectedYear: selectedYear,
+      });
 
-      if (data.status === "success") {
-        setCurrentPage(data.data.params.pagination.currentPage);
-        setTotalPages(data.data.params.pagination.totalPages);
-        setMovies(data.data.items);
-        console.log(data.data.items);
+      if (response.status === "success") {
+        setCurrentPage(response.data.params.pagination.currentPage);
+        setTotalPages(response.data.params.pagination.totalPages);
+        setMovies(response.data.items);
       }
     } catch (error) {
       console.error("Error searching movies:", error);
@@ -148,117 +102,7 @@ const FilmPage: React.FC = () => {
     }
   };
 
-  // Render pagination
-  const renderPagination = () => {
-    const maxVisiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    const pages = [];
-
-    // Previous button
-    pages.push(
-      <Button
-        key="prev"
-        onClick={() => currentPage > 1 && loadMovies(currentPage - 1)}
-        variant="outline"
-        size="icon"
-        className="h-8 w-8"
-        disabled={currentPage === 1}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </Button>
-    );
-
-    // First page
-    if (startPage > 1) {
-      pages.push(
-        <Button
-          key="first"
-          onClick={() => loadMovies(1)}
-          variant="outline"
-          size="sm"
-          className="h-8 w-8"
-        >
-          1
-        </Button>
-      );
-      if (startPage > 2) {
-        pages.push(
-          <span
-            key="dots1"
-            className="flex h-8 w-8 items-center justify-center text-gray-400"
-          >
-            ...
-          </span>
-        );
-      }
-    }
-
-    // Page numbers
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <Button
-          key={i}
-          onClick={() => loadMovies(i)}
-          variant={i === currentPage ? "default" : "outline"}
-          size="sm"
-          className="h-8 w-8"
-        >
-          {i}
-        </Button>
-      );
-    }
-
-    // Last page
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        pages.push(
-          <span
-            key="dots2"
-            className="flex h-8 w-8 items-center justify-center text-gray-400"
-          >
-            ...
-          </span>
-        );
-      }
-      pages.push(
-        <Button
-          key="last"
-          onClick={() => loadMovies(totalPages)}
-          variant="outline"
-          size="sm"
-          className="h-8 w-8"
-        >
-          {totalPages}
-        </Button>
-      );
-    }
-
-    // Next button
-    pages.push(
-      <Button
-        key="next"
-        onClick={() => currentPage < totalPages && loadMovies(currentPage + 1)}
-        variant="outline"
-        size="icon"
-        className="h-8 w-8"
-        disabled={currentPage === totalPages}
-      >
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    );
-
-    return pages;
-  };
-
   useEffect(() => {
-    loadCountries();
-    loadGenres();
     loadMovies();
   }, []);
 
@@ -268,6 +112,20 @@ const FilmPage: React.FC = () => {
     }
   }, [movies]);
 
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft -= 200;
+      checkScroll();
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft += 200;
+      checkScroll();
+    }
+  };
+
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
       <div ref={topRef} className="w-0 h-0" />
@@ -275,12 +133,9 @@ const FilmPage: React.FC = () => {
       {/* Loading Overlay */}
       {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 
-      <main className="container mx-auto px-4 py-8">
-        <div
-          className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4"
-          data-aos="fade-down"
-        >
-          <h1 className="text-3xl font-bold text-white">Phim Mới Cập Nhật</h1>
+      <main className="container mx-auto px-4">
+        {/* Search */}
+        <div className="py-4 flex justify-end items-center">
           <div className="flex items-center gap-4">
             <div className="relative">
               <Input
@@ -295,7 +150,7 @@ const FilmPage: React.FC = () => {
               <Search className="absolute left-2 top-2 text-gray-400 w-5 h-5" />
             </div>
             <Button
-              onClick={() => searchMovies("search")}
+              onClick={() => searchMovies(GetFilmsType.KEYWORD, searchKeyword)}
               className="bg-red-600 hover:bg-red-700"
             >
               <Search className="w-5 h-5 mr-2" />
@@ -303,75 +158,175 @@ const FilmPage: React.FC = () => {
             </Button>
           </div>
         </div>
-
+        <h1 className="text-3xl font-bold text-white py-4">Danh sách</h1>
+        <div className="text-white overflow-hidden scrollbar-hide relative">
+          <div
+            className="flex gap-4 overflow-x-auto py-4 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            ref={scrollContainerRef}
+          >
+            <ListView
+              data={Object.values(FilmTypeList).filter(
+                (item) => item !== FilmTypeList.ALL
+              )}
+              render={(type, index) => {
+                const bgColors = [
+                  "bg-gradient-to-r from-red-900 to-red-800",
+                  "bg-gradient-to-r from-red-800 to-red-700",
+                  "bg-gradient-to-r from-red-700 to-red-600",
+                  "bg-gradient-to-r from-red-600 to-red-500",
+                  "bg-gradient-to-r from-red-500 to-red-400",
+                ];
+                return (
+                  <Link
+                    key={type}
+                    to={`/danh-sach/${type}`}
+                    className={`${
+                      bgColors[index % bgColors.length]
+                    } px-6 py-3 rounded-lg 
+                    hover:scale-105 transition-all duration-300 ease-in-out
+                    shadow-lg hover:shadow-red-500/20
+                    border border-red-900/30
+                    whitespace-nowrap
+                    text-white font-medium flex items-center justify-center md:py-10 md:px-20`}
+                  >
+                    {transFilmTypeToVN(type)}
+                  </Link>
+                );
+              }}
+            />
+          </div>
+          {/* Scroll Buttons */}
+          <button
+            onClick={scrollLeft}
+            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-r-lg hidden  ${
+              canScrollLeft ? "md:block" : "hidden"
+            }`}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button
+            onClick={scrollRight}
+            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-l-lg hidden ${
+              canScrollRight ? "md:block" : "hidden"
+            }`}
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
+        <h1 className="text-3xl font-bold text-white py-4">
+          Phim Mới Cập Nhật
+        </h1>
         {/* Filter Section */}
         <div
-          className="mb-8 flex flex-wrap gap-4"
+          className="mb-8 grid grid-cols-2 md:flex md:flex-row gap-4"
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <Select
-            value={selectedGenre}
-            onValueChange={(value: string) => {
-              setSelectedGenre(value);
-              searchMovies("genre");
-            }}
-          >
-            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectValue placeholder="Thể loại" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectItem value="all">Tất cả</SelectItem>
-              {genres.map((genre) => (
-                <SelectItem key={genre.slug} value={genre.slug}>
-                  {genre.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm text-gray-400">Danh sách</label>
+            <Select
+              value={selectedType}
+              onValueChange={(value: string) => {
+                setSelectedType(transFilmTypeToEN(value));
+                searchMovies(GetFilmsType.LIST, value);
+              }}
+            >
+              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectValue placeholder="Danh sách" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <ListView
+                  data={Object.values(FilmTypeList)}
+                  render={(type) => (
+                    <SelectItem key={type} value={type}>
+                      {transFilmTypeToVN(type)}
+                    </SelectItem>
+                  )}
+                />
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select
-            value={selectedCountry}
-            onValueChange={(value: string) => {
-              setSelectedCountry(value);
-              searchMovies("country");
-            }}
-          >
-            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectValue placeholder="Quốc gia" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectItem value="all">Tất cả</SelectItem>
-              {countries.map((country) => (
-                <SelectItem key={country.slug} value={country.slug}>
-                  {country.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm text-gray-400">Thể loại</label>
+            <Select
+              value={selectedGenre}
+              onValueChange={(value: string) => {
+                setSelectedGenre(value);
+                searchMovies(GetFilmsType.GENRE, value);
+              }}
+            >
+              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectValue placeholder="Thể loại" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectItem value="all">Tất cả</SelectItem>
+                <ListView
+                  data={genres}
+                  render={(genre) => (
+                    <SelectItem key={genre.slug} value={genre.slug}>
+                      {genre.name}
+                    </SelectItem>
+                  )}
+                />
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select
-            value={selectedYear}
-            onValueChange={(value: string) => {
-              setSelectedYear(value);
-              searchMovies("year");
-            }}
-          >
-            <SelectTrigger className="w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectValue placeholder="Năm" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
-              <SelectItem value="all">Tất cả</SelectItem>
-              {Array.from(
-                { length: new Date().getFullYear() - 1970 + 1 },
-                (_, i) => new Date().getFullYear() - i
-              ).map((year) => (
-                <SelectItem key={year} value={year.toString()}>
-                  {year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm text-gray-400">Quốc gia</label>
+            <Select
+              value={selectedCountry}
+              onValueChange={(value: string) => {
+                setSelectedCountry(value);
+                searchMovies(GetFilmsType.COUNTRY, value);
+              }}
+            >
+              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectValue placeholder="Quốc gia" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectItem value="all">Tất cả</SelectItem>
+                <ListView
+                  data={countries}
+                  render={(country) => (
+                    <SelectItem key={country.slug} value={country.slug}>
+                      {country.name}
+                    </SelectItem>
+                  )}
+                />
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="text-sm text-gray-400">Năm</label>
+            <Select
+              value={selectedYear}
+              onValueChange={(value: string) => {
+                setSelectedYear(value);
+                searchMovies(GetFilmsType.YEAR, value);
+              }}
+            >
+              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectValue placeholder="Năm" />
+              </SelectTrigger>
+              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectItem value="all">Tất cả</SelectItem>
+                <ListView
+                  data={Array.from(
+                    { length: new Date().getFullYear() - 1970 + 1 },
+                    (_, i) => new Date().getFullYear() - i
+                  )}
+                  render={(year) => (
+                    <SelectItem key={year} value={year.toString()}>
+                      {year}
+                    </SelectItem>
+                  )}
+                />
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {/* Movie Grid */}
@@ -381,97 +336,23 @@ const FilmPage: React.FC = () => {
               <p className="text-gray-400">Không tìm thấy phim nào phù hợp</p>
             </div>
           ) : (
-            movies.map((movie, index) => (
-              <Card
-                key={movie.slug}
-                className="bg-[#1a1a1a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0"
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <div className="relative group">
-                  <Link to={`/xem-phim/${movie.slug}`}>
-                    <img
-                      src={
-                        movie.poster_url.startsWith("https") ||
-                        movie.poster_url.startsWith("https")
-                          ? movie.poster_url
-                          : `${URL_IMG}${movie.poster_url}`
-                      }
-                      alt={movie.name}
-                      className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity"
-                    />
-                  </Link>
-
-                  <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
-                    {movie.quality}
-                  </div>
-                  <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
-                    {movie.episode_current}
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                    <Button className="opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 bg-red-600 hover:bg-red-700">
-                      <Link
-                        to={`/xem-phim/${movie.slug}`}
-                        className="flex items-center"
-                      >
-                        <Play className="w-5 h-5 mr-2" />
-                        Xem ngay
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2 truncate">
-                    <Link to={`/xem-phim/${movie.slug}`}>{movie.name}</Link>
-                  </h3>
-                  <p className="text-sm text-gray-400 mb-2">
-                    {movie.origin_name}
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                    <span>{movie.year}</span>
-                    <span>•</span>
-                    <span>{movie.time}</span>
-                    <span>•</span>
-                    <span>{movie.lang}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {movie.category.map((cat) => (
-                      <span
-                        key={cat.name}
-                        className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                      >
-                        {cat.name}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {movie.country.map((country) => (
-                      <span
-                        key={country.name}
-                        className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                      >
-                        {country.name}
-                      </span>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))
+            <ListView
+              data={movies}
+              render={(movie, index) => (
+                <MovieCard key={movie.slug} movie={movie} index={index} />
+              )}
+            />
           )}
         </div>
 
         {/* Pagination */}
-        <div
-          className="mt-8 flex justify-center"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <div className="flex items-center gap-1">
-            {renderPagination().map((page, index) => (
-              <div key={index}>{page}</div>
-            ))}
-          </div>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          loadMovies={(page) => {
+            loadMovies(page);
+          }}
+        />
       </main>
     </div>
   );

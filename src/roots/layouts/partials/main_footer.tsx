@@ -7,7 +7,7 @@ const URL_DOWNLOAD_APP =
 const MainFooter: React.FC = () => {
   const { contentSpecial } = useSystemContext();
   return (
-    <footer className=" bg-[#0a0a0a]  text-gray-100 pb-16 pt-10">
+    <footer className=" bg-[#0a0a0a]  text-gray-100 pb-16 pt-10 px-4 md:px-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* About Section */}
