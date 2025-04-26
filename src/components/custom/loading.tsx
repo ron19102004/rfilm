@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 
 const Loading: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50">
       <div className="relative">
         <div className="flex justify-center">
           {["R", "F", "I", "L", "M"].map((letter, index) => (

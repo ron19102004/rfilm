@@ -211,12 +211,12 @@ const FilmIntroSlider: React.FC = () => {
             <img
               src={activeMovie.poster_url}
               alt={activeMovie.name}
-              className="w-full h-full object-cover opacity-60 backdrop-blur"
+              className="w-full h-full object-cover  "
             />
           </motion.div>
 
           {/* Enhanced overlay with gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/70 to-transparent opacity-90 backdrop-blur-md"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/70 to-transparent opacity-90 backdrop-blur"></div>
 
           {/* Content with enhanced animations */}
           <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-24 text-white">
@@ -359,7 +359,7 @@ const FilmIntroSlider: React.FC = () => {
                     <img
                       src={movie.poster_url}
                       alt={movie.name}
-                      className="w-full h-64 object-cover group-hover:opacity-90 opacity-50 transition-all"
+                      className="w-full h-64 object-cover group-hover:opacity-90 md:opacity-50 transition-all"
                     />
                     <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
                       {movie.year}
