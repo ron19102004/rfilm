@@ -36,7 +36,7 @@ const MainLayout: React.FC = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-20 right-8 p-1 bg-transparent border-2 border-red-500 text-red-500 rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all duration-300 z-50"
+          className="fixed bottom-20 right-8 p-1 bg-transparent border-2 border-red-500 text-red-500 rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all duration-300 z-40"
           aria-label="Scroll to top"
         >
           <ArrowUp size={24} />

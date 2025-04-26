@@ -3,12 +3,15 @@ import firebase from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 import { Genre, Country, Movie } from "@/apis";
 import filmApi from "@/apis/film.api";
+import { URL_DOWNLOAD_APP_ANDROID } from "@/constant/system.constant";
 interface SystemContextType {
   contentSpecial: string;
   isLoading: boolean;
   genres: Genre[];
   countries: Country[];
   filmIntro: Movie[];
+  urlDownloadAppAndroid: string;
+  updateAvailable: boolean;
 }
 const useSystemContext = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -16,6 +19,8 @@ const useSystemContext = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
   const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
+  const [urlDownloadAppAndroid, setUrlDownloadAppAndroid] = useState<string>(URL_DOWNLOAD_APP_ANDROID);
+  const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
   const loadResources = async () => {
     const genres = await filmApi.loadGenres();
     const countries = await filmApi.loadCountries();
@@ -31,10 +36,27 @@ const useSystemContext = () => {
     try {
       await loadResources();
       await loadFilmIntro();
-      const docRef = doc(firebase.db, "system", "contentSpecial");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setContentSpecial(docSnap.data().contentSpecial);
+      const docRefContentSpecial = doc(firebase.db, "system", "contentSpecial");
+      const docSnapContentSpecial = await getDoc(docRefContentSpecial);
+      if (docSnapContentSpecial.exists()) {
+        setContentSpecial(docSnapContentSpecial.data().contentSpecial);
+      } else {
+        console.log("No such document!");
+      }
+      const docRefUrlDownloadAppAndroid = doc(
+        firebase.db,
+        "system",
+        "urlDownloadAppAndroid"
+      );
+      const docSnapUrlDownloadAppAndroid = await getDoc(
+        docRefUrlDownloadAppAndroid
+      );
+      if (docSnapUrlDownloadAppAndroid.exists()) {
+        const url = docSnapUrlDownloadAppAndroid.data().urlDownloadAppAndroid;
+        if (url !== URL_DOWNLOAD_APP_ANDROID) {
+          setUpdateAvailable(true);
+          setUrlDownloadAppAndroid(url);
+        }
       } else {
         console.log("No such document!");
       }
@@ -55,6 +77,8 @@ const useSystemContext = () => {
     genres: genres,
     countries: countries,
     filmIntro: filmIntro,
+    urlDownloadAppAndroid: urlDownloadAppAndroid,
+    updateAvailable: updateAvailable,
   };
 };
 export const SystemContext = createContext<SystemContextType>({
@@ -62,7 +86,9 @@ export const SystemContext = createContext<SystemContextType>({
   isLoading: true,
   genres: [],
   countries: [],
-  filmIntro: []
+  filmIntro: [],
+  urlDownloadAppAndroid: "",
+  updateAvailable: false,
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {
