@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader } from "lucide-react";
 
 const Loading: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/60 flex flex-col items-center justify-center z-50">
       <div className="relative">
         <div className="flex justify-center">
           {["R", "F", "I", "L", "M"].map((letter, index) => (
@@ -57,7 +57,7 @@ const Loading: React.FC = () => {
           }}
           className="flex justify-center mt-10"
         >
-          <Loader2 className="w-8 h-8 text-red-500 animate-spin" />
+          <Loader className="w-8 h-8 text-red-500 animate-spin" />
         </motion.div>
       </div>
     </div>

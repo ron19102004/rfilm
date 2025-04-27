@@ -71,7 +71,7 @@ const FilmSearchPage: React.FC = () => {
       {[...Array(10)].map((_, index) => (
         <Card
           key={index}
-          className="bg-[#0a0a0a] border-none"
+          className="bg-[#0a0a0a] border-none m-0 p-0"
           data-aos="fade-up"
           data-aos-delay={index * 50}
         >
@@ -118,7 +118,7 @@ const FilmSearchPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-[#0a0a0a] h-full">
+    <section className="bg-[#1a1a1a] h-full pt-20">
       <PullToRefresh
         onRefresh={async () => {
           window.location.reload();
@@ -134,7 +134,7 @@ const FilmSearchPage: React.FC = () => {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="flex-1 bg-[#1a1a1a] text-white placeholder-gray-400 border-none focus-visible:ring-red-600"
+              className="flex-1 bg-[#2a2a2a] text-white placeholder-gray-400 border-none focus-visible:ring-red-600"
               placeholder="Tìm kiếm phim..."
             />
             <Button type="submit" variant="destructive" className="px-4 py-3">

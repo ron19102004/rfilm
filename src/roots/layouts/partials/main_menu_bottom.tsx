@@ -33,7 +33,7 @@ const menuItems: MenuItem[] = [
 
 const MainMenuBottomMobile: React.FC = () => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#0a0a0a] border-t border-gray-800 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-t-[#3a3a3a] md:hidden">
       <div className="flex justify-around items-center h-16">
         {menuItems.map((item) => (
           <NavLink

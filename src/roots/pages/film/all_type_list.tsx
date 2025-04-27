@@ -13,7 +13,7 @@ const AllTypeListPage: React.FC = () => {
     scrollToTop();
   }, []);
   return (
-    <div className="px-4 md:px-8">
+    <div className="px-4 md:px-8 pt-20">
       <MainBackMobile title="Tất cả danh sách" />
       <div className="text-white overflow-hidden scrollbar-hide relative">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-2">

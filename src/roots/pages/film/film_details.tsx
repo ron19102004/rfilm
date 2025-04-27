@@ -58,7 +58,7 @@ const FilmDetailsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-[#0a0a0a] min-h-screen flex items-center justify-center">
+      <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
         <div className="relative">
           <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
           <div
@@ -72,7 +72,7 @@ const FilmDetailsPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-[#0a0a0a] min-h-screen flex items-center justify-center">
+      <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,26 +86,28 @@ const FilmDetailsPage: React.FC = () => {
   }
 
   return (
-    <HelmetSEO seo={{
-      title: `${movie?.name} - RFilm`,
-      keywords: `${movie?.name} - RFilm`,
-      author: "Ronial",
-      ogTitle: `${movie?.name} - RFilm`,
-      ogDescription: `${movie?.content} - RFilm`,
-      ogImage: `${movie?.thumb_url}`,
-      ogType: "website",
-      ogUrl: `${ENDPOINT_WEB}/chi-tiet-phim/${slug}`,
-      ogSiteName: "RFilm",
-      ogLocale: "vi_VN",
-      canonicalUrl: `${ENDPOINT_WEB}/chi-tiet-phim/${slug}`,
-    }}>
-      <div className="bg-[#0a0a0a] min-h-screen">
+    <HelmetSEO
+      seo={{
+        title: `${movie?.name} - RFilm`,
+        keywords: `${movie?.name} - RFilm`,
+        author: "Ronial",
+        ogTitle: `${movie?.name} - RFilm`,
+        ogDescription: `${movie?.content} - RFilm`,
+        ogImage: `${movie?.thumb_url}`,
+        ogType: "website",
+        ogUrl: `${ENDPOINT_WEB}/chi-tiet-phim/${slug}`,
+        ogSiteName: "RFilm",
+        ogLocale: "vi_VN",
+        canonicalUrl: `${ENDPOINT_WEB}/chi-tiet-phim/${slug}`,
+      }}
+    >
+      <div className="bg-[#1a1a1a] min-h-screen relative">
         <div className="w-full relative">
           <motion.div
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[90vh] relative overflow-hidden"
+            className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-screen relative overflow-hidden"
           >
             {/* Background Image */}
             <div className="w-full h-full image-filter-wrapper">
@@ -117,13 +119,10 @@ const FilmDetailsPage: React.FC = () => {
             </div>
 
             {/* Enhanced Gradient Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/70 to-transparent opacity-70"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-black/40 to-transparent opacity-60"></div>
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-black/30 to-transparent opacity-50"></div>
             <div className="absolute inset-0"></div>
 
             {/* Movie Title Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16">
+            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 lg:p-12 xl:p-16 z-10">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -218,6 +217,7 @@ const FilmDetailsPage: React.FC = () => {
               </motion.div>
             </div>
           </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-100 md:opacity-100"></div>
         </div>
 
         {/* Trailer Modal */}

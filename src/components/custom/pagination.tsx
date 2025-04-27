@@ -31,7 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={() => currentPage > 1 && loadMovies(currentPage - 1)}
         variant="outline"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 cursor-pointer"
         disabled={currentPage === 1}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -46,7 +46,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => loadMovies(1)}
           variant="outline"
           size="sm"
-          className="h-8 w-8"
+          className="h-8 w-8 cursor-pointer"
         >
           1
         </Button>
@@ -69,9 +69,9 @@ const Pagination: React.FC<PaginationProps> = ({
         <Button
           key={i}
           onClick={() => loadMovies(i)}
-          variant={i === currentPage ? "default" : "outline"}
+          variant={i === currentPage ? "destructive" : "outline"}
           size="sm"
-          className="h-8 w-8"
+          className="h-8 w-8 cursor-pointer"
         >
           {i}
         </Button>
@@ -96,7 +96,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => loadMovies(totalPages)}
           variant="outline"
           size="sm"
-          className="h-8 w-8"
+          className="h-8 w-8 cursor-pointer"
         >
           {totalPages}
         </Button>
@@ -110,7 +110,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={() => currentPage < totalPages && loadMovies(currentPage + 1)}
         variant="outline"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 cursor-pointer"
         disabled={currentPage === totalPages}
       >
         <ChevronRight className="h-4 w-4" />

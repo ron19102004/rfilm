@@ -118,7 +118,7 @@ const WatchFilmPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-[#0a0a0a] min-h-screen flex items-center justify-center">
+      <div className="bg-[#1a1a1a] flex items-center justify-center mt-10">
         <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
@@ -126,7 +126,7 @@ const WatchFilmPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="bg-[#0a0a0a] min-h-screen flex items-center justify-center">
+      <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4 text-white">Error</h1>
           <p className="text-gray-400">{error}</p>
@@ -199,7 +199,7 @@ const WatchFilmPage: React.FC = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="min-h-screen bg-[#0a0a0a]"
+        className="min-h-screen bg-[#1a1a1a] mt-20"
       >
         <div className="relative">
           <PullToRefresh onRefresh={fetchMovie} />
@@ -212,9 +212,12 @@ const WatchFilmPage: React.FC = () => {
             className="px-2 md:px-10"
             titleClassName="text-lg md:text-2xl font-bold text-white"
           />
-          <div className="px-4 md:px-6 lg:px-8">
+          <div className="">
             {/* Video Player */}
-            <motion.div variants={itemVariants} className="mb-8">
+            <motion.div
+              variants={itemVariants}
+              className="mb-8 px-4 md:px-6 lg:px-8"
+            >
               <div className="relative pt-[56.25%] bg-black rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#202020] overflow-hidden shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
                 {isLoading ? (
                   <Loading />
@@ -233,7 +236,7 @@ const WatchFilmPage: React.FC = () => {
             </motion.div>
 
             {/* Watch tools */}
-            <motion.div variants={itemVariants} className=" px-4 md:px-10">
+            <motion.div variants={itemVariants} className=" px-4 md:px-10 container mx-auto">
               <div className="flex justify-end items-center">
                 <div className="flex items-center">
                   <div className="relative" ref={shareRef}>
@@ -302,7 +305,7 @@ const WatchFilmPage: React.FC = () => {
               </div>
             </motion.div>
 
-            <div className="px-4 md:px-10">
+            <div className="px-4 md:px-10 container mx-auto">
               {/* Server Tabs */}
               <motion.div variants={itemVariants} className="">
                 <div className="border-b border-[#2a2a2a]">

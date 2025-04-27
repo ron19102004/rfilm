@@ -4,12 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import PullToRefresh from "@/components/custom/pull_to_refresh";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Info, Play } from "lucide-react";
 import { URL_IMG } from "@/constant/api.constant";
 import { Link } from "react-router-dom";
 import ListView from "@/components/list";
 import { Timestamp } from "firebase/firestore";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import { Button } from "@/components/ui/button";
 
 const ProfilePage: React.FC = () => {
   const { scrollToTop } = useSystemContext();
@@ -23,7 +24,6 @@ const ProfilePage: React.FC = () => {
     loadMyMovies();
   }, [user]);
 
-
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } =
@@ -34,7 +34,7 @@ const ProfilePage: React.FC = () => {
   };
 
   useEffect(() => {
-    scrollToTop()
+    scrollToTop();
     checkScroll();
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
@@ -55,19 +55,19 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] p-4 md:p-8">
+    <div className="min-h-screen bg-[#1a1a1a] p-4 md:p-8 pt-20 md:pt-24">
       <PullToRefresh onRefresh={loadMyMovies} />
       <div className="">
         <MainBackMobile title="Thông tin tài khoản" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           {/* Profile Header Card */}
-          <Card className="relative overflow-hidden bg-[#1a1a1a] border-[#2a2a2a] ">
-            <div className="absolute inset-0 bg-[#1a1a1a]"></div>
+          <Card className="relative overflow-hidden bg-[#2a2a2a] border-[#3a3a3a] ">
+            <div className="absolute inset-0 bg-[#2a2a2a]"></div>
             <CardContent className="relative pt-8">
               <div className="flex flex-col items-center space-y-6">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-[#1a1a1a] blur-xl rounded-full"></div>
-                  <Avatar className="relative h-32 w-32 border-2 border-[#2a2a2a] ">
+                  <div className="absolute inset-0 bg-[#2a2a2a] blur-xl rounded-full"></div>
+                  <Avatar className="relative h-32 w-32 border-2 border-[#3a3a3a] ">
                     <AvatarImage
                       src={user?.picture || ""}
                       alt={user?.name || "User"}
@@ -91,13 +91,13 @@ const ProfilePage: React.FC = () => {
           </Card>
 
           {/* Profile Details Card */}
-          <Card className="md:col-span-2 relative overflow-hidden bg-[#1a1a1a] border-[#2a2a2a] ">
-            <div className="absolute inset-0bg-[#1a1a1a]"></div>
+          <Card className="md:col-span-2 relative overflow-hidden bg-[#2a2a2a] border-[#3a3a3a] ">
+            <div className="absolute inset-0bg-[#2a2a2a]"></div>
             <CardHeader className="relative">
               <CardTitle className="text-white text-xl font-semibold tracking-tight">
                 Profile Information
               </CardTitle>
-              <Separator className="my-4 border-[#2a2a2a]" />
+              <Separator className="my-4 border-[#3a3a3a]" />
             </CardHeader>
             <CardContent className="relative">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -125,41 +125,53 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* Watched Movies Section */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Phim đã xem gần đây
-          </h2>
-          <div className="relative">
-            <div
-              ref={scrollContainerRef}
-              className="flex gap-4 overflow-x-auto py-4 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-              onScroll={checkScroll}
-            >
-              <ListView
-                data={movies}
-                render={(movieWatched) => (
-                  <Card
-                    key={movieWatched.movie.movie._id}
-                    className="md:min-w-[300px] md:max-w-[300px] min-w-[250px] max-w-[250px] bg-[#1a1a1a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0"
-                  >
-                    <Link to={`/xem-phim/${movieWatched.movie.movie.slug}`}>
+        {movies && movies.length > 0 ? (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Phim đã xem gần đây
+            </h2>
+            <div className="relative">
+              <div
+                ref={scrollContainerRef}
+                className="flex gap-4 overflow-x-auto py-4 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                onScroll={checkScroll}
+              >
+                <ListView
+                  data={movies}
+                  render={(movieWatched) => (
+                    <Card
+                      key={movieWatched.movie.movie._id}
+                      className="md:min-w-[300px] md:max-w-[300px] min-w-[250px] max-w-[250px] bg-[#2a2a2a] border-[#3a3a3a] shadow-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0"
+                    >
                       <div className="relative group">
-                        <img
-                          src={
-                            movieWatched.movie.movie.poster_url.startsWith(
-                              "https"
-                            )
-                              ? movieWatched.movie.movie.poster_url
-                              : `${URL_IMG}${movieWatched.movie.movie.poster_url}`
-                          }
-                          alt={movieWatched.movie.movie.name}
-                          className="w-full h-[300px] object-cover group-hover:opacity-90 transition-opacity"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+                        <Link
+                          to={`/chi-tiet-phim/${movieWatched.movie.movie.slug}`}
+                          className="relative"
+                        >
+                          <img
+                            src={
+                              movieWatched.movie.movie.poster_url.startsWith(
+                                "https"
+                              ) ||
+                              movieWatched.movie.movie.poster_url.startsWith(
+                                "https"
+                              )
+                                ? movieWatched.movie.movie.poster_url
+                                : `${URL_IMG}${movieWatched.movie.movie.poster_url}`
+                            }
+                            alt={movieWatched.movie.movie.name}
+                            className="w-full h-[300px] object-cover group-hover:opacity-90 transition-opacity"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+                        </Link>
                       </div>
                       <CardContent className="p-4">
                         <h3 className="text-lg font-semibold text-white mb-1 truncate">
-                          {movieWatched.movie.movie.name}
+                          <Link
+                            to={`/chi-tiet-phim/${movieWatched.movie.movie.slug}`}
+                          >
+                            {movieWatched.movie.movie.name}
+                          </Link>
                         </h3>
                         <p className="text-sm text-gray-400 mb-2 truncate">
                           {movieWatched.movie.movie.origin_name}
@@ -176,31 +188,51 @@ const ProfilePage: React.FC = () => {
                               .seconds * 1000
                           ).toLocaleString("vi-VN")}
                         </p>
+                        <div className="grid grid-cols-2 gap-2 items-center justify-center pt-4">
+                          <Button className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+                            <Link
+                              to={`/xem-phim/${movieWatched.movie.movie.slug}`}
+                              className="flex items-center justify-center w-full space-x-2"
+                            >
+                              <Play className="w-5 h-5" />
+                              <span>Xem ngay</span>
+                            </Link>
+                          </Button>
+                          <Button className="w-full bg-[#3a3a3a] hover:bg-[#4a4a4a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+                            <Link
+                              to={`/chi-tiet-phim/${movieWatched.movie.movie.slug}`}
+                              className="flex items-center justify-center w-full space-x-2"
+                            >
+                              <Info className="w-5 h-5" />
+                              <span>Chi tiết</span>
+                            </Link>
+                          </Button>
+                        </div>
                       </CardContent>
-                    </Link>
-                  </Card>
-                )}
-              />
+                    </Card>
+                  )}
+                />
+              </div>
+              {/* Navigation Buttons - Only visible on desktop */}
+              <button
+                onClick={scrollLeft}
+                className={`absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-r-lg hidden ${
+                  canScrollLeft ? "md:block" : "hidden"
+                }`}
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={scrollRight}
+                className={`absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-l-lg hidden ${
+                  canScrollRight ? "md:block" : "hidden"
+                }`}
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
             </div>
-            {/* Navigation Buttons - Only visible on desktop */}
-            <button
-              onClick={scrollLeft}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-r-lg hidden ${
-                canScrollLeft ? "md:block" : "hidden"
-              }`}
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-            <button
-              onClick={scrollRight}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-l-lg hidden ${
-                canScrollRight ? "md:block" : "hidden"
-              }`}
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
           </div>
-        </div>
+        ) : null}
       </div>
     </div>
   );

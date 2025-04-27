@@ -17,7 +17,7 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
         {/* Movie Content */}
         <div className="lg:col-span-2" data-aos="fade-up" data-aos-delay="200">
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
             <div className="flex flex-col sm:flex-row items-center gap-8 mb-8">
               <img
                 src={movie.poster_url}
@@ -33,19 +33,19 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
                 </p>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-[#2a2a2a] rounded-xl p-4 text-center">
+                  <div className="bg-[#3a3a3a] rounded-xl p-4 text-center">
                     <p className="text-gray-400 text-sm mb-1">Năm</p>
                     <p className="text-white font-medium">{movie.year}</p>
                   </div>
-                  <div className="bg-[#2a2a2a] rounded-xl p-4 text-center">
+                  <div className="bg-[#3a3a3a] rounded-xl p-4 text-center">
                     <p className="text-gray-400 text-sm mb-1">Thời lượng</p>
                     <p className="text-white font-medium">{movie.time}</p>
                   </div>
-                  <div className="bg-[#2a2a2a] rounded-xl p-4 text-center">
+                  <div className="bg-[#3a3a3a] rounded-xl p-4 text-center">
                     <p className="text-gray-400 text-sm mb-1">Chất lượng</p>
                     <p className="text-white font-medium">{movie.quality}</p>
                   </div>
-                  <div className="bg-[#2a2a2a] rounded-xl p-4 text-center">
+                  <div className="bg-[#3a3a3a] rounded-xl p-4 text-center">
                     <p className="text-gray-400 text-sm mb-1">Trạng thái</p>
                     <p className="text-white font-medium">
                       <StatusRender status={movie.status} />
@@ -66,7 +66,7 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
 
         {/* Movie Details */}
         <div className="lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
-          <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold text-xl mb-3 text-white">
@@ -144,21 +144,21 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
         data-aos="fade-up"
         data-aos-delay="100"
       >
-        <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+        <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
           <h3 className="text-xl font-semibold mb-4 text-white">Ngôn ngữ</h3>
           <p className="text-gray-300">{movie.lang}</p>
         </div>
-        <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+        <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
           <h3 className="text-xl font-semibold mb-4 text-white">Đạo diễn</h3>
           <p className="text-gray-300">{movie.director.join(", ")}</p>
         </div>
-        <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+        <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
           <h3 className="text-xl font-semibold mb-4 text-white">Quốc gia</h3>
           <p className="text-gray-300">
             {movie.country.map((c) => c.name).join(", ")}
           </p>
         </div>
-        <div className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-2xl shadow-2xl p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-2xl">
+        <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
           <h3 className="text-xl font-semibold mb-4 text-white">Lượt xem</h3>
           <p className="text-gray-300">{movie.view.toLocaleString()}</p>
         </div>

@@ -18,10 +18,10 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
   return (
     <HoverCard openDelay={1000} closeDelay={100}>
-      <HoverCardTrigger>
+      <HoverCardTrigger className="transition-all duration-300">
         <Card
           key={movie.slug}
-          className="bg-[#1a1a1a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full"
+          className="bg-[#2a2a2a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow-2xl"
           data-aos="fade-up"
           data-aos-delay={index * 50}
         >
@@ -29,13 +29,13 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
             <Link to={`/chi-tiet-phim/${movie.slug}`}>
               <img
                 src={
-                  movie.thumb_url.startsWith("https") ||
-                  movie.thumb_url.startsWith("https")
-                    ? movie.thumb_url
-                    : `${URL_IMG}${movie.thumb_url}`
+                  movie.poster_url.startsWith("https") ||
+                  movie.poster_url.startsWith("https")
+                    ? movie.poster_url
+                    : `${URL_IMG}${movie.poster_url}`
                 }
                 alt={movie.name}
-                className="w-full h-80 object-cover group-hover:opacity-90 transition-opacity"
+                className="w-full h-96 object-cover group-hover:opacity-90 transition-opacity"
               />
             </Link>
 
@@ -45,16 +45,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
             <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
               {movie.episode_current}
             </div>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-              <Button className="opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 bg-red-600 hover:bg-red-700">
-                <Link
-                  to={`/xem-phim/${movie.slug}`}
-                  className="flex items-center"
-                >
-                  <Play className="w-5 h-5 mr-2" />
-                  Xem ngay
-                </Link>
-              </Button>
+            <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center">
+              <Link to={`/xem-phim/${movie.slug}`} className="">
+                <Play className="w-24 h-24 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/60 rounded-full p-4" />
+              </Link>
             </div>
           </div>
           <CardContent className="p-4">
@@ -62,14 +56,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
               <Link to={`/chi-tiet-phim/${movie.slug}`}>{movie.name}</Link>
             </h3>
             <p className="text-sm text-gray-400 mb-2">{movie.origin_name}</p>
+            <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+              <span>{movie.year}</span>
+              <span>•</span>
+              <span>{movie.time}</span>
+              <span>•</span>
+              <span>{movie.lang}</span>
+            </div>
             <div className="md:hidden">
-              <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                <span>{movie.year}</span>
-                <span>•</span>
-                <span>{movie.time}</span>
-                <span>•</span>
-                <span>{movie.lang}</span>
-              </div>
               <div className="flex flex-wrap gap-2 mb-2">
                 {movie.category.map((cat) => (
                   <span

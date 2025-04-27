@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Search, ChevronLeft, ChevronRight, Film } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Film } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -27,7 +25,6 @@ const FilmPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
@@ -169,7 +166,7 @@ const FilmPage: React.FC = () => {
 
   return (
     <>
-      <div className="bg-[#0a0a0a] min-h-screen">
+      <div className="bg-[#1a1a1a] min-h-screen">
         <PullToRefresh
           onRefresh={async () => {
             window.location.reload();
@@ -180,35 +177,11 @@ const FilmPage: React.FC = () => {
         <FilmIntroSlider />
         <main className=" px-4">
           <div ref={topRef} className="w-0 h-0" />
-          {/* Search */}
-          <div className="py-4 flex justify-end items-center">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Input
-                  type="text"
-                  value={searchKeyword}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setSearchKeyword(e.target.value)
-                  }
-                  placeholder="Tìm kiếm phim..."
-                  className="pl-10 bg-[#1a1a1a] border-[#2a2a2a] text-white focus-visible:ring-red-600"
-                />
-                <Search className="absolute left-2 top-2 text-gray-400 w-5 h-5" />
-              </div>
-              <Button
-                onClick={() =>
-                  searchMovies(GetFilmsType.KEYWORD, searchKeyword)
-                }
-                className="bg-red-600 hover:bg-red-700"
-              >
-                <Search className="w-5 h-5 mr-2" />
-                Tìm kiếm
-              </Button>
-            </div>
-          </div>
           <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
             <Film className="w-8 h-8" />
-            <span className="title-hover">Danh sách</span>
+            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
+              Danh sách
+            </span>
           </h1>
           <div className="text-white overflow-hidden scrollbar-hide relative">
             <div
@@ -221,11 +194,11 @@ const FilmPage: React.FC = () => {
                 )}
                 render={(type, index) => {
                   const bgColors = [
-                    "bg-gradient-to-r from-red-600 to-orange-600",
-                    "bg-gradient-to-r from-orange-600 to-amber-600",
-                    "bg-gradient-to-r from-amber-600 to-yellow-600",
-                    "bg-gradient-to-r from-yellow-600 to-orange-500",
-                    "bg-gradient-to-r from-orange-500 to-red-500",
+                    "bg-gradient-to-r from-red-600 to-rose-500",
+                    "bg-gradient-to-r from-rose-500 to-orange-500",
+                    "bg-gradient-to-r from-orange-500 to-amber-400",
+                    "bg-gradient-to-r from-amber-400 to-yellow-400",
+                    "bg-gradient-to-r from-yellow-400 to-orange-400",
                   ];
                   return (
                     <Link
@@ -233,14 +206,14 @@ const FilmPage: React.FC = () => {
                       to={`/danh-sach/${type}`}
                       className={`${
                         bgColors[index % bgColors.length]
-                      } px-6 py-3 rounded-lg 
+                      } rounded-lg 
                     hover:scale-105 transition-all duration-300 ease-in-out
                     shadow-lg hover:shadow-orange-500/20
                     border border-orange-900/30
                     whitespace-nowrap
-                    text-white font-medium items-start justify-center md:py-10 md:px-20 flex flex-col`}
+                    text-white font-medium items-start justify-center py-10 md:py-12 px-10 md:px-20 flex flex-col`}
                     >
-                      <h3 className="text-xl font-bold">
+                      <h3 className="text-2xl font-bold">
                         {transFilmTypeToVN(type)}
                       </h3>
                       <h4 className="flex items-center gap-2">
@@ -272,7 +245,9 @@ const FilmPage: React.FC = () => {
           </div>
           <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
             <Film className="w-8 h-8" />
-            <span className="title-hover">Phim Mới Hôm Nay</span>
+            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500">
+              Phim Mới Hôm Nay
+            </span>
           </h1>
           {/* Filter Section */}
           <div
@@ -289,10 +264,10 @@ const FilmPage: React.FC = () => {
                   searchMovies(GetFilmsType.LIST, value);
                 }}
               >
-                <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#2a2a2a] text-white">
                   <SelectValue placeholder="Danh sách" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectContent className="bg-[#1a1a1a] border-[#3a3a3a] text-white">
                   <ListView
                     data={Object.values(FilmTypeList)}
                     render={(type) => (
@@ -314,10 +289,10 @@ const FilmPage: React.FC = () => {
                   searchMovies(GetFilmsType.GENRE, value);
                 }}
               >
-                <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#2a2a2a] text-white">
                   <SelectValue placeholder="Thể loại" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectContent className="bg-[#1a1a1a] border-[#3a3a3a] text-white">
                   <SelectItem value="all">Tất cả</SelectItem>
                   <ListView
                     data={genres}
@@ -340,10 +315,10 @@ const FilmPage: React.FC = () => {
                   searchMovies(GetFilmsType.COUNTRY, value);
                 }}
               >
-                <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#2a2a2a] text-white">
                   <SelectValue placeholder="Quốc gia" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectContent className="bg-[#1a1a1a] border-[#3a3a3a] text-white">
                   <SelectItem value="all">Tất cả</SelectItem>
                   <ListView
                     data={countries}
@@ -366,10 +341,10 @@ const FilmPage: React.FC = () => {
                   searchMovies(GetFilmsType.YEAR, value);
                 }}
               >
-                <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#2a2a2a] text-white">
                   <SelectValue placeholder="Năm" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+                <SelectContent className="bg-[#1a1a1a] border-[#3a3a3a] text-white">
                   <SelectItem value="all">Tất cả</SelectItem>
                   <ListView
                     data={Array.from(

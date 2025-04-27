@@ -11,7 +11,7 @@ export interface FilmContextType {
 const filmHook = (): FilmContextType => {
   const [filmUpdateResponse, setFilmUpdateResponse] =
     useState<FilmUpdateResponse | null>(null);
-  const loadMovies = async (page = 1, start?: () => void, end?: () => void) => {
+  const loadMovies = async (page = 2, start?: () => void, end?: () => void) => {
     try {
       start?.();
       const response = await filmApi.getFilmsUpdateV3(page);

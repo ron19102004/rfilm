@@ -22,7 +22,7 @@ const MainLayout: React.FC = () => {
   return (
     <>
       <div ref={topRef} className="w-0 h-0" />
-      <div className="bg-[#0a0a0a] relative pb-20 pt-20 md:pb-0">
+      <div className="bg-[#1a1a1a] relative md:pb-0">
         <MainHeader />
         <main className="">
           <Outlet />
@@ -31,10 +31,10 @@ const MainLayout: React.FC = () => {
         {showScrollTop && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-20 right-8 p-1 bg-transparent border-2 border-red-500 text-red-500 rounded-full shadow-lg hover:bg-red-500 hover:text-white transition-all duration-300 z-40"
+            className="fixed bottom-20 right-8 p-1 border-2 border-red-500/10 text-red-500 rounded-full shadow-lg bg-red-500/10 hover:bg-red-500 hover:text-white transition-all duration-300 z-40"
             aria-label="Scroll to top"
           >
-            <ArrowUp size={24} />
+            <ArrowUp size={34} />
           </button>
         )}
         <MainMenuBottomMobile />

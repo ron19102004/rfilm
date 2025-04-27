@@ -36,7 +36,7 @@ const useSystemContext = () => {
     setCountries(countries);
   };
   const loadFilmIntro = async () => {
-    const filmIntro = await filmApi.getFilmsUpdateV2();
+    const filmIntro = await filmApi.getFilmsUpdateV3(1);
     setFilmIntro(filmIntro.items);
   };
   const init = async () => {
@@ -73,7 +73,7 @@ const useSystemContext = () => {
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 3000);
+      }, 1000);
     }
   };
   useEffect(() => {
