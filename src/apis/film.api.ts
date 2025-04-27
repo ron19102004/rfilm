@@ -93,7 +93,7 @@ const getFilmsBy = async (options: GetFilmsOptions) => {
 
 const getFilmDetails = async (slug: string) => {
   const response = await axios.get<MovieDetailsResponse>(
-    `https://phimapi.com/phim//${slug}`
+    `https://phimapi.com/phim/${slug}`
   );
   return response.data;
 };

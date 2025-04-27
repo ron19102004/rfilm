@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export interface FilmContextType {
   filmUpdateResponse: FilmUpdateResponse | null;
   setFilmUpdateResponse: (filmUpdateResponse: FilmUpdateResponse) => void;
-  loadMovies: (page?: number, start?: () => void, end?: () => void) => void;
+  loadMovies: (page?: number, start?: () => void, end?: () => void) => Promise<void>;
 }
 
 const filmHook = (): FilmContextType => {

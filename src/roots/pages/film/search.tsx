@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import ListView from "@/components/list";
 import MovieCard from "@/components/custom/movie_card";
 import filmApi from "@/apis/film.api";
 import Pagination from "@/components/custom/pagination";
+import { useSystemContext } from "@/context";
 
 const FilmSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +19,7 @@ const FilmSearchPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const topRef = useRef<HTMLDivElement>(null);
+  const { scrollToTop } = useSystemContext();
 
   useEffect(() => {
     const keyword = searchParams.get("keyword") || "";
@@ -94,9 +95,7 @@ const FilmSearchPage: React.FC = () => {
     </div>
   );
   useEffect(() => {
-    if (topRef.current) {
-      topRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToTop();
   }, [movies]);
   const renderMovies = () => {
     if (movies.length === 0) {
@@ -120,11 +119,12 @@ const FilmSearchPage: React.FC = () => {
 
   return (
     <section className="bg-[#0a0a0a] h-full">
-      <PullToRefresh onRefresh={async()=>{
-        window.location.reload()
-      }}/>
-      <div ref={topRef} className="w-0 h-0" />
-      <div className="container mx-auto px-4 py-8">
+      <PullToRefresh
+        onRefresh={async () => {
+          window.location.reload();
+        }}
+      />
+      <div className=" px-4 py-8">
         <div className="mb-8" data-aos="fade-down">
           <form
             onSubmit={handleSearch}

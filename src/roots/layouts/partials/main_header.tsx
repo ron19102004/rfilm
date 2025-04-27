@@ -6,6 +6,7 @@ import { User, LogOut } from "lucide-react";
 interface MainHeaderProps {}
 
 const MainHeader: React.FC<MainHeaderProps> = () => {
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { signInWithGoogle, user, logout } = useAuthContext();
@@ -27,7 +28,7 @@ const MainHeader: React.FC<MainHeaderProps> = () => {
   }, []);
 
   return (
-    <header className="bg-[#0a0a0a] shadow-sm">
+    <header className="bg-[#0a0a0a]/60 shadow-sm fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
       <nav className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <a
@@ -50,7 +51,7 @@ const MainHeader: React.FC<MainHeaderProps> = () => {
                   />
                 </button>
                 <div
-                  className={`absolute right-0 mt-2 w-48 bg-[#0a0a0a] rounded-lg shadow-lg z-50 ${
+                  className={`absolute right-0 mt-2 w-48 bg-[#0a0a0a]/70 rounded-lg shadow-lg z-50 backdrop-blur-sm ${
                     isDropdownOpen ? "block" : "hidden"
                   }`}
                 >

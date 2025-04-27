@@ -5,8 +5,9 @@ import { cn } from "@/lib/utils";
 interface MainBackMobileProps {
   title: string;
   className?: ClassValue;
+  titleClassName?: ClassValue;
 }
-const MainBackMobile: React.FC<MainBackMobileProps> = ({ title, className }) => {
+const MainBackMobile: React.FC<MainBackMobileProps> = ({ title, className, titleClassName }) => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -32,7 +33,7 @@ const MainBackMobile: React.FC<MainBackMobileProps> = ({ title, className }) => 
           />
         </svg>
       </button>
-      <h1 className="text-2xl font-bold text-white py-2">{title}</h1>
+      <h1 className={cn("text-2xl font-bold text-white py-2", titleClassName)}>{title}</h1>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import firebase from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 import { Genre, Country, Movie } from "@/apis";
@@ -12,6 +12,8 @@ interface SystemContextType {
   filmIntro: Movie[];
   urlDownloadAppAndroid: string;
   updateAvailable: boolean;
+  topRef: React.RefObject<HTMLDivElement | null>;
+  scrollToTop: () => void;
 }
 const useSystemContext = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -21,6 +23,12 @@ const useSystemContext = () => {
   const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
   const [urlDownloadAppAndroid, setUrlDownloadAppAndroid] = useState<string>(URL_DOWNLOAD_APP_ANDROID);
   const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
+  const topRef = useRef<HTMLDivElement | null>(null);
+  const scrollToTop = () => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   const loadResources = async () => {
     const genres = await filmApi.loadGenres();
     const countries = await filmApi.loadCountries();
@@ -79,6 +87,8 @@ const useSystemContext = () => {
     filmIntro: filmIntro,
     urlDownloadAppAndroid: urlDownloadAppAndroid,
     updateAvailable: updateAvailable,
+    topRef: topRef,
+    scrollToTop: scrollToTop,
   };
 };
 export const SystemContext = createContext<SystemContextType>({
@@ -89,6 +99,10 @@ export const SystemContext = createContext<SystemContextType>({
   filmIntro: [],
   urlDownloadAppAndroid: "",
   updateAvailable: false,
+  topRef: { current: null },
+  scrollToTop: function (): void {
+    throw new Error("Function not implemented.");
+  }
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {

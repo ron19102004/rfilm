@@ -16,7 +16,7 @@ import {
 import { useSystemContext } from "@/context";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
 import React, { useEffect, useRef, useState } from "react";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const TypeListPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -27,18 +27,19 @@ const TypeListPage: React.FC = () => {
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [selectedCountry, setSelectedCountry] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
-  
+
   const selectedGenreRef = useRef<string>(selectedGenre);
   const selectedCountryRef = useRef<string>(selectedCountry);
   const selectedYearRef = useRef<string>(selectedYear);
 
-  const { isLoading: isLoadingSystem, countries, genres } = useSystemContext();
-  const topRef = useRef<HTMLDivElement>(null);
-
+  const {
+    isLoading: isLoadingSystem,
+    countries,
+    genres,
+    scrollToTop,
+  } = useSystemContext();
   useEffect(() => {
-    if (topRef.current) {
-      topRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToTop();
   }, [movies]);
   // Search movies
   const searchMovies = async () => {
@@ -70,15 +71,16 @@ const TypeListPage: React.FC = () => {
   }, [slug, selectedGenre, selectedCountry, selectedYear, currentPage]);
   return (
     <div className="bg-[#0a0a0a] min-h-screen">
-      <div ref={topRef} className="w-0 h-0" />
       <MainBackMobile title={transFilmTypeToVN(slug?.toString() || "") || ""} />
-      <PullToRefresh onRefresh={async()=>{
-        window.location.reload()
-      }}/>
+      <PullToRefresh
+        onRefresh={async () => {
+          window.location.reload();
+        }}
+      />
       {/* Loading Overlay */}
       {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
 
-      <main className="container mx-auto px-4">
+      <main className=" px-4">
         {/* Filter Section */}
         <div
           className="mb-8 grid grid-cols-2 md:flex md:flex-row gap-4"

@@ -35,12 +35,19 @@ const FilmPage: React.FC = () => {
     FilmTypeList.ALL
   );
   const navigate = useNavigate();
-  const { isLoading: isLoadingSystem, countries, genres } = useSystemContext();
+  const {
+    isLoading: isLoadingSystem,
+    countries,
+    genres,
+    scrollToTop,
+  } = useSystemContext();
   const topRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const { filmUpdateResponse, loadMovies } = useFilmContext();
+  const getFilmsTypeRef = useRef<GetFilmsType | null>(null);
+  const moviesChangeCount = useRef(0);
 
   const checkScroll = () => {
     if (scrollContainerRef.current) {
@@ -58,7 +65,13 @@ const FilmPage: React.FC = () => {
   }, []);
 
   // Search movies
-  const searchMovies = async (type: GetFilmsType, value: string) => {
+  const searchMovies = async (
+    type: GetFilmsType,
+    value: string,
+    page: number = 1
+  ) => {
+    moviesChangeCount.current++;
+    getFilmsTypeRef.current = type;
     if (loading) return;
     if (type === GetFilmsType.KEYWORD) {
       navigate(`/tim-kiem?keyword=${value}&page=1`);
@@ -69,7 +82,7 @@ const FilmPage: React.FC = () => {
       const response = await filmApi.getFilmsBy({
         type,
         value,
-        page: 1,
+        page,
         selectedCountry: selectedCountry,
         selectedGenre: selectedGenre,
         selectedYear: selectedYear,
@@ -86,7 +99,32 @@ const FilmPage: React.FC = () => {
       setLoading(false);
     }
   };
-
+  const paginationHandle = async (page: number) => {
+    moviesChangeCount.current++;
+    if (getFilmsTypeRef.current === null) {
+      await loadMovies(
+        page,
+        () => {
+          setLoading(true);
+        },
+        () => {
+          setLoading(false);
+        }
+      );
+      return;
+    }
+    let value = "";
+    if (getFilmsTypeRef.current === GetFilmsType.COUNTRY) {
+      value = selectedCountry;
+    } else if (getFilmsTypeRef.current === GetFilmsType.GENRE) {
+      value = selectedGenre;
+    } else if (getFilmsTypeRef.current === GetFilmsType.YEAR) {
+      value = selectedYear;
+    } else if (getFilmsTypeRef.current === GetFilmsType.LIST) {
+      value = selectedType;
+    }
+    await searchMovies(getFilmsTypeRef.current, value, page);
+  };
   useEffect(() => {
     if (filmUpdateResponse) {
       setMovies(filmUpdateResponse.items);
@@ -94,10 +132,24 @@ const FilmPage: React.FC = () => {
       setTotalPages(filmUpdateResponse.pagination.totalPages);
     }
   }, [filmUpdateResponse]);
+  useEffect(() => {
+    if (getFilmsTypeRef.current) {
+      if (
+        selectedCountry === "all" &&
+        selectedGenre === "all" &&
+        selectedType === FilmTypeList.ALL &&
+        selectedYear === "all"
+      ) {
+        getFilmsTypeRef.current = null;
+      }
+    }
+  }, [selectedCountry, selectedGenre, selectedType, selectedYear]);
 
   useEffect(() => {
-    if (topRef.current) {
+    if (topRef.current && moviesChangeCount.current > 0) {
       topRef.current.scrollIntoView({ behavior: "smooth" });
+    } else {
+      scrollToTop();
     }
   }, [movies]);
 
@@ -118,7 +170,6 @@ const FilmPage: React.FC = () => {
   return (
     <>
       <div className="bg-[#0a0a0a] min-h-screen">
-        <div ref={topRef} className="w-0 h-0" />
         <PullToRefresh
           onRefresh={async () => {
             window.location.reload();
@@ -126,9 +177,9 @@ const FilmPage: React.FC = () => {
         />
         {/* Loading Overlay */}
         {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
-
-        <main className="container mx-auto px-4">
-          <FilmIntroSlider />
+        <FilmIntroSlider />
+        <main className=" px-4">
+          <div ref={topRef} className="w-0 h-0" />
           {/* Search */}
           <div className="py-4 flex justify-end items-center">
             <div className="flex items-center gap-4">
@@ -359,17 +410,7 @@ const FilmPage: React.FC = () => {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            loadMovies={(page) => {
-              loadMovies(
-                page,
-                () => {
-                  setLoading(true);
-                },
-                () => {
-                  setLoading(false);
-                }
-              );
-            }}
+            loadMovies={paginationHandle}
           />
         </main>
       </div>

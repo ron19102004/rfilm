@@ -22,12 +22,14 @@ import MyMovieContextProvider from "@/context/my_movie.hook";
 import LoginPage from "@/roots/pages/auth/login";
 import VerifyTokenGoogle from "@/roots/pages/auth/verify_token_google";
 import NotFoundPage from "@/roots/pages/err/not_found";
+import FilmDetailsPage from "@/roots/pages/film/film_details";
 
 const users: RouteObject[] = [
   layout(<MainLayout />, [
     prefix("/", [
       index(<FilmPage />),
       router("/tim-kiem", <FilmSearchPage />),
+      router("/chi-tiet-phim/:slug", <FilmDetailsPage />),
       router("/xem-phim/:slug", <WatchFilmPage />),
       router("/danh-sach/:slug", <TypeListPage />),
       router("/tat-ca-danh-sach", <AllTypeListPage />),

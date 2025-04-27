@@ -7,7 +7,7 @@ export const FilmContext = createContext<FilmContextType>({
     setFilmUpdateResponse: function (_: FilmUpdateResponse): void {
         throw new Error("Function not implemented.");
     },
-    loadMovies: function (): void {
+    loadMovies: function (): Promise<void> {
         throw new Error("Function not implemented.");
     }
 });

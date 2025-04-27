@@ -22,6 +22,7 @@ export interface Movie {
   category: Array<Genre>;
   country: Array<Country>;
   slug: string;
+  thumb_url: string;
 }
 export interface MovieDetails {
   _id: string;
@@ -40,7 +41,9 @@ export interface MovieDetails {
   actor: string[];
   category: { name: string }[];
   poster_url: string;
+  thumb_url: string;
   slug: string;
+  trailer_url: string;
 }
 
 export interface Episode {

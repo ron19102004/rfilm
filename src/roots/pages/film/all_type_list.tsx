@@ -1,14 +1,19 @@
 import { FilmTypeList } from "@/apis/index.d";
 import { transFilmTypeToVN } from "@/apis/trans.f";
 import ListView from "@/components/list";
+import { useSystemContext } from "@/context";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const AllTypeListPage: React.FC = () => {
+  const { scrollToTop } = useSystemContext();
+  useEffect(() => {
+    scrollToTop();
+  }, []);
   return (
-    <div className="container mx-auto px-4 md:px-8">
+    <div className="px-4 md:px-8">
       <MainBackMobile title="Tất cả danh sách" />
       <div className="text-white overflow-hidden scrollbar-hide relative">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-2">

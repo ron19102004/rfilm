@@ -6,6 +6,14 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Genre } from "@/apis";
 import Slider from "react-slick";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
+import { URL_IMG } from "@/constant/api.constant";
 
 const FilmIntroSlider: React.FC = () => {
   const { filmIntro } = useSystemContext();
@@ -181,7 +189,7 @@ const FilmIntroSlider: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className="w-full mx-auto px-4 py-2">
+      <div className="w-full mx-auto px-10 py-2">
         <Slider {...settings}>
           {[...Array(6)].map((_, index) => (
             <SkeletonCard key={index} />
@@ -198,25 +206,29 @@ const FilmIntroSlider: React.FC = () => {
   const activeMovie = firstHalfMovies[activeIndex];
 
   return (
-    <div className="">
+    <div className="mx-auto px-4">
       <div className="w-full mx-auto">
-        <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-screen bg-black overflow-hidden rounded-2xl">
+        <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-screen bg-[#0a0a0a] overflow-hidden rounded-2xl">
           {/* Background image with parallax effect */}
           <motion.div
-            initial={{ scale: 1.1 }}
+            initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5 }}
-            className="absolute inset-0"
+            className="absolute inset-0 image-filter-wrapper"
           >
             <img
-              src={activeMovie.poster_url}
+              src={activeMovie.thumb_url}
               alt={activeMovie.name}
-              className="w-full h-full object-cover  "
+              className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-full object-cover rounded-2xl"
             />
           </motion.div>
 
-          {/* Enhanced overlay with gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/70 to-transparent opacity-90 backdrop-blur"></div>
+          {/* Enhanced overlay with gradient 
+          backdrop-blur: mờ hơn
+          */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/50 to-transparent opacity-50 md:opacity-70"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-black/20 to-transparent opacity-70 "></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-black/20 to-transparent opacity-50 md:opacity-70"></div>
 
           {/* Content with enhanced animations */}
           <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-24 text-white">
@@ -294,21 +306,21 @@ const FilmIntroSlider: React.FC = () => {
             <div className="max-w-7xl mx-auto">
               <div className="relative">
                 {/* Gradient overlays for scroll indication */}
-                <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-black/50 to-transparent z-10 pointer-events-none rounded-l-2xl" />
+                <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-black/0 to-transparent z-10 pointer-events-none" />
 
                 {/* Thumbnail container */}
                 <div
                   ref={thumbnailContainerRef}
                   className="flex gap-2 sm:gap-3 md:gap-4 overflow-x-auto scrollbar-none pb-4 md:pb-0"
                 >
-                  <div className="flex gap-2 sm:gap-3 md:gap-4 scrollbar-hide overflow-hidden py-2">
+                  <div className="flex gap-2 sm:gap-3 md:gap-4 scrollbar-hide overflow-hidden py-2 px-2">
                     {getVisibleThumbnails().map((idx) => {
                       const movie = firstHalfMovies[idx];
                       return (
                         <motion.div
                           key={idx}
-                          whileHover={{ scale: 1.05, y: -5 }}
+                          whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                           className={`thumbnail-item relative flex-shrink-0 w-16 h-12 sm:w-24 sm:h-16 md:w-32 md:h-20 rounded-lg cursor-pointer transition-all duration-300 ${
                             idx === activeIndex
@@ -349,35 +361,120 @@ const FilmIntroSlider: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full mx-auto px-4 py-2">
+      <div className="w-full px-4 py-2 ">
         <Slider {...settings}>
           {secondHalfMovies.map((movie, index) => (
-            <div key={index} className="px-2 py-4">
-              <motion.div whileHover={{ scale: 1.05 }}>
-                <div className="bg-[#1a1a1a] border border-[#424242] shadow-lg rounded-lg overflow-hidden group hover:shadow-2xl transition-all duration-300">
-                  <div className="relative transition-all">
-                    <img
-                      src={movie.poster_url}
-                      alt={movie.name}
-                      className="w-full h-64 object-cover group-hover:opacity-90 md:opacity-50 transition-all"
-                    />
-                    <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
-                      {movie.year}
+            <HoverCard>
+              <HoverCardTrigger>
+                <div key={index} className="px-2 py-4">
+                  <motion.div whileHover={{ scale: 1.05 }}>
+                    <div className="bg-[#1a1a1a] border border-[#424242] shadow-lg rounded-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 ">
+                      <div className="relative transition-all">
+                        <img
+                          src={movie.thumb_url}
+                          alt={movie.name}
+                          className="w-full h-64 object-cover group-hover:opacity-90 md:opacity-50 transition-all"
+                        />
+                        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
+                          {movie.year}
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <Link to={`/xem-phim/${movie.slug}`} className="block">
+                          <h3 className="text-lg font-semibold text-white hover:text-red-500 transition-colors line-clamp-1">
+                            {movie.name}
+                          </h3>
+                          <p className="text-sm text-gray-400 mt-1 line-clamp-1 font-bold">
+                            {movie.origin_name}
+                          </p>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <HoverCardContent
+                  className="bg-[#1a1a1a] border-[#252525] w-96 hidden md:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
+                  sideOffset={5}
+                >
+                  <div className="w-full pb-2 relative transition-all duration-300">
+                    <Link to={`/xem-phim/${movie.slug}`}>
+                      <img
+                        src={
+                          movie.thumb_url.startsWith("https") ||
+                          movie.thumb_url.startsWith("https")
+                            ? movie.thumb_url
+                            : `${URL_IMG}${movie.thumb_url}`
+                        }
+                        alt={movie.name}
+                        className="w-full h-80 object-cover group-hover:opacity-90 rounded-2xl hover:scale-105 transition-all duration-300"
+                      />
+                    </Link>
+                    <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                      {movie.quality}
+                    </div>
+                    <div className="absolute top-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                      {movie.episode_current}
                     </div>
                   </div>
-                  <div className="p-4">
-                    <Link to={`/xem-phim/${movie.slug}`} className="block">
-                      <h3 className="text-lg font-semibold text-white hover:text-red-500 transition-colors">
-                        {movie.name}
-                      </h3>
-                      <p className="text-sm text-gray-400 mt-1">
-                        {movie.origin_name}
-                      </p>
-                    </Link>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2 truncate">
+                      <Link to={`/xem-phim/${movie.slug}`}>{movie.name}</Link>
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-2">
+                      {movie.origin_name}
+                    </p>
                   </div>
-                </div>
-              </motion.div>
-            </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                        {movie.year}
+                      </span>
+                      <span>•</span>
+                      <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                        {movie.time}
+                      </span>
+                      <span>•</span>
+                      <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                        {movie.lang}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {movie?.category?.map((cat) => (
+                        <span
+                          key={cat.name}
+                          className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                        >
+                          {cat.name}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {movie?.country?.map((country) => (
+                        <span
+                          key={country.name}
+                          className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                        >
+                          {country.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <Button className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+                      <Link
+                        to={`/xem-phim/${movie.slug}`}
+                        className="flex items-center justify-center w-full"
+                      >
+                        <Play className="w-5 h-5" />
+                        <span>Xem ngay</span>
+                      </Link>
+                    </Button>
+                  </div>
+                </HoverCardContent>{" "}
+              </HoverCardContent>
+            </HoverCard>
           ))}
         </Slider>
       </div>

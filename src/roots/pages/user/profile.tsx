@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useAuthContext, useMyMovieContext } from "@/context";
+import { useAuthContext, useMyMovieContext, useSystemContext } from "@/context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -12,6 +12,7 @@ import { Timestamp } from "firebase/firestore";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
 
 const ProfilePage: React.FC = () => {
+  const { scrollToTop } = useSystemContext();
   const { user } = useAuthContext();
   const { movies, loadMyMovies } = useMyMovieContext();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,7 @@ const ProfilePage: React.FC = () => {
   };
 
   useEffect(() => {
+    scrollToTop()
     checkScroll();
     window.addEventListener("resize", checkScroll);
     return () => window.removeEventListener("resize", checkScroll);
@@ -55,7 +57,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#0a0a0a] p-4 md:p-8">
       <PullToRefresh onRefresh={loadMyMovies} />
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-6xl mx-auto">
         <MainBackMobile title="Thông tin tài khoản" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           {/* Profile Header Card */}
