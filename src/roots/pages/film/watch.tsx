@@ -14,6 +14,7 @@ import { Share } from "@capacitor/share";
 import toast from "react-hot-toast";
 import FilmDetailsCard from "@/components/custom/film_details_card";
 import { motion, AnimatePresence } from "framer-motion";
+import { ENDPOINT_WEB } from "@/constant/system.constant";
 
 interface ShareProps {
   title: string;
@@ -23,17 +24,17 @@ interface ShareProps {
 const shareProps: ShareProps[] = [
   {
     title: "Facebook",
-    url: `https://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+    url: `https://www.facebook.com/sharer/sharer.php?u=`,
     icon: <Facebook className="w-5 h-5 text-red-500" />,
   },
   {
     title: "Twitter",
-    url: `https://twitter.com/intent/tweet?url=${window.location.href}`,
+    url: `https://twitter.com/intent/tweet?url=`,
     icon: <Twitter className="w-5 h-5 text-red-500" />,
   },
   {
     title: "Telegram",
-    url: `https://t.me/share/url?url=${window.location.href}`,
+    url: `https://t.me/share/url?url=`,
     icon: <Send className="w-5 h-5 text-red-500" />,
   },
 ];
@@ -136,14 +137,18 @@ const WatchFilmPage: React.FC = () => {
     await Share.share({
       title: "Chia sẻ link",
       text: "Xem link này nè!",
-      url: window.location.href,
+      url: Capacitor.isNativePlatform()
+        ? ENDPOINT_WEB + "/xem-phim/" + slug
+        : window.location.href,
       dialogTitle: "Chia sẻ qua",
     });
   };
   const copyLinkHandle = async () => {
     if (Capacitor.isNativePlatform()) {
       await Clipboard.write({
-        string: window.location.href,
+        string: Capacitor.isNativePlatform()
+          ? ENDPOINT_WEB + "/xem-phim/" + slug
+          : window.location.href,
       });
     } else {
       await navigator.clipboard.writeText(window.location.href);
@@ -156,9 +161,9 @@ const WatchFilmPage: React.FC = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -167,9 +172,9 @@ const WatchFilmPage: React.FC = () => {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5
-      }
-    }
+        duration: 0.5,
+      },
+    },
   };
 
   if (!movie) return null;
@@ -193,17 +198,17 @@ const WatchFilmPage: React.FC = () => {
         />
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           {/* Video Player */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-8"
-          >
+          <motion.div variants={itemVariants} className="mb-8">
             <div className="relative pt-[56.25%] bg-black rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#202020] overflow-hidden shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
               {isLoading ? (
                 <Loading />
               ) : (
                 <iframe
                   id="videoPlayer"
-                  src={episodes[activeServer]?.server_data[activeEpisode]?.link_embed}
+                  src={
+                    episodes[activeServer]?.server_data[activeEpisode]
+                      ?.link_embed
+                  }
                   allowFullScreen
                   className="absolute top-0 left-0 w-full h-full border-none"
                 />
@@ -243,7 +248,12 @@ const WatchFilmPage: React.FC = () => {
                             render={(item) => (
                               <motion.a
                                 whileHover={{ x: 5 }}
-                                href={item.url}
+                                href={
+                                  item.url +
+                                  (Capacitor.isNativePlatform()
+                                    ? ENDPOINT_WEB + "/xem-phim/" + slug
+                                    : window.location.href)
+                                }
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200 space-x-2"
@@ -281,10 +291,7 @@ const WatchFilmPage: React.FC = () => {
 
           <div className="container mx-auto px-4 md:px-10">
             {/* Server Tabs */}
-            <motion.div
-              variants={itemVariants}
-              className=""
-            >
+            <motion.div variants={itemVariants} className="">
               <div className="border-b border-[#2a2a2a]">
                 <ul className="flex flex-wrap -mb-px" role="tablist">
                   {episodes.map((server, index) => (
@@ -311,10 +318,7 @@ const WatchFilmPage: React.FC = () => {
               </div>
 
               {/* Episode List */}
-              <motion.div
-                variants={itemVariants}
-                className="mt-8"
-              >
+              <motion.div variants={itemVariants} className="mt-8">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
                   {episodes[activeServer]?.server_data
                     .slice(0, showAllEpisodes ? undefined : 12)
@@ -328,7 +332,9 @@ const WatchFilmPage: React.FC = () => {
                             ? "bg-gradient-to-r from-red-600 to-red-700 text-white border-red-600"
                             : "border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]"
                         }`}
-                        onClick={() => handleEpisodeChange(index, episode.link_embed)}
+                        onClick={() =>
+                          handleEpisodeChange(index, episode.link_embed)
+                        }
                       >
                         {episode.name}
                       </motion.button>

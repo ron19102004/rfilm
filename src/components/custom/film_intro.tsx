@@ -12,7 +12,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
+import { Info, Play } from "lucide-react";
 import { URL_IMG } from "@/constant/api.constant";
 
 const FilmIntroSlider: React.FC = () => {
@@ -271,31 +271,45 @@ const FilmIntroSlider: React.FC = () => {
                   </p>
 
                   {/* Enhanced play button */}
-                  <Link
-                    to={`/xem-phim/${activeMovie.slug}`}
-                    className="cursor-pointer"
-                  >
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
+                  <div className="flex gap-2">
+                    <Link
+                      to={`/xem-phim/${activeMovie.slug}`}
+                      className="cursor-pointer"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors shadow-lg shadow-red-500/30"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M14.752 11.168l-5.197-3.028A1 1 0 008 9.038v5.924a1 1 0 001.555.832l5.197-3.028a1 1 0 000-1.698z"
-                        />
-                      </svg>
-                    </motion.button>
-                  </Link>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14.752 11.168l-5.197-3.028A1 1 0 008 9.038v5.924a1 1 0 001.555.832l5.197-3.028a1 1 0 000-1.698z"
+                          />
+                        </svg>
+                      </motion.button>
+                    </Link>
+                    <Link
+                      to={`/chi-tiet-phim/${activeMovie.slug}`}
+                      className="cursor-pointer"
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20  rounded-full flex items-center justify-center  transition-colors"
+                      >
+                        <Info/>
+                      </motion.button>
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>

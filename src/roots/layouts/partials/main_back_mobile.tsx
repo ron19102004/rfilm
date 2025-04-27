@@ -13,7 +13,7 @@ const MainBackMobile: React.FC<MainBackMobileProps> = ({ title, className, title
     navigate(-1);
   };
   return (
-    <div className={cn("container mx-auto bg-white/300 backdrop-blur-sm py-2 flex justify-start gap-2 items-center px-2 transition-all", className)}>
+    <div className={cn("bg-white/300 backdrop-blur-sm py-2 flex justify-start gap-2 items-center px-2 transition-all", className)}>
       <button
         onClick={handleBack}
         className="flex items-center justify-center w-10 h-10 transition-all"
