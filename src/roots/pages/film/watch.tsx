@@ -196,7 +196,7 @@ const WatchFilmPage: React.FC = () => {
           className="px-2 md:px-10"
           titleClassName="text-lg md:text-2xl font-bold text-white"
         />
-        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+        <div className="px-4 md:px-6 lg:px-8">
           {/* Video Player */}
           <motion.div variants={itemVariants} className="mb-8">
             <div className="relative pt-[56.25%] bg-black rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#202020] overflow-hidden shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
@@ -219,7 +219,7 @@ const WatchFilmPage: React.FC = () => {
           {/* Watch tools */}
           <motion.div
             variants={itemVariants}
-            className="container mx-auto px-4 md:px-10"
+            className=" px-4 md:px-10"
           >
             <div className="flex justify-end items-center">
               <div className="flex items-center">
@@ -289,7 +289,7 @@ const WatchFilmPage: React.FC = () => {
             </div>
           </motion.div>
 
-          <div className="container mx-auto px-4 md:px-10">
+          <div className="px-4 md:px-10">
             {/* Server Tabs */}
             <motion.div variants={itemVariants} className="">
               <div className="border-b border-[#2a2a2a]">
