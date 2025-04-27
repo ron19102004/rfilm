@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import FilmDetailsCard from "@/components/custom/film_details_card";
 import { motion, AnimatePresence } from "framer-motion";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
+import HelmetSEO from "@/components/custom/helmet_seo";
 
 interface ShareProps {
   title: string;
@@ -179,203 +180,216 @@ const WatchFilmPage: React.FC = () => {
 
   if (!movie) return null;
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="min-h-screen bg-[#0a0a0a]"
+    <HelmetSEO
+      seo={{
+        title: `${movie?.name} - RFilm`,
+        keywords: `${movie?.name} - RFilm`,
+        author: "Ronial",
+        ogTitle: `${movie?.name} - RFilm`,
+        ogDescription: `${movie?.content} - RFilm`,
+        ogImage: `${movie?.thumb_url}`,
+        ogType: "website",
+        ogUrl: `${ENDPOINT_WEB}/xem-phim/${slug}`,
+        ogSiteName: "RFilm",
+        ogLocale: "vi_VN",
+        canonicalUrl: `${ENDPOINT_WEB}/xem-phim/${slug}`,
+      }}
     >
-      <div className="relative">
-        <PullToRefresh onRefresh={fetchMovie} />
-        <MainBackMobile
-          title={
-            movie.name +
-            " - " +
-            episodes[activeServer]?.server_data[activeEpisode].name
-          }
-          className="px-2 md:px-10"
-          titleClassName="text-lg md:text-2xl font-bold text-white"
-        />
-        <div className="px-4 md:px-6 lg:px-8">
-          {/* Video Player */}
-          <motion.div variants={itemVariants} className="mb-8">
-            <div className="relative pt-[56.25%] bg-black rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#202020] overflow-hidden shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
-              {isLoading ? (
-                <Loading />
-              ) : (
-                <iframe
-                  id="videoPlayer"
-                  src={
-                    episodes[activeServer]?.server_data[activeEpisode]
-                      ?.link_embed
-                  }
-                  allowFullScreen
-                  className="absolute top-0 left-0 w-full h-full border-none"
-                />
-              )}
-            </div>
-          </motion.div>
-
-          {/* Watch tools */}
-          <motion.div
-            variants={itemVariants}
-            className=" px-4 md:px-10"
-          >
-            <div className="flex justify-end items-center">
-              <div className="flex items-center">
-                <div className="relative" ref={shareRef}>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsShareOpen(!isShareOpen)}
-                    className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 flex items-center gap-2 shadow-lg"
-                  >
-                    <Share2 className="w-5 h-5" />
-                    Chia sẻ
-                  </motion.button>
-                  <AnimatePresence>
-                    {isShareOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute -left-20 mt-2 w-48 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-xl z-50"
-                      >
-                        <div className="py-2">
-                          <ListView
-                            data={shareProps}
-                            render={(item) => (
-                              <motion.a
-                                whileHover={{ x: 5 }}
-                                href={
-                                  item.url +
-                                  (Capacitor.isNativePlatform()
-                                    ? ENDPOINT_WEB + "/xem-phim/" + slug
-                                    : window.location.href)
-                                }
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200 space-x-2"
-                                onClick={() => setIsShareOpen(false)}
-                              >
-                                {item.icon}
-                                <span>{item.title}</span>
-                              </motion.a>
-                            )}
-                          />
-                          <motion.button
-                            whileHover={{ x: 5 }}
-                            onClick={copyLinkHandle}
-                            className="flex items-center w-full px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200"
-                          >
-                            <Copy className="w-5 h-5 mr-2 text-red-500" />
-                            Sao chép link
-                          </motion.button>
-                          <motion.button
-                            whileHover={{ x: 5 }}
-                            onClick={handleShare}
-                            className="flex items-center w-full px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200"
-                          >
-                            <Share2 className="w-5 h-5 mr-2 text-red-500" />
-                            Chia sẻ
-                          </motion.button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="min-h-screen bg-[#0a0a0a]"
+      >
+        <div className="relative">
+          <PullToRefresh onRefresh={fetchMovie} />
+          <MainBackMobile
+            title={
+              movie.name +
+              " - " +
+              episodes[activeServer]?.server_data[activeEpisode].name
+            }
+            className="px-2 md:px-10"
+            titleClassName="text-lg md:text-2xl font-bold text-white"
+          />
+          <div className="px-4 md:px-6 lg:px-8">
+            {/* Video Player */}
+            <motion.div variants={itemVariants} className="mb-8">
+              <div className="relative pt-[56.25%] bg-black rounded-xl sm:rounded-2xl md:rounded-3xl border border-[#202020] overflow-hidden shadow-2xl transform hover:scale-[1.01] transition-transform duration-300">
+                {isLoading ? (
+                  <Loading />
+                ) : (
+                  <iframe
+                    id="videoPlayer"
+                    src={
+                      episodes[activeServer]?.server_data[activeEpisode]
+                        ?.link_embed
+                    }
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full border-none"
+                  />
+                )}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <div className="px-4 md:px-10">
-            {/* Server Tabs */}
-            <motion.div variants={itemVariants} className="">
-              <div className="border-b border-[#2a2a2a]">
-                <ul className="flex flex-wrap -mb-px" role="tablist">
-                  {episodes.map((server, index) => (
-                    <motion.li
-                      key={index}
-                      className="mr-2"
-                      role="presentation"
-                      whileHover={{ y: -2 }}
-                    >
-                      <button
-                        className={`inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-in-out ${
-                          index === activeServer
-                            ? "border-red-600 text-red-600"
-                            : "border-transparent text-gray-400 hover:text-gray-300 hover:border-[#2a2a2a]"
-                        }`}
-                        onClick={() => handleServerChange(index)}
-                        role="tab"
-                      >
-                        {server.server_name}
-                      </button>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Episode List */}
-              <motion.div variants={itemVariants} className="mt-8">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-                  {episodes[activeServer]?.server_data
-                    .slice(0, showAllEpisodes ? undefined : 12)
-                    .map((episode, index) => (
-                      <motion.button
-                        key={index}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`px-4 py-2.5 rounded-lg border transition-all duration-200 ease-in-out ${
-                          index === activeEpisode
-                            ? "bg-gradient-to-r from-red-600 to-red-700 text-white border-red-600"
-                            : "border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]"
-                        }`}
-                        onClick={() =>
-                          handleEpisodeChange(index, episode.link_embed)
-                        }
-                      >
-                        {episode.name}
-                      </motion.button>
-                    ))}
-                </div>
-
-                {episodes[activeServer]?.server_data.length > 12 && (
-                  <motion.div
-                    variants={itemVariants}
-                    className="mt-6 flex justify-center"
-                  >
+            {/* Watch tools */}
+            <motion.div variants={itemVariants} className=" px-4 md:px-10">
+              <div className="flex justify-end items-center">
+                <div className="flex items-center">
+                  <div className="relative" ref={shareRef}>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => setShowAllEpisodes(!showAllEpisodes)}
-                      className="px-8 py-3 bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white rounded-lg border border-[#2a2a2a] hover:from-[#2a2a2a] hover:to-[#3a3a3a] transition-all duration-200 shadow-lg"
+                      onClick={() => setIsShareOpen(!isShareOpen)}
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 flex items-center gap-2 shadow-lg"
                     >
-                      {showAllEpisodes ? "Ẩn bớt" : "Xem thêm"}
+                      <Share2 className="w-5 h-5" />
+                      Chia sẻ
                     </motion.button>
-                  </motion.div>
-                )}
-              </motion.div>
+                    <AnimatePresence>
+                      {isShareOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute -left-20 mt-2 w-48 bg-[#1a1a1a] border border-[#2a2a2a] rounded-lg shadow-xl z-50"
+                        >
+                          <div className="py-2">
+                            <ListView
+                              data={shareProps}
+                              render={(item) => (
+                                <motion.a
+                                  whileHover={{ x: 5 }}
+                                  href={
+                                    item.url +
+                                    (Capacitor.isNativePlatform()
+                                      ? ENDPOINT_WEB + "/xem-phim/" + slug
+                                      : window.location.href)
+                                  }
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200 space-x-2"
+                                  onClick={() => setIsShareOpen(false)}
+                                >
+                                  {item.icon}
+                                  <span>{item.title}</span>
+                                </motion.a>
+                              )}
+                            />
+                            <motion.button
+                              whileHover={{ x: 5 }}
+                              onClick={copyLinkHandle}
+                              className="flex items-center w-full px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200"
+                            >
+                              <Copy className="w-5 h-5 mr-2 text-red-500" />
+                              Sao chép link
+                            </motion.button>
+                            <motion.button
+                              whileHover={{ x: 5 }}
+                              onClick={handleShare}
+                              className="flex items-center w-full px-4 py-2 text-gray-300 hover:bg-red-600/10 transition-colors duration-200"
+                            >
+                              <Share2 className="w-5 h-5 mr-2 text-red-500" />
+                              Chia sẻ
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
-            <AnimatePresence mode="wait">
-              {movieDetails && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="pt-8"
-                >
-                  <FilmDetailsCard movieDetails={movieDetails} />
+            <div className="px-4 md:px-10">
+              {/* Server Tabs */}
+              <motion.div variants={itemVariants} className="">
+                <div className="border-b border-[#2a2a2a]">
+                  <ul className="flex flex-wrap -mb-px" role="tablist">
+                    {episodes.map((server, index) => (
+                      <motion.li
+                        key={index}
+                        className="mr-2"
+                        role="presentation"
+                        whileHover={{ y: -2 }}
+                      >
+                        <button
+                          className={`inline-block p-4 border-b-2 rounded-t-lg transition-all duration-200 ease-in-out ${
+                            index === activeServer
+                              ? "border-red-600 text-red-600"
+                              : "border-transparent text-gray-400 hover:text-gray-300 hover:border-[#2a2a2a]"
+                          }`}
+                          onClick={() => handleServerChange(index)}
+                          role="tab"
+                        >
+                          {server.server_name}
+                        </button>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Episode List */}
+                <motion.div variants={itemVariants} className="mt-8">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                    {episodes[activeServer]?.server_data
+                      .slice(0, showAllEpisodes ? undefined : 12)
+                      .map((episode, index) => (
+                        <motion.button
+                          key={index}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`px-4 py-2.5 rounded-lg border transition-all duration-200 ease-in-out ${
+                            index === activeEpisode
+                              ? "bg-gradient-to-r from-red-600 to-red-700 text-white border-red-600"
+                              : "border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]"
+                          }`}
+                          onClick={() =>
+                            handleEpisodeChange(index, episode.link_embed)
+                          }
+                        >
+                          {episode.name}
+                        </motion.button>
+                      ))}
+                  </div>
+
+                  {episodes[activeServer]?.server_data.length > 12 && (
+                    <motion.div
+                      variants={itemVariants}
+                      className="mt-6 flex justify-center"
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowAllEpisodes(!showAllEpisodes)}
+                        className="px-8 py-3 bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white rounded-lg border border-[#2a2a2a] hover:from-[#2a2a2a] hover:to-[#3a3a3a] transition-all duration-200 shadow-lg"
+                      >
+                        {showAllEpisodes ? "Ẩn bớt" : "Xem thêm"}
+                      </motion.button>
+                    </motion.div>
+                  )}
                 </motion.div>
-              )}
-            </AnimatePresence>
+              </motion.div>
+
+              <AnimatePresence mode="wait">
+                {movieDetails && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="pt-8"
+                  >
+                    <FilmDetailsCard movieDetails={movieDetails} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </HelmetSEO>
   );
 };
 
