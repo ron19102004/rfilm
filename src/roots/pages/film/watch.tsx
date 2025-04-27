@@ -199,7 +199,7 @@ const WatchFilmPage: React.FC = () => {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="min-h-screen bg-[#1a1a1a] mt-20"
+        className="min-h-screen bg-[#1a1a1a] pt-20"
       >
         <div className="relative">
           <PullToRefresh onRefresh={fetchMovie} />

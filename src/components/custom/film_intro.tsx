@@ -258,7 +258,7 @@ const FilmIntroSlider: React.FC = () => {
                   <div className="flex flex-wrap gap-2 sm:gap-3">
                     {activeMovie.category?.map((genre: Genre) => (
                       <span
-                        key={genre._id}
+                        key={genre.name}
                         className="border border-white/30 px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm hover:bg-white/10 transition-colors"
                       >
                         {genre.name}
