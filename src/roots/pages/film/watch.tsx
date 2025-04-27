@@ -6,7 +6,7 @@ import { MovieDetails, MovieDetailsResponse, Server } from "@/apis/index.d";
 import filmApi from "@/apis/film.api";
 import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
 import { useMyMovieContext, useSystemContext } from "@/context";
-import { Share2, Facebook, Twitter, Send, Copy } from "lucide-react";
+import { Share2, Facebook, Twitter, Send, Copy, Loader } from "lucide-react";
 import ListView from "@/components/list";
 import { Capacitor } from "@capacitor/core";
 import { Clipboard } from "@capacitor/clipboard";
@@ -16,6 +16,8 @@ import FilmDetailsCard from "@/components/custom/film_details_card";
 import { motion, AnimatePresence } from "framer-motion";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
 import HelmetSEO from "@/components/custom/helmet_seo";
+import { lazy, Suspense } from "react";
+const FilmIntroCard = lazy(() => import("@/components/custom/film_intro_card"));
 
 interface ShareProps {
   title: string;
@@ -119,7 +121,7 @@ const WatchFilmPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="bg-[#1a1a1a] flex items-center justify-center mt-10">
-        <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+        <Loader className="w-16 h-16 text-red-600 animate-spin" />
       </div>
     );
   }
@@ -236,7 +238,10 @@ const WatchFilmPage: React.FC = () => {
             </motion.div>
 
             {/* Watch tools */}
-            <motion.div variants={itemVariants} className=" px-4 md:px-10 container mx-auto">
+            <motion.div
+              variants={itemVariants}
+              className=" px-4 md:px-10 container mx-auto"
+            >
               <div className="flex justify-end items-center">
                 <div className="flex items-center">
                   <div className="relative" ref={shareRef}>
@@ -389,6 +394,17 @@ const WatchFilmPage: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
+            <Suspense
+              fallback={
+                <div className="w-full flex items-center justify-center">
+                  <Loader className="w-8 h-8 text-red-500 animate-spin" />
+                </div>
+              }
+            >
+              <div className="py-4 sm:py-6 md:py-8 lg:py-12">
+                <FilmIntroCard />
+              </div>
+            </Suspense>
           </div>
         </div>
       </motion.div>

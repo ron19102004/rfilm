@@ -5,8 +5,11 @@ import HelmetSEO from "@/components/custom/helmet_seo";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
 import { useSystemContext } from "@/context";
 import { motion, AnimatePresence } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { Loader } from "lucide-react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+
+const FilmIntroCard = lazy(() => import("@/components/custom/film_intro_card"));
 
 const FilmDetailsPage: React.FC = () => {
   const { scrollToTop } = useSystemContext();
@@ -60,11 +63,7 @@ const FilmDetailsPage: React.FC = () => {
     return (
       <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
         <div className="relative">
-          <div className="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-          <div
-            className="absolute inset-0 w-16 h-16 border-4 border-red-400 border-t-transparent rounded-full animate-spin"
-            style={{ animationDelay: "-0.5s" }}
-          ></div>
+          <Loader className="w-16 h-16 text-red-600 animate-spin" />
         </div>
       </div>
     );
@@ -107,7 +106,7 @@ const FilmDetailsPage: React.FC = () => {
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="w-full h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-screen relative overflow-hidden"
+            className="w-full h-[50vh] md:h-[60vh] lg:h-screen relative overflow-hidden"
           >
             {/* Background Image */}
             <div className="w-full h-full image-filter-wrapper">
@@ -133,7 +132,7 @@ const FilmDetailsPage: React.FC = () => {
                   <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white drop-shadow-lg line-clamp-2">
                     {movie?.name}
                   </h1>
-                  <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-red-400 font-light line-clamp-1">
+                  <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-red-400 font-bold line-clamp-1">
                     {movie?.origin_name}
                   </h2>
                 </div>
@@ -283,7 +282,7 @@ const FilmDetailsPage: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="py-4 sm:py-6 md:py-8 lg:py-12"
+                  className="pt-4 sm:pt-6 md:pt-8 lg:pt-12"
                 >
                   <FilmDetailsCard movieDetails={movieDetails} />
                 </motion.div>
@@ -291,6 +290,18 @@ const FilmDetailsPage: React.FC = () => {
             </AnimatePresence>
           </div>
         </div>
+
+        <Suspense
+          fallback={
+            <div className="w-full flex items-center justify-center">
+              <Loader className="w-8 h-8 text-red-500 animate-spin" />
+            </div>
+          }
+        >
+          <div className="py-4 sm:py-6 md:py-8 lg:py-12">
+            <FilmIntroCard />
+          </div>
+        </Suspense>
       </div>
     </HelmetSEO>
   );

@@ -7,7 +7,7 @@ import { Capacitor } from "@capacitor/core";
 const MainFooter: React.FC = () => {
   const { contentSpecial, urlDownloadAppAndroid } = useSystemContext();
   return (
-    <footer className=" bg-[#1a1a1a]  text-gray-100 pb-16 pt-10 px-4 md:px-10">
+    <footer className=" bg-[#1a1a1a]  text-gray-100 pb-16 pt-10 px-2 md:px-10">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* About Section */}
@@ -78,44 +78,14 @@ const MainFooter: React.FC = () => {
                 <Send className="w-6 h-6" />
               </a>
             </div>
-            <div className="mt-6">
-              <h4 className="text-gray-300 font-semibold mb-2">
-                Đăng ký nhận tin
-              </h4>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Email của bạn"
-                  className="px-4 py-2 rounded-l-lg bg-[#1a1a1a] text-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 w-full"
-                />
-                <button className="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-r-lg transition duration-300">
-                  Đăng ký
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-[#1a1a1a] text-center">
           <p className="text-gray-400 text-sm">
-            &copy; 2024 Công Ty. Bảo lưu mọi quyền.
+            &copy; {new Date().getFullYear()} RFilm.
           </p>
-          <div className="mt-2 flex justify-center space-x-4 text-sm">
-            <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition duration-300"
-            >
-              Chính sách bảo mật
-            </a>
-            <span className="text-[#1a1a1a]">|</span>
-            <a
-              href="#"
-              className="text-gray-400 hover:text-red-500 transition duration-300"
-            >
-              Điều khoản sử dụng
-            </a>
-          </div>
         </div>
       </div>
     </footer>

@@ -14,10 +14,10 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
   return (
     <div className={cn(className)}>
       {/* Movie Info */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8 ">
         {/* Movie Content */}
         <div className="lg:col-span-2" data-aos="fade-up" data-aos-delay="200">
-          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
+          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg h-full">
             <div className="flex flex-col sm:flex-row items-center gap-8 mb-8">
               <img
                 src={movie.poster_url}
@@ -66,7 +66,7 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
 
         {/* Movie Details */}
         <div className="lg:col-span-1" data-aos="fade-up" data-aos-delay="300">
-          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
+          <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-8 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg h-full">
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold text-xl mb-3 text-white">

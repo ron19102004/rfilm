@@ -70,7 +70,7 @@ const TypeListPage: React.FC = () => {
     searchMovies();
   }, [slug, selectedGenre, selectedCountry, selectedYear, currentPage]);
   return (
-    <div className="bg-[#0a0a0a] min-h-screen">
+    <div className="bg-[#1a1a1a] pt-20">
       <MainBackMobile title={transFilmTypeToVN(slug?.toString() || "") || ""} />
       <PullToRefresh
         onRefresh={async () => {
@@ -96,10 +96,10 @@ const TypeListPage: React.FC = () => {
                 selectedGenreRef.current = value;
               }}
             >
-              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectValue placeholder="Thể loại" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectItem value="all">Tất cả</SelectItem>
                 <ListView
                   data={genres}
@@ -122,10 +122,10 @@ const TypeListPage: React.FC = () => {
                 selectedCountryRef.current = value;
               }}
             >
-              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectValue placeholder="Quốc gia" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectItem value="all">Tất cả</SelectItem>
                 <ListView
                   data={countries}
@@ -148,10 +148,10 @@ const TypeListPage: React.FC = () => {
                 selectedYearRef.current = value;
               }}
             >
-              <SelectTrigger className="w-full md:w-[180px] bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectValue placeholder="Năm" />
               </SelectTrigger>
-              <SelectContent className="bg-[#1a1a1a] border-[#2a2a2a] text-white">
+              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
                 <SelectItem value="all">Tất cả</SelectItem>
                 <ListView
                   data={Array.from(

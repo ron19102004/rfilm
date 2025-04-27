@@ -166,7 +166,7 @@ const FilmPage: React.FC = () => {
 
   return (
     <>
-      <div className="bg-[#1a1a1a] min-h-screen">
+      <div className="min-h-screen">
         <PullToRefresh
           onRefresh={async () => {
             window.location.reload();
@@ -175,9 +175,9 @@ const FilmPage: React.FC = () => {
         {/* Loading Overlay */}
         {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
         <FilmIntroSlider />
-        <main className=" px-4">
+        <main className="px-4">
           <div ref={topRef} className="w-0 h-0" />
-          <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
             <Film className="w-8 h-8" />
             <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
               Danh sách
@@ -243,7 +243,7 @@ const FilmPage: React.FC = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
-          <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
+          <h1 className=" text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
             <Film className="w-8 h-8" />
             <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500">
               Phim Mới Hôm Nay

@@ -244,7 +244,7 @@ const FilmIntroSlider: React.FC = () => {
                   <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300 line-clamp-2">
                     {activeMovie.name}
                   </h1>
-                  <h2 className="text-base sm:text-lg md:text-2xl lg:text-3xl text-red-400 font-light line-clamp-1">
+                  <h2 className="font-bold text-base sm:text-lg md:text-2xl lg:text-3xl text-red-400 line-clamp-1">
                     {activeMovie.origin_name}
                   </h2>
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4">

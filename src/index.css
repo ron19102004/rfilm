@@ -23,7 +23,7 @@ body {
   width: 100%;
   inset: 0;
   background-image: radial-gradient(#000 1px, transparent 1px);
-  background-size: 5px 5px; /* khoảng cách giữa các chấm */
+  background-size: 3px 3px; /* khoảng cách giữa các chấm */
   opacity: 0.3; /* độ mờ của lớp chấm */
   pointer-events: none; /* để click xuyên qua */
 }

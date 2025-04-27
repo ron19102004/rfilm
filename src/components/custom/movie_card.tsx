@@ -10,18 +10,23 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { cn } from "@/lib/utils";
 
 interface MovieCardProps {
   movie: Movie;
   index?: number;
+  imgSize?: string;
 }
-const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
   return (
     <HoverCard openDelay={1000} closeDelay={100}>
       <HoverCardTrigger className="transition-all duration-300">
         <Card
           key={movie.slug}
-          className="bg-[#2a2a2a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow-2xl"
+          className={cn(
+            "bg-[#2a2a2a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow-2xl",
+            imgSize
+          )}
           data-aos="fade-up"
           data-aos-delay={index * 50}
         >
@@ -35,7 +40,10 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
                     : `${URL_IMG}${movie.poster_url}`
                 }
                 alt={movie.name}
-                className="w-full h-96 object-cover group-hover:opacity-90 transition-opacity"
+                className={cn(
+                  "w-full h-96 object-cover group-hover:opacity-90 transition-opacity",
+                  imgSize
+                )}
               />
             </Link>
 
@@ -94,7 +102,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1 }) => {
                     <span>Xem ngay</span>
                   </Link>
                 </Button>
-                <Button className="w-full bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+                <Button className="w-full bg-[#3a3a3a] hover:bg-[#4a4a4a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
                   <Link
                     to={`/chi-tiet-phim/${movie.slug}`}
                     className="flex items-center justify-center w-full space-x-2"
