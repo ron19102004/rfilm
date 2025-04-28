@@ -4,7 +4,7 @@ import { Loader } from "lucide-react";
 
 const Loading: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-black/60 flex flex-col items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/80 flex flex-col items-center justify-center z-50">
       <div className="relative">
         <div className="flex justify-center">
           {["R", "F", "I", "L", "M"].map((letter, index) => (
@@ -45,17 +45,31 @@ const Loading: React.FC = () => {
             </motion.div>
           ))}
         </div>
+        {/* <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            delay: 1.5,
+            duration: 5,
+            type: "spring",
+            stiffness: 100,
+            damping: 10,
+          }}
+          className="px-10"
+        >
+          <img src={gif.VNFlag} alt="VNFlag" className="object-cover" />
+        </motion.div> */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1.2 }}
           transition={{
-            delay: 1.5,
+            delay: 1.8,
             duration: 0.5,
             type: "spring",
             stiffness: 100,
             damping: 10,
           }}
-          className="flex justify-center mt-10"
+          className="flex justify-center mt-5"
         >
           <Loader className="w-8 h-8 text-red-500 animate-spin" />
         </motion.div>

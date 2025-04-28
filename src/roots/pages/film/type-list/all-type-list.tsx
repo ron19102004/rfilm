@@ -2,7 +2,7 @@ import { FilmTypeList } from "@/apis/index.d";
 import { transFilmTypeToVN } from "@/apis/trans.f";
 import ListView from "@/components/list";
 import { useSystemContext } from "@/context";
-import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
 import { ChevronRight } from "lucide-react";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";

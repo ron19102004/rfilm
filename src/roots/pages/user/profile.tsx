@@ -3,13 +3,13 @@ import { useAuthContext, useMyMovieContext, useSystemContext } from "@/context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import PullToRefresh from "@/components/custom/pull_to_refresh";
+import PullToRefresh from "@/components/custom/pull-to-refresh";
 import { ChevronLeft, ChevronRight, Film, Info, Play } from "lucide-react";
-import { URL_IMG } from "@/constant/api.constant";
+import { URL_IMG_KK } from "@/constant/api.constant";
 import { Link } from "react-router-dom";
 import ListView from "@/components/list";
 import { Timestamp } from "firebase/firestore";
-import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
 import { Button } from "@/components/ui/button";
 
 const ProfilePage: React.FC = () => {
@@ -160,7 +160,7 @@ const ProfilePage: React.FC = () => {
                                 "https"
                               )
                                 ? movieWatched.movie.movie.poster_url
-                                : `${URL_IMG}${movieWatched.movie.movie.poster_url}`
+                                : `${URL_IMG_KK}${movieWatched.movie.movie.poster_url}`
                             }
                             alt={movieWatched.movie.movie.name}
                             className="w-full h-[300px] object-cover group-hover:opacity-90 transition-opacity"

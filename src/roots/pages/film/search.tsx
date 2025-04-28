@@ -4,11 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import PullToRefresh from "@/components/custom/pull_to_refresh";
+import PullToRefresh from "@/components/custom/pull-to-refresh";
 import { GetFilmsType, Movie } from "@/apis/index.d";
 import ListView from "@/components/list";
-import MovieCard from "@/components/custom/movie_card";
-import filmApi from "@/apis/film.api";
+import MovieCard from "@/components/custom/movie-card";
+import filmApi from "@/apis/filmKK.api";
 import Pagination from "@/components/custom/pagination";
 import { useSystemContext } from "@/context";
 

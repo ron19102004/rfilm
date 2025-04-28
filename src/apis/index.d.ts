@@ -13,6 +13,7 @@ export interface Genre {
 export interface Movie {
   name: string;
   origin_name: string;
+  content?: string;
   poster_url: string;
   quality: string;
   episode_current: string;

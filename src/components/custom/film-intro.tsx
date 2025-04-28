@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useSystemContext } from "@/context";
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
 import { Info, Play } from "lucide-react";
-import { URL_IMG } from "@/constant/api.constant";
+import { URL_IMG_KK } from "@/constant/api.constant";
 
 
 
@@ -22,12 +22,13 @@ const FilmIntroSlider: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   // Split movies into two halves
-  const firstHalfMovies =
-    filmIntro?.slice(0, Math.ceil(filmIntro.length / 2)) || [];
-  const secondHalfMovies =
-    filmIntro?.slice(Math.ceil(filmIntro.length / 2)) || [];
+  const firstHalfMovies = useMemo(() => {
+    return filmIntro?.slice(0, Math.ceil(filmIntro.length / 2)) || [];
+  }, [filmIntro]);
+  const secondHalfMovies = useMemo(() => {
+    return filmIntro?.slice(Math.ceil(filmIntro.length / 2)) || [];
+  }, [filmIntro]);
 
   const settings = {
     dots: true,
@@ -228,7 +229,7 @@ const FilmIntroSlider: React.FC = () => {
           {/* Enhanced overlay with gradient 
           backdrop-blur: mờ hơn
           */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-black/20 to-transparent opacity-90 "></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-black/20 to-transparent opacity-90 md:opacity-50"></div>
           {/* Content with enhanced animations */}
           <div className="absolute inset-0 flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-24 text-white z-10">
             <AnimatePresence mode="wait">
@@ -374,13 +375,13 @@ const FilmIntroSlider: React.FC = () => {
           </div>
         </div>
         {/* background Cho liền mạch bg*/}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-100 md:opacity-100"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-100"></div>
       </div>
       <div className="w-full px-8 py-2 ">
         <Slider {...settings} dots={false}>
           {secondHalfMovies.map((movie, index) => (
             <HoverCard>
-              <HoverCardTrigger>
+              <HoverCardTrigger asChild>
                 <div key={index} className="px-2 py-4">
                   <motion.div whileHover={{ scale: 1.05 }}>
                     <div className="bg-[#2a2a2a] border border-[#3a3a3a] shadow-lg rounded-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 ">
@@ -390,7 +391,7 @@ const FilmIntroSlider: React.FC = () => {
                             movie.thumb_url.startsWith("https") ||
                             movie.thumb_url.startsWith("https")
                               ? movie.thumb_url
-                              : `${URL_IMG}${movie.thumb_url}`
+                              : `${URL_IMG_KK}${movie.thumb_url}`
                           }
                           alt={movie.name}
                           className="w-full h-64 object-cover group-hover:opacity-90 opacity-100 md:opacity-80 transition-all"
@@ -444,7 +445,7 @@ const FilmIntroSlider: React.FC = () => {
                         movie.poster_url.startsWith("https") ||
                         movie.poster_url.startsWith("https")
                           ? movie.poster_url
-                          : `${URL_IMG}${movie.poster_url}`
+                          : `${URL_IMG_KK}${movie.poster_url}`
                       }
                       alt={movie.name}
                       className="w-full h-80 object-cover group-hover:opacity-90 rounded-2xl hover:scale-105 transition-all duration-300"

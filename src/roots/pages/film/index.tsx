@@ -9,16 +9,16 @@ import {
 } from "@/components/ui/select";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/components/custom/loading";
-import PullToRefresh from "@/components/custom/pull_to_refresh";
+import PullToRefresh from "@/components/custom/pull-to-refresh";
 import { useFilmContext, useSystemContext } from "@/context";
 import { FilmTypeList, GetFilmsType, Movie } from "@/apis/index.d";
 import ListView from "@/components/list";
-import MovieCard from "@/components/custom/movie_card";
-import filmApi from "@/apis/film.api";
+import MovieCard from "@/components/custom/movie-card";
+import filmApi from "@/apis/filmKK.api";
 import { transFilmTypeToEN, transFilmTypeToVN } from "@/apis/trans.f";
 import Pagination from "@/components/custom/pagination";
-import FilmIntroSlider from "@/components/custom/film_intro";
-import UpdateAppSheet from "@/components/custom/update_app_sheet";
+import FilmIntroSlider from "@/components/custom/film-intro";
+import UpdateAppSheet from "@/components/custom/update-app-sheet";
 
 const FilmPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);

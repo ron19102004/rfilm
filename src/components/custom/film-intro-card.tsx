@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSystemContext } from "@/context";
 import { Film } from "lucide-react";
-import MovieCard from "./movie_card";
+import MovieCard from "./movie-card";
 import React, { useEffect, useRef, useState } from "react";
 import ListView from "../list";
 
@@ -58,7 +58,9 @@ const FilmIntroCard: React.FC = () => {
               <ListView
                 data={filmIntro}
                 render={(mo, index) => (
-                  <MovieCard movie={mo} key={index} imgSize="w-80 md:w-96" />
+                  <div key={index}>
+                    <MovieCard movie={mo} key={index} imgSize="w-80 md:w-96" />
+                  </div>
                 )}
               />
             </div>

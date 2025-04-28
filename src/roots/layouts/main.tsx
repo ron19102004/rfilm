@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import MainHeader from "./partials/main_header";
-import MainFooter from "./partials/main_footer";
+import MainHeader from "./partials/main-header";
+import MainFooter from "./partials/main-footer";
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import MainMenuBottomMobile from "./partials/main_menu_bottom";
+import MainMenuBottomMobile from "./partials/main-menu-bottom";
 import { useSystemContext } from "@/context";
 
 const MainLayout: React.FC = () => {

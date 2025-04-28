@@ -1,7 +1,7 @@
-import filmApi from "@/apis/film.api";
+import filmApi from "@/apis/filmKK.api";
 import { MovieDetails, MovieDetailsResponse } from "@/apis/index.d";
-import FilmDetailsCard from "@/components/custom/film_details_card";
-import HelmetSEO from "@/components/custom/helmet_seo";
+import FilmDetailsCard from "@/components/custom/film-details-card";
+import HelmetSEO from "@/components/custom/helmet-seo";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
 import { useSystemContext } from "@/context";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,7 +9,7 @@ import { Loader } from "lucide-react";
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const FilmIntroCard = lazy(() => import("@/components/custom/film_intro_card"));
+const FilmIntroCard = lazy(() => import("@/components/custom/film-intro-card"));
 
 const FilmDetailsPage: React.FC = () => {
   const { scrollToTop } = useSystemContext();
@@ -35,6 +35,7 @@ const FilmDetailsPage: React.FC = () => {
   const fetchMovie = async () => {
     if (!slug) return;
     try {
+      setIsLoading(true);
       const response = await filmApi.getFilmDetails(slug?.toString());
       if (response.status) {
         setMovieDetails(response);
@@ -135,6 +136,7 @@ const FilmDetailsPage: React.FC = () => {
                   <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-red-400 font-bold line-clamp-1">
                     {movie?.origin_name}
                   </h2>
+                  <p className="text-white line-clamp-2">{movie?.content}</p>
                 </div>
 
                 {/* Watch Now Button and Info */}
@@ -153,7 +155,7 @@ const FilmDetailsPage: React.FC = () => {
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 sm:w-6 sm:h-6"
+                          className="w-5 h-5 sm:w-8 sm:h-8"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -216,7 +218,8 @@ const FilmDetailsPage: React.FC = () => {
               </motion.div>
             </div>
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] to-transparent opacity-100 md:opacity-100"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]  to-transparent opacity-100"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a]  to-transparent opacity-60 md:hidden"></div>
         </div>
 
         {/* Trailer Modal */}

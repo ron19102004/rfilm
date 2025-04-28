@@ -2,7 +2,7 @@ import { Movie } from "@/apis";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { URL_IMG } from "@/constant/api.constant";
+import { URL_IMG_KK } from "@/constant/api.constant";
 import { Button } from "@/components/ui/button";
 import { Play, Info } from "lucide-react";
 import {
@@ -20,7 +20,7 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
   return (
     <HoverCard openDelay={1000} closeDelay={100}>
-      <HoverCardTrigger className="transition-all duration-300">
+      <HoverCardTrigger className="transition-all duration-300" asChild>
         <Card
           key={movie.slug}
           className={cn(
@@ -37,7 +37,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                   movie.poster_url.startsWith("https") ||
                   movie.poster_url.startsWith("https")
                     ? movie.poster_url
-                    : `${URL_IMG}${movie.poster_url}`
+                    : `${URL_IMG_KK}${movie.poster_url}`
                 }
                 alt={movie.name}
                 className={cn(
@@ -73,9 +73,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             </div>
             <div className="md:hidden">
               <div className="flex flex-wrap gap-2 mb-2">
-                {movie.category.map((cat) => (
+                {movie.category.map((cat, index) => (
                   <span
-                    key={cat.name}
+                    key={index}
                     className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
                   >
                     {cat.name}
@@ -83,9 +83,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                 ))}
               </div>
               <div className="flex flex-wrap gap-2">
-                {movie.country.map((country) => (
+                {movie.country.map((country, index) => (
                   <span
-                    key={country.name}
+                    key={index}
                     className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
                   >
                     {country.name}
@@ -127,7 +127,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                 movie.thumb_url.startsWith("https") ||
                 movie.thumb_url.startsWith("https")
                   ? movie.thumb_url
-                  : `${URL_IMG}${movie.thumb_url}`
+                  : `${URL_IMG_KK}${movie.thumb_url}`
               }
               alt={movie.name}
               className="w-full h-80 object-cover group-hover:opacity-90 rounded-2xl hover:scale-105 transition-all duration-300"
@@ -155,9 +155,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             <span className="bg-[#2a2a2a] px-2 py-1 rounded">{movie.lang}</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            {movie.category.map((cat) => (
+            {movie.category.map((cat, index) => (
               <span
-                key={cat.name}
+                key={index}
                 className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
               >
                 {cat.name}
@@ -165,9 +165,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             ))}
           </div>
           <div className="flex flex-wrap gap-2">
-            {movie.country.map((country) => (
+            {movie.country.map((country, index) => (
               <span
-                key={country.name}
+                key={index}
                 className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
               >
                 {country.name}

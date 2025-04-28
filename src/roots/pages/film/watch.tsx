@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "@/components/custom/loading";
-import PullToRefresh from "@/components/custom/pull_to_refresh";
+import PullToRefresh from "@/components/custom/pull-to-refresh";
 import { MovieDetails, MovieDetailsResponse, Server } from "@/apis/index.d";
-import filmApi from "@/apis/film.api";
-import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import filmApi from "@/apis/filmKK.api";
+import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
 import { useMyMovieContext, useSystemContext } from "@/context";
 import { Share2, Facebook, Twitter, Send, Copy, Loader } from "lucide-react";
 import ListView from "@/components/list";
@@ -12,12 +12,12 @@ import { Capacitor } from "@capacitor/core";
 import { Clipboard } from "@capacitor/clipboard";
 import { Share } from "@capacitor/share";
 import toast from "react-hot-toast";
-import FilmDetailsCard from "@/components/custom/film_details_card";
+import FilmDetailsCard from "@/components/custom/film-details-card";
 import { motion, AnimatePresence } from "framer-motion";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
-import HelmetSEO from "@/components/custom/helmet_seo";
+import HelmetSEO from "@/components/custom/helmet-seo";
 import { lazy, Suspense } from "react";
-const FilmIntroCard = lazy(() => import("@/components/custom/film_intro_card"));
+const FilmIntroCard = lazy(() => import("@/components/custom/film-intro-card"));
 
 interface ShareProps {
   title: string;

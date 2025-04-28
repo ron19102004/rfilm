@@ -1,8 +1,8 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import firebase from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
 import { Genre, Country, Movie } from "@/apis";
-import filmApi from "@/apis/film.api";
+import filmApi from "@/apis/filmKK.api";
 import { URL_DOWNLOAD_APP_ANDROID } from "@/constant/system.constant";
 interface SystemContextType {
   contentSpecial: string;
@@ -14,14 +14,23 @@ interface SystemContextType {
   updateAvailable: boolean;
   topRef: React.RefObject<HTMLDivElement | null>;
   scrollToTop: () => void;
+  genresRecord: Record<string, string>;
+  countriesRecord: Record<string, string>;
 }
 const useSystemContext = () => {
+  const [genresRecord, setGenresRecord] = useState<Record<string, string>>({});
+  const [countriesRecord, setCountriesRecord] = useState<
+    Record<string, string>
+  >({});
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [contentSpecial, setContentSpecial] = useState<string>("");
   const [genres, setGenres] = useState<Genre[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
   const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
-  const [urlDownloadAppAndroid, setUrlDownloadAppAndroid] = useState<string>(URL_DOWNLOAD_APP_ANDROID);
+  const [urlDownloadAppAndroid, setUrlDownloadAppAndroid] = useState<string>(
+    URL_DOWNLOAD_APP_ANDROID
+  );
   const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
   const topRef = useRef<HTMLDivElement | null>(null);
   const scrollToTop = () => {
@@ -29,17 +38,27 @@ const useSystemContext = () => {
       topRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const loadResources = async () => {
+  const loadResources = useCallback(async () => {
     const genres = await filmApi.loadGenres();
     const countries = await filmApi.loadCountries();
     setGenres(genres);
     setCountries(countries);
-  };
-  const loadFilmIntro = async () => {
+    const genresRd = genres.reduce((acc, item) => {
+      acc[item.slug] = item.name;
+      return acc;
+    }, {} as Record<string, string>);
+    const countriesRd = countries.reduce((acc, item) => {
+      acc[item.slug] = item.name;
+      return acc;
+    }, {} as Record<string, string>);
+    setGenresRecord(genresRd);
+    setCountriesRecord(countriesRd);
+  }, []);
+  const loadFilmIntro = useCallback(async () => {
     const filmIntro = await filmApi.getFilmsUpdateV3(1);
     setFilmIntro(filmIntro.items);
-  };
-  const init = async () => {
+  }, []);
+  const init = useCallback(async () => {
     setIsLoading(true);
     try {
       await loadResources();
@@ -75,7 +94,7 @@ const useSystemContext = () => {
         setIsLoading(false);
       }, 1000);
     }
-  };
+  }, []);
   useEffect(() => {
     init();
   }, []);
@@ -89,6 +108,8 @@ const useSystemContext = () => {
     updateAvailable: updateAvailable,
     topRef: topRef,
     scrollToTop: scrollToTop,
+    genresRecord: genresRecord,
+    countriesRecord: countriesRecord,
   };
 };
 export const SystemContext = createContext<SystemContextType>({
@@ -102,7 +123,9 @@ export const SystemContext = createContext<SystemContextType>({
   topRef: { current: null },
   scrollToTop: function (): void {
     throw new Error("Function not implemented.");
-  }
+  },
+  genresRecord: {},
+  countriesRecord: {},
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {

@@ -1,6 +1,6 @@
 import { MovieDetails, MovieDetailsResponse } from "@/apis/index.d";
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 interface FilmDetailsCardProps {
   movieDetails: MovieDetailsResponse;
   className?: string;
@@ -10,7 +10,11 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
   movieDetails,
   className,
 }) => {
-  const [movie] = useState<MovieDetails>(movieDetails.movie);
+  const [movie, setMovie] = useState<MovieDetails|null>(null);
+  useEffect(() => {
+    setMovie(movieDetails.movie);
+  }, [movieDetails]);
+  if (!movie) return null;
   return (
     <div className={cn(className)}>
       {/* Movie Info */}
@@ -22,7 +26,7 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
               <img
                 src={movie.poster_url}
                 alt={movie.name}
-                className="w-48 h-72 object-cover rounded-2xl shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
+                className="w-full h-96 md:w-60 md:h-96 object-cover rounded-2xl shadow-2xl transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-2xl"
               />
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2">

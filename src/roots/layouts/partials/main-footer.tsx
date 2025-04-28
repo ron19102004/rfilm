@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Smartphone, Send } from "lucide-react";
+import { Mail, Smartphone, Send, Star, BellRing } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSystemContext } from "@/context";
 import { cn } from "@/lib/utils";
@@ -12,12 +12,19 @@ const MainFooter: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* About Section */}
           <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1 bg-red-700 rounded-full w-full md:w-fit justify-center">
+              <div className="bg-red-800 p-1 rounded-full">
+                <Star className="text-yellow-400 w-4 h-4  fill-yellow-400" />
+              </div>
+              <span className="text-white text-sm font-semibold">
+                Hoàng Sa &amp; Trường Sa là của Việt Nam!
+              </span>
+            </div>
             <h3 className="text-red-500 text-2xl font-bold tracking-wide">
               Thông báo
             </h3>
-            <p className="text-gray-300 leading-relaxed text-lg font-semibold">
-              {contentSpecial.length > 0 &&
-                contentSpecial.replace(/\\n\s*/g, "\n")}
+            <p className="text-gray-300 leading-relaxed">
+              <BellRing className="inline-block w-5 h-5"/> : {contentSpecial.length > 0 ? contentSpecial : "Không có"}
             </p>
             <div className="flex items-center space-x-2">
               <Mail className="text-red-500 w-5 h-5" />

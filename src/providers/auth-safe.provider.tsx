@@ -17,7 +17,7 @@ const LoadingSpinner = () => (
   </div>
 );
 
-const AuthProvider: React.FC = () => {
+const AuthSafeProvider: React.FC = () => {
   const { user, loading } = useAuthContext();
 
   if (loading || !user) {
@@ -27,4 +27,4 @@ const AuthProvider: React.FC = () => {
   return <Outlet />;
 };
 
-export default AuthProvider;
+export default AuthSafeProvider;

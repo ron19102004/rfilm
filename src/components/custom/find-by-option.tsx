@@ -1,10 +1,9 @@
-import filmApi from "@/apis/film.api";
+import filmApi from "@/apis/filmKK.api"   ;
 import { GetFilmsType, Movie } from "@/apis/index.d";
-import { transFilmTypeToVN } from "@/apis/trans.f";
 import Loading from "@/components/custom/loading";
-import MovieCard from "@/components/custom/movie_card";
+import MovieCard from "@/components/custom/movie-card";
 import Pagination from "@/components/custom/pagination";
-import PullToRefresh from "@/components/custom/pull_to_refresh";
+import PullToRefresh from "@/components/custom/pull-to-refresh";
 import ListView from "@/components/list";
 import {
   Select,
@@ -14,12 +13,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSystemContext } from "@/context";
-import MainBackMobile from "@/roots/layouts/partials/main_back_mobile";
+import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 
-const TypeListPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
+interface FindByOptionProps {
+  type: GetFilmsType;
+  value: string;
+  titleBar: string;
+}
+const FindByOption: React.FC<FindByOptionProps> = ({
+  type,
+  value,
+  titleBar,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -43,12 +49,11 @@ const TypeListPage: React.FC = () => {
   }, [movies]);
   // Search movies
   const searchMovies = async () => {
-    if (loading || !slug) return;
     setLoading(true);
     try {
       const response = await filmApi.getFilmsBy({
-        type: GetFilmsType.LIST,
-        value: slug.toString(),
+        type: type,
+        value: value,
         page: currentPage,
         selectedCountry: selectedCountryRef.current,
         selectedGenre: selectedGenreRef.current,
@@ -68,10 +73,10 @@ const TypeListPage: React.FC = () => {
   };
   useEffect(() => {
     searchMovies();
-  }, [slug, selectedGenre, selectedCountry, selectedYear, currentPage]);
+  }, [value, selectedGenre, selectedCountry, selectedYear, currentPage]);
   return (
     <div className="bg-[#1a1a1a] pt-20">
-      <MainBackMobile title={transFilmTypeToVN(slug?.toString() || "") || ""} />
+      <MainBackMobile title={titleBar} />
       <PullToRefresh
         onRefresh={async () => {
           window.location.reload();
@@ -87,57 +92,61 @@ const TypeListPage: React.FC = () => {
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-400">Thể loại</label>
-            <Select
-              value={selectedGenre}
-              onValueChange={(value: string) => {
-                setSelectedGenre(value);
-                selectedGenreRef.current = value;
-              }}
-            >
-              <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
-                <SelectValue placeholder="Thể loại" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
-                <SelectItem value="all">Tất cả</SelectItem>
-                <ListView
-                  data={genres}
-                  render={(genre) => (
-                    <SelectItem key={genre.slug} value={genre.slug}>
-                      {genre.name}
-                    </SelectItem>
-                  )}
-                />
-              </SelectContent>
-            </Select>
-          </div>
+          {type !== GetFilmsType.GENRE && (
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-gray-400">Thể loại</label>
+              <Select
+                value={selectedGenre}
+                onValueChange={(value: string) => {
+                  setSelectedGenre(value);
+                  selectedGenreRef.current = value;
+                }}
+              >
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
+                  <SelectValue placeholder="Thể loại" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
+                  <SelectItem value="all">Tất cả</SelectItem>
+                  <ListView
+                    data={genres}
+                    render={(genre) => (
+                      <SelectItem key={genre.slug} value={genre.slug}>
+                        {genre.name}
+                      </SelectItem>
+                    )}
+                  />
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
-          <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-400">Quốc gia</label>
-            <Select
-              value={selectedCountry}
-              onValueChange={(value: string) => {
-                setSelectedCountry(value);
-                selectedCountryRef.current = value;
-              }}
-            >
-              <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
-                <SelectValue placeholder="Quốc gia" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
-                <SelectItem value="all">Tất cả</SelectItem>
-                <ListView
-                  data={countries}
-                  render={(country) => (
-                    <SelectItem key={country.slug} value={country.slug}>
-                      {country.name}
-                    </SelectItem>
-                  )}
-                />
-              </SelectContent>
-            </Select>
-          </div>
+          {type !== GetFilmsType.COUNTRY && (
+            <div className="flex flex-col gap-2">
+              <label className="text-sm text-gray-400">Quốc gia</label>
+              <Select
+                value={selectedCountry}
+                onValueChange={(value: string) => {
+                  setSelectedCountry(value);
+                  selectedCountryRef.current = value;
+                }}
+              >
+                <SelectTrigger className="w-full md:w-[180px] bg-[#2a2a2a] border-[#3a3a3a] text-white">
+                  <SelectValue placeholder="Quốc gia" />
+                </SelectTrigger>
+                <SelectContent className="bg-[#2a2a2a] border-[#3a3a3a] text-white">
+                  <SelectItem value="all">Tất cả</SelectItem>
+                  <ListView
+                    data={countries}
+                    render={(country) => (
+                      <SelectItem key={country.slug} value={country.slug}>
+                        {country.name}
+                      </SelectItem>
+                    )}
+                  />
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-400">Năm</label>
@@ -198,4 +207,4 @@ const TypeListPage: React.FC = () => {
   );
 };
 
-export default TypeListPage;
+export default FindByOption;

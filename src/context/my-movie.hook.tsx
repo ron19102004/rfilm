@@ -1,4 +1,4 @@
-import useMyMovie, { MyMovieContextType } from "@/hooks/my_movie.hook";
+import useMyMovie, { MyMovieContextType } from "@/hooks/my-movie.hook";
 import { createContext } from "react";
 
 export const MyMovieContext = createContext<MyMovieContextType>({
