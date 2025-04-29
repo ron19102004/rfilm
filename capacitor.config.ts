@@ -7,8 +7,17 @@ const config: CapacitorConfig = {
   plugins: {
     GoogleAuth: {
       scopes: ["profile", "email"],
-      serverClientId: "148106803737-9flo3maauatd9sp43lmq5i84dq4ao63r.apps.googleusercontent.com",
+      serverClientId:
+        "148106803737-9flo3maauatd9sp43lmq5i84dq4ao63r.apps.googleusercontent.com",
       forceCodeForRefreshToken: true,
+    },
+    SplashScreen: {
+      launchShowDuration: 3000,
+      launchAutoHide: true,
+      backgroundColor: "#000000", // Màu đen
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
     },
   },
 };

@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "@/components/custom/loading";
 import PullToRefresh from "@/components/custom/pull-to-refresh";
-import { MovieDetails, MovieDetailsResponse, Server } from "@/apis/index.d";
+import {
+  GetFilmsType,
+  Movie,
+  MovieDetails,
+  MovieDetailsResponse,
+  Server,
+} from "@/apis/index.d";
 import filmApi from "@/apis/filmKK.api";
 import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
 import { useMyMovieContext, useSystemContext } from "@/context";
@@ -17,7 +23,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
 import HelmetSEO from "@/components/custom/helmet-seo";
 import { lazy, Suspense } from "react";
-const FilmIntroCard = lazy(() => import("@/components/custom/film-intro-card"));
+
+const FilmRenderSection = lazy(
+  () => import("@/components/custom/film-render-section")
+);
 
 interface ShareProps {
   title: string;
@@ -43,7 +52,7 @@ const shareProps: ShareProps[] = [
 ];
 
 const WatchFilmPage: React.FC = () => {
-  const { scrollToTop } = useSystemContext();
+  const { scrollToTop, filmIntro } = useSystemContext();
   const { slug } = useParams<{ slug: string }>();
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [episodes, setEpisodes] = useState<Server[]>([]);
@@ -58,6 +67,7 @@ const WatchFilmPage: React.FC = () => {
   const shareRef = useRef<HTMLDivElement>(null);
   const [showAllEpisodes, setShowAllEpisodes] = useState(false);
   const { saveOrUpdateMovie } = useMyMovieContext();
+  const [moviesSuggest, setMoviesSuggest] = useState<Movie[]>([]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -99,8 +109,25 @@ const WatchFilmPage: React.FC = () => {
     scrollToTop();
     fetchMovie();
   }, [slug]);
+  const loadFilmsSuggest = useCallback(async () => {
+    if (movie) {
+      if (movie.country && movie.country.length > 0) {
+        const country = movie.country[0];
+        const moviesSuggest = await filmApi.getFilmsBy({
+          type: GetFilmsType.COUNTRY,
+          value: country.slug,
+          page: 1,
+          selectedCountry: "all",
+          selectedGenre: "all",
+          selectedYear: "2025",
+        });
+        setMoviesSuggest(moviesSuggest.data.items);
+      }
+    }
+  }, [movie]);
   useEffect(() => {
     scrollToTop();
+    loadFilmsSuggest();
   }, [movie]);
 
   const handleServerChange = (index: number) => {
@@ -249,7 +276,7 @@ const WatchFilmPage: React.FC = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setIsShareOpen(!isShareOpen)}
-                      className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 flex items-center gap-2 shadow-lg"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-2 rounded-full hover:from-red-700 hover:to-red-800 transition-all duration-300 flex items-center gap-2 shadow-lg"
                     >
                       <Share2 className="w-5 h-5" />
                       Chia sẻ
@@ -340,7 +367,7 @@ const WatchFilmPage: React.FC = () => {
 
                 {/* Episode List */}
                 <motion.div variants={itemVariants} className="mt-8">
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-10 gap-3">
                     {episodes[activeServer]?.server_data
                       .slice(0, showAllEpisodes ? undefined : 12)
                       .map((episode, index) => (
@@ -371,7 +398,7 @@ const WatchFilmPage: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setShowAllEpisodes(!showAllEpisodes)}
-                        className="px-8 py-3 bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white rounded-lg border border-[#2a2a2a] hover:from-[#2a2a2a] hover:to-[#3a3a3a] transition-all duration-200 shadow-lg"
+                        className="px-8 py-2 bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] text-white rounded-lg border border-[#2a2a2a] hover:from-[#2a2a2a] hover:to-[#3a3a3a] transition-all duration-200 shadow-lg"
                       >
                         {showAllEpisodes ? "Ẩn bớt" : "Xem thêm"}
                       </motion.button>
@@ -401,8 +428,22 @@ const WatchFilmPage: React.FC = () => {
                 </div>
               }
             >
-              <div className="py-4 sm:py-6 md:py-8 lg:py-12">
-                <FilmIntroCard />
+              <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+                <FilmRenderSection movies={moviesSuggest} title="Gợi ý" />
+              </div>
+            </Suspense>
+            <Suspense
+              fallback={
+                <div className="w-full flex items-center justify-center">
+                  <Loader className="w-8 h-8 text-red-500 animate-spin" />
+                </div>
+              }
+            >
+              <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+                <FilmRenderSection
+                  movies={filmIntro}
+                  title="Phim mới cập nhật"
+                />
               </div>
             </Suspense>
           </div>

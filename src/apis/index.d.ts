@@ -35,12 +35,12 @@ export interface MovieDetails {
   status: string;
   content: string;
   director: string[];
-  country: { name: string }[];
+  country: Country[];
   lang: string;
   rating: string;
   view: number;
   actor: string[];
-  category: { name: string }[];
+  category: Genre[];
   poster_url: string;
   thumb_url: string;
   slug: string;

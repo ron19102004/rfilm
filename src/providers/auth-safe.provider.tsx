@@ -4,7 +4,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Loader } from "lucide-react";
 
 const LoadingSpinner = () => (
-  <div className="flex items-center justify-center bg-[#0a0a0a]">
+  <div className="flex items-center justify-center bg-[#1a1a1a] pt-20">
     <div className="flex flex-col items-center">
       <Loader className="h-8 w-8 text-red-500 animate-spin" />
       <p className="mt-4 text-red-500 text-lg font-semibold">

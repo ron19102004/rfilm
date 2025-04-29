@@ -24,7 +24,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
         <Card
           key={movie.slug}
           className={cn(
-            "bg-[#2a2a2a] border-[#2a2a2a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow-2xl",
+            "bg-[#2a2a2a] border-[#3a3a3a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow",
             imgSize
           )}
           data-aos="fade-up"
@@ -41,7 +41,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                 }
                 alt={movie.name}
                 className={cn(
-                  "w-full h-96 object-cover group-hover:opacity-90 transition-opacity",
+                  "w-full h-60 xl:h-72 object-cover group-hover:opacity-90 transition-opacity",
                   imgSize
                 )}
               />
@@ -55,7 +55,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             </div>
             <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center">
               <Link to={`/xem-phim/${movie.slug}`} className="">
-                <Play className="w-24 h-24 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/60 rounded-full p-4" />
+                <Play className="w-24 h-24 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/80 rounded-2xl p-4 fill-amber-50" />
               </Link>
             </div>
           </div>
@@ -117,7 +117,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
         </Card>
       </HoverCardTrigger>
       <HoverCardContent
-        className="bg-[#1a1a1a] border-[#252525] w-96 hidden lg:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
+        className="bg-[#1a1a1a] border-[#3a3a3a] w-96 hidden lg:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
         sideOffset={5}
       >
         <div className="w-full pb-2 relative transition-all duration-300">

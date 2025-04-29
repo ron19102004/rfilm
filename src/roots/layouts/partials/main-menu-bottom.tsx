@@ -35,7 +35,7 @@ const menuItems: MenuItem[] = [
 const MainMenuBottomMobile: React.FC = () => {
   const { scrollToTop } = useSystemContext();
   return (
-    <div className="fixed bottom-2 right-0 md:bottom-4 w-[90vw] md:w-96 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/70 backdrop-blur rounded-2xl  border border-[#3a3a3a] lg:hidden z-10">
+    <div className="fixed bottom-2 right-0 md:bottom-4 w-[90vw] md:w-96 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/70 backdrop-blur rounded-2xl  border border-[#3a3a3a] xl:hidden z-10">
       <div className="flex justify-around items-center h-16">
         {menuItems.map((item) => (
           <NavLink

@@ -9,8 +9,6 @@ import {
   UserRound,
   ChevronDown,
 } from "lucide-react";
-import { URL_DOWNLOAD_APP_ANDROID } from "@/constant/system.constant";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,7 +81,7 @@ const MainHeader: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { signInWithGoogle, user, logout } = useAuthContext();
-  const { scrollToTop, urlDownloadAppAndroid, countries, genres } =
+  const { scrollToTop, countries, genres , downloadAndInstallApk} =
     useSystemContext();
 
   useEffect(() => {
@@ -140,9 +138,9 @@ const MainHeader: React.FC = () => {
             <Link to="/tim-kiem">
               <Search className="text-white h-6 w-6" />
             </Link>
-            <a
-              href={urlDownloadAppAndroid || URL_DOWNLOAD_APP_ANDROID}
-              className={cn("flex items-center gap-2", {
+            <button
+              onClick={downloadAndInstallApk}
+              className={cn("flex items-center gap-2 cursor-pointer", {
                 hidden: Capacitor.isNativePlatform(),
               })}
             >
@@ -151,7 +149,7 @@ const MainHeader: React.FC = () => {
                 <p>Tải ứng dụng</p>
                 <p className="font-bold">RFilm</p>
               </h1>
-            </a>
+            </button>
 
             {user ? (
               <div className="relative" ref={dropdownRef}>

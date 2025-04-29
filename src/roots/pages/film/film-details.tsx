@@ -1,18 +1,25 @@
 import filmApi from "@/apis/filmKK.api";
-import { MovieDetails, MovieDetailsResponse } from "@/apis/index.d";
+import {
+  GetFilmsType,
+  Movie,
+  MovieDetails,
+  MovieDetailsResponse,
+} from "@/apis/index.d";
 import FilmDetailsCard from "@/components/custom/film-details-card";
 import HelmetSEO from "@/components/custom/helmet-seo";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
 import { useSystemContext } from "@/context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader } from "lucide-react";
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const FilmIntroCard = lazy(() => import("@/components/custom/film-intro-card"));
+const FilmRenderSection = lazy(
+  () => import("@/components/custom/film-render-section")
+);
 
 const FilmDetailsPage: React.FC = () => {
-  const { scrollToTop } = useSystemContext();
+  const { scrollToTop, filmIntro } = useSystemContext();
   const { slug } = useParams<{ slug: string }>();
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +28,7 @@ const FilmDetailsPage: React.FC = () => {
   );
   const [error, setError] = useState<string | null>(null);
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [moviesSuggest, setMoviesSuggest] = useState<Movie[]>([]);
 
   // Convert YouTube URL to embed URL
   const getYouTubeEmbedUrl = (url: string) => {
@@ -32,7 +40,7 @@ const FilmDetailsPage: React.FC = () => {
       : null;
   };
 
-  const fetchMovie = async () => {
+  const fetchMovie = useCallback(async () => {
     if (!slug) return;
     try {
       setIsLoading(true);
@@ -49,15 +57,32 @@ const FilmDetailsPage: React.FC = () => {
       setError("An error occurred while fetching the movie");
       setIsLoading(false);
     }
-  };
+  }, [slug]);
 
   useEffect(() => {
     scrollToTop();
     fetchMovie();
   }, [slug]);
 
+  const loadFilmsSuggest = useCallback(async () => {
+    if (movie) {
+      if (movie.country && movie.country.length > 0) {
+        const country = movie.country[0];
+        const moviesSuggest = await filmApi.getFilmsBy({
+          type: GetFilmsType.COUNTRY,
+          value: country.slug,
+          page: 1,
+          selectedCountry: "all",
+          selectedGenre: "all",
+          selectedYear: "2025",
+        });
+        setMoviesSuggest(moviesSuggest.data.items);
+      }
+    }
+  }, [movie]);
   useEffect(() => {
     scrollToTop();
+    loadFilmsSuggest();
   }, [movie]);
 
   if (isLoading) {
@@ -151,11 +176,11 @@ const FilmDetailsPage: React.FC = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-base flex items-center justify-center gap-2 shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all duration-300"
+                        className="w-full sm:w-auto bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-lg flex items-center justify-center gap-2 shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all duration-300"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 sm:w-8 sm:h-8"
+                          className="w-8 h-8 sm:w-14 sm:h-14 fill-amber-50"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -176,11 +201,11 @@ const FilmDetailsPage: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => setIsTrailerOpen(true)}
-                        className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-base flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20"
+                        className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-5 h-5 sm:w-6 sm:h-6"
+                          className="w-5 h-5 sm:w-8 sm:h-8 fill-amber-50"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -293,7 +318,6 @@ const FilmDetailsPage: React.FC = () => {
             </AnimatePresence>
           </div>
         </div>
-
         <Suspense
           fallback={
             <div className="w-full flex items-center justify-center">
@@ -301,8 +325,19 @@ const FilmDetailsPage: React.FC = () => {
             </div>
           }
         >
-          <div className="py-4 sm:py-6 md:py-8 lg:py-12">
-            <FilmIntroCard />
+          <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+            <FilmRenderSection movies={moviesSuggest} title="Gợi ý" />
+          </div>
+        </Suspense>
+        <Suspense
+          fallback={
+            <div className="w-full flex items-center justify-center">
+              <Loader className="w-8 h-8 text-red-500 animate-spin" />
+            </div>
+          }
+        >
+          <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+            <FilmRenderSection movies={filmIntro} title="Phim mới cập nhật" />
           </div>
         </Suspense>
       </div>
