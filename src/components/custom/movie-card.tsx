@@ -71,7 +71,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
               <span>•</span>
               <span>{movie.lang}</span>
             </div>
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <div className="flex flex-wrap gap-2 mb-2">
                 {movie.category.map((cat, index) => (
                   <span
@@ -117,7 +117,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
         </Card>
       </HoverCardTrigger>
       <HoverCardContent
-        className="bg-[#1a1a1a] border-[#252525] w-96 hidden md:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
+        className="bg-[#1a1a1a] border-[#252525] w-96 hidden lg:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
         sideOffset={5}
       >
         <div className="w-full pb-2 relative transition-all duration-300">

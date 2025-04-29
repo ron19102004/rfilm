@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 import { ClassValue } from "clsx";
 import { Capacitor } from "@capacitor/core";
 
-const MenuFilter: React.FC<{
+export const MenuFilter: React.FC<{
   countries: Country[];
   genres: Genre[];
   className?: ClassValue;
@@ -31,10 +31,10 @@ const MenuFilter: React.FC<{
   return (
     <div className={cn("flex items-center gap-4", className)}>
       <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0">
+        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-white">Quốc gia</h1>
-            <ChevronDown className="text-white h-4 w-4" />
+            <h1 className="text-white font-semibold lg:font-normal">Quốc gia</h1>
+            <ChevronDown className="text-[#4a4a4a] lg:text-white h-4 w-4" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-[#2a2a2a] text-white border-[#3a3a3a] outline-none ring-0 focus:outline-none focus:ring-0">
@@ -53,10 +53,10 @@ const MenuFilter: React.FC<{
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0">
+        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-white">Thể loại</h1>
-            <ChevronDown className="text-white h-4 w-4" />
+            <h1 className="text-white font-semibold lg:font-normal">Thể loại</h1>
+            <ChevronDown className="text-[#4a4a4a] lg:text-white h-4 w-4" />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-[#2a2a2a] text-white border-[#3a3a3a] outline-none ring-0 focus:outline-none focus:ring-0">
@@ -133,7 +133,7 @@ const MainHeader: React.FC = () => {
             <MenuFilter
               countries={countries}
               genres={genres}
-              className="hidden md:flex"
+              className="hidden lg:flex"
             />
           </div>
           <div className="flex items-center gap-6">

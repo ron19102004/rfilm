@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import PullToRefresh from "@/components/custom/pull-to-refresh";
@@ -11,6 +10,7 @@ import MovieCard from "@/components/custom/movie-card";
 import filmApi from "@/apis/filmKK.api";
 import Pagination from "@/components/custom/pagination";
 import { useSystemContext } from "@/context";
+import { debounce } from "@/utils/debounce.utils";
 
 const FilmSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,6 +20,7 @@ const FilmSearchPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { scrollToTop } = useSystemContext();
+  const searchInputRef = useRef<string>("")
 
   useEffect(() => {
     const keyword = searchParams.get("keyword") || "";
@@ -30,7 +31,7 @@ const FilmSearchPage: React.FC = () => {
       setCurrentPage(page);
       fetchSearchResults(keyword, page);
     }
-  }, []);
+  }, [searchParams]);
 
   const fetchSearchResults = async (keyword: string, page: number) => {
     setIsLoading(true);
@@ -51,14 +52,14 @@ const FilmSearchPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchInput.trim()) {
-      setSearchParams({ keyword: searchInput, page: "1" });
-      fetchSearchResults(searchInput, 1);
+  const searchDebounce = debounce(async () => {
+    if (searchInputRef.current.trim()) {
+      setSearchParams({ keyword: searchInputRef.current, page: "1" });
+      await fetchSearchResults(searchInputRef.current, 1);
     }
-  };
+  }, 1000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const searchDebounceCallback = useCallback(searchDebounce, []);
 
   const handlePagination = (page: number) => {
     setCurrentPage(page);
@@ -96,6 +97,7 @@ const FilmSearchPage: React.FC = () => {
   );
   useEffect(() => {
     scrollToTop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [movies]);
   const renderMovies = () => {
     if (movies.length === 0) {
@@ -126,34 +128,19 @@ const FilmSearchPage: React.FC = () => {
       />
       <div className=" px-4 py-8">
         <div className="mb-8" data-aos="fade-down">
-          <form
-            onSubmit={handleSearch}
-            className="flex gap-2 max-w-2xl mx-auto"
-          >
+          <div className="flex gap-2 max-w-2xl mx-auto">
             <Input
               type="text"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+                searchInputRef.current = e.target.value
+                searchDebounceCallback();
+              }}
               className="flex-1 bg-[#2a2a2a] text-white placeholder-gray-400 border-none focus-visible:ring-red-600"
               placeholder="Tìm kiếm phim..."
             />
-            <Button type="submit" variant="destructive" className="px-4 py-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </Button>
-          </form>
+          </div>
         </div>
 
         <div id="searchResults">

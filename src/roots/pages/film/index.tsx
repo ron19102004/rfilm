@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Film } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Film,
+  SlidersHorizontal,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -19,6 +24,7 @@ import { transFilmTypeToEN, transFilmTypeToVN } from "@/apis/trans.f";
 import Pagination from "@/components/custom/pagination";
 import FilmIntroSlider from "@/components/custom/film-intro";
 import UpdateAppSheet from "@/components/custom/update-app-sheet";
+import { MenuFilter } from "@/roots/layouts/partials/main-header";
 
 const FilmPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -177,6 +183,17 @@ const FilmPage: React.FC = () => {
         <FilmIntroSlider />
         <main className="px-4">
           <div ref={topRef} className="w-0 h-0" />
+          {/* Lọc theo */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+              <SlidersHorizontal className="w-8 h-8" />
+              <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
+                Bộ lọc
+              </span>
+            </h1>
+            <MenuFilter countries={countries} genres={genres} />
+          </div>
+          {/* Danh sách  */}
           <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
             <Film className="w-8 h-8" />
             <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">

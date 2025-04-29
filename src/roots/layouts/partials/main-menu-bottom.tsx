@@ -1,4 +1,5 @@
-import { HomeIcon, ListIcon, SearchIcon, UserIcon } from "lucide-react";
+import { useSystemContext } from "@/context";
+import { HouseIcon, ListIcon, SearchIcon, UserIcon } from "lucide-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -11,7 +12,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   {
     label: "Trang chủ",
-    icon: <HomeIcon />,
+    icon: <HouseIcon />,
     href: "/",
   },
   {
@@ -32,11 +33,13 @@ const menuItems: MenuItem[] = [
 ];
 
 const MainMenuBottomMobile: React.FC = () => {
+  const { scrollToTop } = useSystemContext();
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-t-[#3a3a3a] md:hidden z-10">
+    <div className="fixed bottom-2 right-0 md:bottom-4 w-[90vw] md:w-96 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/70 backdrop-blur rounded-2xl  border border-[#3a3a3a] lg:hidden z-10">
       <div className="flex justify-around items-center h-16">
         {menuItems.map((item) => (
           <NavLink
+            onClick={scrollToTop}
             key={item.href}
             to={item.href}
             className={({ isActive }) =>

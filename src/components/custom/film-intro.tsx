@@ -222,7 +222,7 @@ const FilmIntroSlider: React.FC = () => {
             <img
               src={activeMovie.thumb_url}
               alt={activeMovie.name}
-              className="w-full h-[50vh] md:h-[60vh] lg:h-full object-cover"
+              className="w-full h-[50vh] md:min-h-screen object-cover"
             />
           </motion.div>
 
