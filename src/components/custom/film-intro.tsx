@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useSystemContext } from "@/context";
+import { useFilmContext } from "@/context";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Country, Genre } from "@/apis";
@@ -16,7 +16,7 @@ import { Info, Play } from "lucide-react";
 import { URL_IMG_KK } from "@/constant/api.constant";
 
 const FilmIntroSlider: React.FC = () => {
-  const { filmIntro } = useSystemContext();
+  const { filmIntro } = useFilmContext();
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

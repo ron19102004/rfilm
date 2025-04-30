@@ -71,9 +71,12 @@ const MainFooter: React.FC = () => {
                 </Link>
               </li>
               <li
-                className={cn('flex flex-col justify-center items-start gap-2 w-full',{
-                  hidden: Capacitor.isNativePlatform(),
-                })}
+                className={cn(
+                  "flex flex-col justify-center items-start gap-2 w-full",
+                  {
+                    hidden: Capacitor.isNativePlatform(),
+                  }
+                )}
               >
                 <button
                   onClick={async () => await downloadAndInstallApk()}
@@ -82,13 +85,15 @@ const MainFooter: React.FC = () => {
                   <Smartphone className="w-5 h-5" />
                   Tải ứng dụng Android tại đây
                 </button>
-                <a
-                  href={exeDownloadAppWindow}
-                  className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-4 rounded-lg transition duration-300 mt-4 gap-2 w-full lg:w-fit"
-                >
-                  <MonitorDown className="w-5 h-5" />
-                  Tải ứng dụng Window tại đây
-                </a>
+                {exeDownloadAppWindow.trim().length > 0 && (
+                  <a
+                    href={exeDownloadAppWindow}
+                    className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-4 rounded-lg transition duration-300 mt-4 gap-2 w-full lg:w-fit"
+                  >
+                    <MonitorDown className="w-5 h-5" />
+                    Tải ứng dụng Window tại đây
+                  </a>
+                )}
               </li>
             </ul>
           </div>

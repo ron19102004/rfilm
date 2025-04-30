@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useRef, useState } from "react";
 import firebase from "@/firebase";
 import { getDoc, doc } from "firebase/firestore";
-import { Genre, Country, Movie } from "@/apis";
+import { Genre, Country } from "@/apis";
 import filmApi from "@/apis/filmKK.api";
 import { Capacitor } from "@capacitor/core";
 import { Directory, Filesystem } from "@capacitor/filesystem";
@@ -27,12 +27,12 @@ interface SystemContextType extends AppApkSystem ,AppExeSystem{
   isLoading: boolean;
   genres: Genre[];
   countries: Country[];
-  filmIntro: Movie[];
   topRef: React.RefObject<HTMLDivElement | null>;
   scrollToTop: () => void;
   genresRecord: Record<string, string>;
   countriesRecord: Record<string, string>;
   isMobile: () => boolean;
+  setLoading: (status:boolean) => void
 }
 const useSystemContext = () => {
   const [exeDownloadAppWindow, setExeDownloadAppWindow] = useState<string>("");
@@ -46,7 +46,6 @@ const useSystemContext = () => {
   const [contentSpecial, setContentSpecial] = useState<string>("");
   const [genres, setGenres] = useState<Genre[]>([]);
   const [countries, setCountries] = useState<Country[]>([]);
-  const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
   const [urlDownloadAppAndroid, setUrlDownloadAppAndroid] =
     useState<string>("");
   const [updateAvailable, setUpdateAvailable] = useState<boolean>(false);
@@ -139,10 +138,6 @@ const useSystemContext = () => {
     setGenresRecord(genresRd);
     setCountriesRecord(countriesRd);
   }, []);
-  const loadFilmIntro = useCallback(async () => {
-    const filmIntro = await filmApi.getFilmsUpdateV3(1);
-    setFilmIntro(filmIntro.items);
-  }, []);
   const getFirebaseDocData = async (path: [string, string]) => {
     const docRef = doc(firebase.db, ...path);
     const snapshot = await getDoc(docRef);
@@ -152,7 +147,6 @@ const useSystemContext = () => {
     setIsLoading(true);
     try {
       await loadResources();
-      await loadFilmIntro();
       //Read content special
       const contentDoc = await getFirebaseDocData(["system", "contentSpecial"]);
       if (contentDoc) setContentSpecial(contentDoc.contentSpecial);
@@ -172,7 +166,6 @@ const useSystemContext = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false);
       //Read url download app
       if (isMobile()) {
         const currentVersion = await AppVersion.getVersionNumber();
@@ -201,7 +194,6 @@ const useSystemContext = () => {
     isLoading: isLoading,
     genres: genres,
     countries: countries,
-    filmIntro: filmIntro,
     urlDownloadAppAndroid: urlDownloadAppAndroid,
     updateAvailable: updateAvailable,
     topRef: topRef,
@@ -212,6 +204,7 @@ const useSystemContext = () => {
     isMobile: isMobile,
     versionAppCurrent: versionAppCurrent,
     exeDownloadAppWindow: exeDownloadAppWindow,
+    setLoading: setIsLoading
   };
 };
 export const SystemContext = createContext<SystemContextType>({
@@ -219,7 +212,6 @@ export const SystemContext = createContext<SystemContextType>({
   isLoading: true,
   genres: [],
   countries: [],
-  filmIntro: [],
   urlDownloadAppAndroid: "",
   updateAvailable: false,
   topRef: { current: null },
@@ -236,6 +228,9 @@ export const SystemContext = createContext<SystemContextType>({
     throw new Error("Function not implemented.");
   },
   exeDownloadAppWindow: "",
+  setLoading: function (_: boolean): void {
+    throw new Error("Function not implemented.");
+  }
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {

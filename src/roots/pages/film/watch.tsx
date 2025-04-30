@@ -11,7 +11,7 @@ import {
 } from "@/apis/index.d";
 import filmApi from "@/apis/filmKK.api";
 import MainBackMobile from "@/roots/layouts/partials/main-back-mobile";
-import { useMyMovieContext, useSystemContext } from "@/context";
+import { useFilmContext, useMyMovieContext, useSystemContext } from "@/context";
 import { Share2, Facebook, Twitter, Send, Copy, Loader } from "lucide-react";
 import ListView from "@/components/list";
 import { Capacitor } from "@capacitor/core";
@@ -52,7 +52,8 @@ const shareProps: ShareProps[] = [
 ];
 
 const WatchFilmPage: React.FC = () => {
-  const { scrollToTop, filmIntro } = useSystemContext();
+  const { scrollToTop} = useSystemContext();
+  const {filmIntro} = useFilmContext()
   const { slug } = useParams<{ slug: string }>();
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [episodes, setEpisodes] = useState<Server[]>([]);
@@ -426,7 +427,7 @@ const WatchFilmPage: React.FC = () => {
                 </div>
               }
             >
-              <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+              <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
                 <FilmRenderSection movies={moviesSuggest} title="Gợi ý" />
               </div>
             </Suspense>
@@ -437,7 +438,7 @@ const WatchFilmPage: React.FC = () => {
                 </div>
               }
             >
-              <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+              <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
                 <FilmRenderSection
                   movies={filmIntro}
                   title="Phim mới cập nhật"

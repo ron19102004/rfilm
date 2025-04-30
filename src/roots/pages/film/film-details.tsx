@@ -8,7 +8,7 @@ import {
 import FilmDetailsCard from "@/components/custom/film-details-card";
 import HelmetSEO from "@/components/custom/helmet-seo";
 import { ENDPOINT_WEB } from "@/constant/system.constant";
-import { useSystemContext } from "@/context";
+import { useFilmContext, useSystemContext } from "@/context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader } from "lucide-react";
 import React, { lazy, Suspense, useCallback, useEffect, useState } from "react";
@@ -19,7 +19,8 @@ const FilmRenderSection = lazy(
 );
 
 const FilmDetailsPage: React.FC = () => {
-  const { scrollToTop, filmIntro } = useSystemContext();
+  const { scrollToTop } = useSystemContext();
+  const { filmIntro } = useFilmContext();
   const { slug } = useParams<{ slug: string }>();
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -334,7 +335,7 @@ const FilmDetailsPage: React.FC = () => {
             </div>
           }
         >
-          <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+          <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12 ">
             <FilmRenderSection movies={moviesSuggest} title="Gợi ý" />
           </div>
         </Suspense>
@@ -345,7 +346,7 @@ const FilmDetailsPage: React.FC = () => {
             </div>
           }
         >
-          <div className="pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+          <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
             <FilmRenderSection movies={filmIntro} title="Phim mới cập nhật" />
           </div>
         </Suspense>

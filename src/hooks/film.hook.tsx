@@ -1,17 +1,33 @@
-import { FilmUpdateResponse } from "@/apis/index.d";
+import { FilmUpdateResponse, GetFilmsType, Movie } from "@/apis/index.d";
 import filmApi from "@/apis/filmKK.api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useSystemContext } from "@/context";
 
 export interface FilmContextType {
   filmUpdateResponse: FilmUpdateResponse | null;
   setFilmUpdateResponse: (filmUpdateResponse: FilmUpdateResponse) => void;
-  loadMovies: (page?: number, start?: () => void, end?: () => void) => Promise<void>;
+  loadMovies: (
+    page?: number,
+    start?: () => void,
+    end?: () => void
+  ) => Promise<void>;
+  filmIntro: Movie[];
+  filmKorean: Movie[];
+  filmChina:Movie[]
 }
 
-const filmHook = (): FilmContextType => {
+const useFilmHook = (): FilmContextType => {
   const [filmUpdateResponse, setFilmUpdateResponse] =
     useState<FilmUpdateResponse | null>(null);
-  const loadMovies = async (page = 2, start?: () => void, end?: () => void) => {
+  const { setLoading } = useSystemContext();
+  const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
+  const [filmKorean, setFilmKorean] = useState<Movie[]>([]);
+  const [filmChina,setFilmChina] = useState<Movie[]>([])
+  const loadMoviesUpdate = async (
+    page = 2,
+    start?: () => void,
+    end?: () => void
+  ) => {
     try {
       start?.();
       const response = await filmApi.getFilmsUpdateV3(page);
@@ -24,14 +40,50 @@ const filmHook = (): FilmContextType => {
       end?.();
     }
   };
+  const loadFilmIntro = useCallback(async () => {
+    const filmIntro = await filmApi.getFilmsUpdateV3(1);
+    setFilmIntro(filmIntro.items);
+  }, []);
+  const loadFilmResource = useCallback(async () => {
+    const filmKr = await filmApi.getFilmsBy({
+      type: GetFilmsType.COUNTRY,
+      value: "han-quoc",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "all",
+      selectedYear: "all",
+    });
+    setFilmKorean(filmKr.data.items);
+    const filmChi = await filmApi.getFilmsBy({
+      type: GetFilmsType.COUNTRY,
+      value: "trung-quoc",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "all",
+      selectedYear: "all",
+    });
+    setFilmChina(filmChi.data.items)
+  }, []);
+  const init = async () => {
+    try {
+      await loadMoviesUpdate();
+      await loadFilmIntro();
+    } finally {
+      setLoading(false);
+      await loadFilmResource();
+    }
+  };
   useEffect(() => {
-    loadMovies();
+    init();
   }, []);
   return {
     filmUpdateResponse: filmUpdateResponse,
     setFilmUpdateResponse: setFilmUpdateResponse,
-    loadMovies: loadMovies,
+    loadMovies: loadMoviesUpdate,
+    filmIntro: filmIntro,
+    filmKorean: filmKorean,
+    filmChina:filmChina
   };
 };
 
-export default filmHook;
+export default useFilmHook;

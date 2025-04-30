@@ -25,8 +25,10 @@ import Pagination from "@/components/custom/pagination";
 import FilmIntroSlider from "@/components/custom/film-intro";
 import UpdateAppSheet from "@/components/custom/update-app-sheet";
 import { MenuFilter } from "@/roots/layouts/partials/main-header";
+import FilmRenderSection from "@/components/custom/film-render-section";
 
 const FilmPage: React.FC = () => {
+  const { filmKorean, filmChina } = useFilmContext();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -260,6 +262,11 @@ const FilmPage: React.FC = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
+          {/* Chủ đề hàn quốc  */}
+          <FilmRenderSection movies={filmKorean} title="Hàn Quốc" />
+          {/* Chủ đề trung quốc  */}
+          <FilmRenderSection movies={filmChina} title="Trung Quốc" />
+          {/* Phim moi hom nay  */}
           <h1 className=" text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
             <Film className="w-8 h-8" />
             <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500">

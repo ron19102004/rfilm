@@ -43,8 +43,8 @@ const FilmRenderSection: React.FC<FilmSlideProps> = ({movies,title}) => {
   return (
     <div>
       {movies && movies.length > 0 ? (
-        <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12">
-          <h1 className=" text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+        <div className="">
+          <h1 className=" text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
             <Film className="w-8 h-8" />
             <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
               {title}

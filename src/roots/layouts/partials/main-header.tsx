@@ -60,7 +60,7 @@ export const MenuFilter: React.FC<{
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
-            <Library className="text-white"/>
+            <Library className="text-white" />
             <h1 className="text-white font-semibold lg:font-normal">
               Thể loại
             </h1>
@@ -155,7 +155,7 @@ const MainHeader: React.FC = () => {
             </Link>
             <div className={cn({ hidden: Capacitor.isNativePlatform() })}>
               <DropdownMenu>
-                <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
+                <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0" asChild>
                   <button
                     className={cn("flex items-center gap-2 cursor-pointer", {
                       hidden: Capacitor.isNativePlatform(),
@@ -183,20 +183,22 @@ const MainHeader: React.FC = () => {
                       </h1>
                     </button>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="hover:bg-transparent">
-                    <a
-                      href={exeDownloadAppWindow}
-                      className={cn(
-                        "flex items-center gap-2 cursor-pointer",
-                        {}
-                      )}
-                    >
-                      <MonitorDown className="h-6 w-6" />
-                      <h1 className=" text-sm">
-                        <p className="font-bold">Window</p>
-                      </h1>
-                    </a>
-                  </DropdownMenuItem>
+                  {exeDownloadAppWindow.trim().length > 0 && (
+                    <DropdownMenuItem className="hover:bg-transparent">
+                      <a
+                        href={exeDownloadAppWindow}
+                        className={cn(
+                          "flex items-center gap-2 cursor-pointer",
+                          {}
+                        )}
+                      >
+                        <MonitorDown className="h-6 w-6" />
+                        <h1 className=" text-sm">
+                          <p className="font-bold">Window</p>
+                        </h1>
+                      </a>
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
