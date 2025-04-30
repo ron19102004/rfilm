@@ -180,7 +180,7 @@ const FilmDetailsPage: React.FC = () => {
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-8 h-8 sm:w-14 sm:h-14 fill-amber-50"
+                          className="w-8 h-8 sm:w-12 sm:h-12 fill-amber-50"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -231,12 +231,21 @@ const FilmDetailsPage: React.FC = () => {
                       {movie?.lang}
                     </span>
                     {movie?.category?.map((genre, index) => (
-                      <span
-                        key={index}
-                        className="bg-white/10 backdrop-blur-sm text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium border border-white/20"
-                      >
-                        {genre.name}
-                      </span>
+                      <Link to={"/the-loai/" + genre.slug}>
+                        <span
+                          key={index}
+                          className="bg-white/10 backdrop-blur-sm text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium border border-white/20"
+                        >
+                          {genre.name}
+                        </span>
+                      </Link>
+                    ))}
+                    {movie?.country?.map((country, index) => (
+                      <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                        <span className="bg-white/10 backdrop-blur-sm text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium border border-white/20">
+                          {country.name}
+                        </span>
+                      </Link>
                     ))}
                   </div>
                 </motion.div>

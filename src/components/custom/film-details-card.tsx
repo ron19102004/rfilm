@@ -87,7 +87,11 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">Quốc gia:</span>
                     <span className="text-white">
-                      {movie.country.map((c) => c.name).join(", ")}
+                      {movie.country.map((c, index) => (
+                        <span key={index}>
+                          <Link to={"/quoc-gia/" + c.slug}>{c.name}, </Link>
+                        </span>
+                      ))}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
@@ -162,7 +166,11 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
         <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
           <h3 className="text-xl font-semibold mb-4 text-white">Quốc gia</h3>
           <p className="text-gray-300">
-            {movie.country.map((c) => c.name).join(", ")}
+            {movie.country.map((c, index) => (
+              <span key={index}>
+                <Link to={"/quoc-gia/" + c.slug}>{c.name}, </Link>
+              </span>
+            ))}
           </p>
         </div>
         <div className="bg-[#2a2a2a] border border-[#3a3a3a] rounded-2xl  p-6 transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-lg">
