@@ -5,6 +5,9 @@ import path from "path"
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "dist",
+  },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

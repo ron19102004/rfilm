@@ -9,6 +9,9 @@ import { FileOpener } from "@awesome-cordova-plugins/file-opener";
 import { AppVersion } from "@ionic-native/app-version";
 
 const isApkLink = (url: string) => /\.apk(\?.*)?$/.test(url);
+interface AppExeSystem {
+  exeDownloadAppWindow:string
+}
 interface AppApkSystem {
   versionAppCurrent: string;
   downloadAndInstallApk: (
@@ -19,7 +22,7 @@ interface AppApkSystem {
   urlDownloadAppAndroid: string;
   updateAvailable: boolean;
 }
-interface SystemContextType extends AppApkSystem {
+interface SystemContextType extends AppApkSystem ,AppExeSystem{
   contentSpecial: string;
   isLoading: boolean;
   genres: Genre[];
@@ -32,6 +35,7 @@ interface SystemContextType extends AppApkSystem {
   isMobile: () => boolean;
 }
 const useSystemContext = () => {
+  const [exeDownloadAppWindow, setExeDownloadAppWindow] = useState<string>("");
   const [versionAppCurrent, setVersionAppCurrent] = useState<string>("");
   const [genresRecord, setGenresRecord] = useState<Record<string, string>>({});
   const [countriesRecord, setCountriesRecord] = useState<
@@ -159,6 +163,12 @@ const useSystemContext = () => {
       ]);
       if (urlDownloadAppDoc)
         setUrlDownloadAppAndroid(urlDownloadAppDoc.urlDownloadAppAndroid);
+      //Read url download app
+      const exeDownloadAppWindowDoc = await getFirebaseDocData([
+        "system",
+        "exeDownloadAppWindow",
+      ]);
+      if (exeDownloadAppWindowDoc) setExeDownloadAppWindow(exeDownloadAppWindowDoc.exeDownloadAppWindow);
     } catch (error) {
       console.log(error);
     } finally {
@@ -201,6 +211,7 @@ const useSystemContext = () => {
     downloadAndInstallApk: downloadAndInstallApk,
     isMobile: isMobile,
     versionAppCurrent: versionAppCurrent,
+    exeDownloadAppWindow: exeDownloadAppWindow,
   };
 };
 export const SystemContext = createContext<SystemContextType>({
@@ -224,6 +235,7 @@ export const SystemContext = createContext<SystemContextType>({
   downloadAndInstallApk: function (): Promise<void> {
     throw new Error("Function not implemented.");
   },
+  exeDownloadAppWindow: "",
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {
