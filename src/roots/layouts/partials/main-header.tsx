@@ -10,6 +10,8 @@ import {
   ChevronDown,
   MonitorSmartphone,
   MonitorDown,
+  Globe,
+  Library,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -33,6 +35,7 @@ export const MenuFilter: React.FC<{
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
+            <Globe className="text-white" />
             <h1 className="text-white font-semibold lg:font-normal">
               Quốc gia
             </h1>
@@ -57,6 +60,7 @@ export const MenuFilter: React.FC<{
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
+            <Library className="text-white"/>
             <h1 className="text-white font-semibold lg:font-normal">
               Thể loại
             </h1>
@@ -149,45 +153,53 @@ const MainHeader: React.FC = () => {
             <Link to="/tim-kiem">
               <Search className="text-white h-6 w-6" />
             </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
-                <button
-                  className={cn("flex items-center gap-2 cursor-pointer", {
-                    hidden: Capacitor.isNativePlatform(),
-                  })}
-                >
-                  <MonitorSmartphone className="text-white h-6 w-6" />
-                  <h1 className="text-white text-sm hidden md:block">
-                    <p>Tải ứng dụng</p>
-                    <p className="font-bold">RFilm</p>
-                  </h1>
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-[#2a2a2a] text-white  border-[#3a3a3a] outline-none ring-0 focus:outline-none focus:ring-0">
-                <DropdownMenuItem className="hover:bg-transparent">
+            <div className={cn({ hidden: Capacitor.isNativePlatform() })}>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
                   <button
-                    onClick={async () => await downloadAndInstallApk()}
-                    className={cn("flex items-center gap-2 cursor-pointer", {})}
+                    className={cn("flex items-center gap-2 cursor-pointer", {
+                      hidden: Capacitor.isNativePlatform(),
+                    })}
                   >
-                    <TabletSmartphone className="h-6 w-6" />
-                    <h1 className="t text-sm ">
-                      <p className="font-bold">Android</p>
+                    <MonitorSmartphone className="text-white h-6 w-6" />
+                    <h1 className="text-white text-sm hidden md:block">
+                      <p>Tải ứng dụng</p>
+                      <p className="font-bold">RFilm</p>
                     </h1>
                   </button>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-transparent">
-                  <a
-                    href={exeDownloadAppWindow}
-                    className={cn("flex items-center gap-2 cursor-pointer", {})}
-                  >
-                    <MonitorDown className="h-6 w-6" />
-                    <h1 className=" text-sm">
-                      <p className="font-bold">Window</p>
-                    </h1>
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="bg-[#2a2a2a] text-white  border-[#3a3a3a] outline-none ring-0 focus:outline-none focus:ring-0">
+                  <DropdownMenuItem className="hover:bg-transparent">
+                    <button
+                      onClick={async () => await downloadAndInstallApk()}
+                      className={cn(
+                        "flex items-center gap-2 cursor-pointer",
+                        {}
+                      )}
+                    >
+                      <TabletSmartphone className="h-6 w-6" />
+                      <h1 className="t text-sm ">
+                        <p className="font-bold">Android</p>
+                      </h1>
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-transparent">
+                    <a
+                      href={exeDownloadAppWindow}
+                      className={cn(
+                        "flex items-center gap-2 cursor-pointer",
+                        {}
+                      )}
+                    >
+                      <MonitorDown className="h-6 w-6" />
+                      <h1 className=" text-sm">
+                        <p className="font-bold">Window</p>
+                      </h1>
+                    </a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
 
             {user ? (
               <div className="relative" ref={dropdownRef}>
