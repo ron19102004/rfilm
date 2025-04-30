@@ -1,6 +1,7 @@
 import { MovieDetails, MovieDetailsResponse } from "@/apis/index.d";
 import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 interface FilmDetailsCardProps {
   movieDetails: MovieDetailsResponse;
   className?: string;
@@ -10,7 +11,7 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
   movieDetails,
   className,
 }) => {
-  const [movie, setMovie] = useState<MovieDetails|null>(null);
+  const [movie, setMovie] = useState<MovieDetails | null>(null);
   useEffect(() => {
     setMovie(movieDetails.movie);
   }, [movieDetails]);
@@ -128,12 +129,14 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {movie.category.map((cat, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1.5 bg-red-600 text-white rounded-full text-sm hover:bg-red-700 transition-colors duration-200"
-                    >
-                      {cat.name}
-                    </span>
+                    <Link to={`/the-loai/${cat.slug}`}>
+                      <span
+                        key={index}
+                        className="px-3 py-1.5 bg-red-600 text-white rounded-full text-sm hover:bg-red-700 transition-colors duration-200"
+                      >
+                        {cat.name}
+                      </span>
+                    </Link>
                   ))}
                 </div>
               </div>

@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useSystemContext } from "@/context";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Genre } from "@/apis";
+import { Country, Genre } from "@/apis";
 import Slider from "react-slick";
 import {
   HoverCard,
@@ -14,8 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Info, Play } from "lucide-react";
 import { URL_IMG_KK } from "@/constant/api.constant";
-
-
 
 const FilmIntroSlider: React.FC = () => {
   const { filmIntro } = useSystemContext();
@@ -257,13 +255,24 @@ const FilmIntroSlider: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2 sm:gap-3">
-                    {activeMovie.category?.map((genre: Genre) => (
-                      <span
-                        key={genre.name}
-                        className="border border-white/30 px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm hover:bg-white/10 transition-colors"
-                      >
-                        {genre.name}
-                      </span>
+                    {activeMovie.category?.map((genre: Genre, index) => (
+                      <Link to={`/the-loai/${genre.slug}`} key={index}>
+                        <span
+                          key={genre.name}
+                          className="border border-white/30 px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm hover:bg-white/10 transition-colors"
+                        >
+                          {genre.name}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    {activeMovie.country?.map((country: Country, index) => (
+                      <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                        <span className="border border-white/30 px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm hover:bg-white/10 transition-colors">
+                          {country.name}
+                        </span>
+                      </Link>
                     ))}
                   </div>
                   {/* <p className="text-gray-300 text-sm sm:text-base md:text-lg leading-relaxed line-clamp-3 sm:line-clamp-none">
@@ -481,23 +490,27 @@ const FilmIntroSlider: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {movie?.category?.map((cat) => (
-                      <span
-                        key={cat.name}
-                        className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-                      >
-                        {cat.name}
-                      </span>
+                    {movie?.category?.map((cat, index) => (
+                      <Link to={`/the-loai/${cat.slug}`} key={index}>
+                        <span
+                          key={cat.name}
+                          className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                        >
+                          {cat.name}
+                        </span>
+                      </Link>
                     ))}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {movie?.country?.map((country) => (
-                      <span
-                        key={country.name}
-                        className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-                      >
-                        {country.name}
-                      </span>
+                    {movie?.country?.map((country, index) => (
+                      <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                        <span
+                          key={country.name}
+                          className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                        >
+                          {country.name}
+                        </span>
+                      </Link>
                     ))}
                   </div>
                 </div>

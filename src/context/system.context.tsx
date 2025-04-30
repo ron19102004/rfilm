@@ -4,28 +4,32 @@ import { getDoc, doc } from "firebase/firestore";
 import { Genre, Country, Movie } from "@/apis";
 import filmApi from "@/apis/filmKK.api";
 import { Capacitor } from "@capacitor/core";
-import { Directory } from "@capacitor/filesystem";
+import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FileOpener } from "@awesome-cordova-plugins/file-opener";
-import { Http } from "@capacitor-community/http";
-import toast from "react-hot-toast";
 import { AppVersion } from "@ionic-native/app-version";
 
 const isApkLink = (url: string) => /\.apk(\?.*)?$/.test(url);
-interface SystemContextType {
+interface AppApkSystem {
+  versionAppCurrent: string;
+  downloadAndInstallApk: (
+    changeStatus?: (status: boolean) => void,
+    changeProgress?: (progress: number) => void,
+    changeError?: (error: string) => void
+  ) => Promise<void>;
+  urlDownloadAppAndroid: string;
+  updateAvailable: boolean;
+}
+interface SystemContextType extends AppApkSystem {
   contentSpecial: string;
   isLoading: boolean;
   genres: Genre[];
   countries: Country[];
   filmIntro: Movie[];
-  urlDownloadAppAndroid: string;
-  updateAvailable: boolean;
   topRef: React.RefObject<HTMLDivElement | null>;
   scrollToTop: () => void;
   genresRecord: Record<string, string>;
   countriesRecord: Record<string, string>;
-  downloadAndInstallApk: () => Promise<void>;
   isMobile: () => boolean;
-  versionAppCurrent: string;
 }
 const useSystemContext = () => {
   const [versionAppCurrent, setVersionAppCurrent] = useState<string>("");
@@ -46,30 +50,68 @@ const useSystemContext = () => {
 
   const isMobile = () =>
     Capacitor.isNativePlatform() || Capacitor.getPlatform() === "android";
-  const downloadAndInstallApk = async () => {
+  const downloadAndInstallApk = async (
+    changeStatus?: (status: boolean) => void,
+    changeProgress?: (progress: number) => void,
+    changeError?: (error: string) => void
+  ) => {
+    if (changeStatus) changeStatus(true);
+    if (urlDownloadAppAndroid.length === 0) {
+      if (changeError) changeError("Tài nguyên không tồn tại");
+      if (changeStatus) changeStatus(false);
+      return;
+    }
     if (!isMobile() || !isApkLink(urlDownloadAppAndroid)) {
       window.open(urlDownloadAppAndroid, "_system");
       return;
     }
     try {
-      const fileName = `${Date.now()}update.apk`;
-      const result = await Http.downloadFile({
-        url: urlDownloadAppAndroid,
-        filePath: fileName,
-        fileDirectory: Directory.Cache,
-      });
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = "blob";
+      xhr.open("GET", urlDownloadAppAndroid, true);
+      xhr.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percentComplete = event.loaded / event.total;
+          if (changeProgress) changeProgress(percentComplete);
+          if (percentComplete === 1) {
+            if (changeStatus) changeStatus(false);
+          }
+        }
+      };
+      xhr.onload = async () => {
+        if (xhr.status === 200) {
+          const blob = xhr.response;
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            const base64Data = reader.result?.toString().split(",")[1];
+            const fileName = `${Date.now()}update.apk`;
 
-      const fileUri = result.path?.replace("file://", "");
-      if (fileUri) {
-        await FileOpener.open(
-          fileUri,
-          "application/vnd.android.package-archive"
-        );
-        console.log("File opened successfully");
-      }
+            await Filesystem.writeFile({
+              path: fileName,
+              data: base64Data!,
+              directory: Directory.Cache,
+            });
+
+            const uri = await Filesystem.getUri({
+              directory: Directory.Cache,
+              path: fileName,
+            });
+
+            await FileOpener.open(
+              uri.uri,
+              "application/vnd.android.package-archive"
+            );
+          };
+          reader.readAsDataURL(blob);
+        }
+      };
+      xhr.onerror = () => {
+        if (changeError) changeError("Lỗi khi tải tệp");
+      };
+      xhr.send();
     } catch (err) {
-      toast.error("Lỗi khi tải hoặc mở tệp");
-      console.log("Lỗi:", err);
+      if (changeError) changeError("Lỗi khi tải hoặc mở tệp");
+      window.open(urlDownloadAppAndroid, "_system");
     }
   };
   const scrollToTop = () => {
@@ -97,34 +139,26 @@ const useSystemContext = () => {
     const filmIntro = await filmApi.getFilmsUpdateV3(1);
     setFilmIntro(filmIntro.items);
   }, []);
+  const getFirebaseDocData = async (path: [string, string]) => {
+    const docRef = doc(firebase.db, ...path);
+    const snapshot = await getDoc(docRef);
+    return snapshot.exists() ? snapshot.data() : null;
+  };
   const init = useCallback(async () => {
     setIsLoading(true);
     try {
       await loadResources();
       await loadFilmIntro();
       //Read content special
-      const docRefContentSpecial = doc(firebase.db, "system", "contentSpecial");
-      const docSnapContentSpecial = await getDoc(docRefContentSpecial);
-      if (docSnapContentSpecial.exists()) {
-        setContentSpecial(docSnapContentSpecial.data().contentSpecial);
-      } else {
-        console.log("No such document!");
-      }
+      const contentDoc = await getFirebaseDocData(["system", "contentSpecial"]);
+      if (contentDoc) setContentSpecial(contentDoc.contentSpecial);
       //Read url download app
-      const docRefUrlDownloadAppAndroid = doc(
-        firebase.db,
+      const urlDownloadAppDoc = await getFirebaseDocData([
         "system",
-        "urlDownloadAppAndroid"
-      );
-      const docSnapUrlDownloadAppAndroid = await getDoc(
-        docRefUrlDownloadAppAndroid
-      );
-      if (docSnapUrlDownloadAppAndroid.exists()) {
-        const url = docSnapUrlDownloadAppAndroid.data().urlDownloadAppAndroid;
-        setUrlDownloadAppAndroid(url);
-      } else {
-        console.log("No such document!");
-      }
+        "urlDownloadAppAndroid",
+      ]);
+      if (urlDownloadAppDoc)
+        setUrlDownloadAppAndroid(urlDownloadAppDoc.urlDownloadAppAndroid);
     } catch (error) {
       console.log(error);
     } finally {
@@ -133,22 +167,18 @@ const useSystemContext = () => {
       if (isMobile()) {
         const currentVersion = await AppVersion.getVersionNumber();
         setVersionAppCurrent(currentVersion);
-        const versionCurrentFirebase = doc(
-          firebase.db,
+        //Read app version current
+        const versionCurrentFirebaseDoc = await getFirebaseDocData([
           "system",
-          "appVersionCurrent"
-        );
-        const docSnapVersionCurrentFirebase = await getDoc(
-          versionCurrentFirebase
-        );
-        if (docSnapVersionCurrentFirebase.exists()) {
+          "appVersionCurrent",
+        ]);
+        if (versionCurrentFirebaseDoc) {
           const verCurrentFirebase =
-            docSnapVersionCurrentFirebase.data().appVersionCurrent;
+            versionCurrentFirebaseDoc.appVersionCurrent;
+          setVersionAppCurrent(verCurrentFirebase);
           if (currentVersion !== verCurrentFirebase) {
             setUpdateAvailable(true);
           }
-        } else {
-          console.log("No such document!");
         }
       }
     }
@@ -187,11 +217,13 @@ export const SystemContext = createContext<SystemContextType>({
   },
   genresRecord: {},
   countriesRecord: {},
-  downloadAndInstallApk: async () => {},
   isMobile: function (): boolean {
     throw new Error("Function not implemented.");
   },
   versionAppCurrent: "",
+  downloadAndInstallApk: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 });
 
 const SystemContextProvider = ({ children }: { children: React.ReactNode }) => {

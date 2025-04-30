@@ -31,7 +31,9 @@ export const MenuFilter: React.FC<{
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-white font-semibold lg:font-normal">Quốc gia</h1>
+            <h1 className="text-white font-semibold lg:font-normal">
+              Quốc gia
+            </h1>
             <ChevronDown className="text-[#4a4a4a] lg:text-white h-4 w-4" />
           </div>
         </DropdownMenuTrigger>
@@ -53,7 +55,9 @@ export const MenuFilter: React.FC<{
       <DropdownMenu>
         <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
           <div className="flex items-center gap-2">
-            <h1 className="text-white font-semibold lg:font-normal">Thể loại</h1>
+            <h1 className="text-white font-semibold lg:font-normal">
+              Thể loại
+            </h1>
             <ChevronDown className="text-[#4a4a4a] lg:text-white h-4 w-4" />
           </div>
         </DropdownMenuTrigger>
@@ -81,7 +85,7 @@ const MainHeader: React.FC = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { signInWithGoogle, user, logout } = useAuthContext();
-  const { scrollToTop, countries, genres , downloadAndInstallApk} =
+  const { scrollToTop, countries, genres, downloadAndInstallApk } =
     useSystemContext();
 
   useEffect(() => {
@@ -139,7 +143,7 @@ const MainHeader: React.FC = () => {
               <Search className="text-white h-6 w-6" />
             </Link>
             <button
-              onClick={downloadAndInstallApk}
+              onClick={async () => await downloadAndInstallApk()}
               className={cn("flex items-center gap-2 cursor-pointer", {
                 hidden: Capacitor.isNativePlatform(),
               })}

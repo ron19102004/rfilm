@@ -11,6 +11,7 @@ html,
 body {
   background-color: #1a1a1a;
 }
+
 .image-filter-wrapper {
   position: relative;
   display: inline-block;
@@ -18,7 +19,7 @@ body {
 }
 
 .image-filter-wrapper::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   inset: 0;
@@ -27,7 +28,37 @@ body {
   opacity: 0.1; /* độ mờ của lớp chấm */
   pointer-events: none; /* để click xuyên qua */
 }
+progress {
+  appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+}
 
+progress::-webkit-progress-bar {
+  background-color: #e5e7eb; /* gray-200 */
+  border-radius: 5px;
+}
+
+progress::-webkit-progress-value {
+  background-color: #3b82f6; /* blue-500 */
+  border-radius: 5px;
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -202,6 +233,7 @@ body {
   }
 }
 
+
 .flag {
   transform-origin: left;
   animation: wave 3s ease-in-out infinite;
@@ -210,7 +242,16 @@ body {
 .star {
   animation: flutter 2s ease-in-out infinite;
 }
-
+.content-special-text {
+  background: linear-gradient(90deg, #ff0000, #ff7f00 50%, #ff0000 100%);
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shine 10s linear infinite;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
 .welcome-text {
   background: linear-gradient(90deg, #ffffff 0%, #ffd700 50%, #ffffff 100%);
   background-size: 200% auto;

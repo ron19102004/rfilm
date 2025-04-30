@@ -62,7 +62,6 @@ const RouterRoot: FC = () => {
             <RouterProvider
               router={createBrowserRouter([
                 ...users,
-                { path: "*", element: <div>404</div> }, //
               ])}
             />
           </MyMovieContextProvider>

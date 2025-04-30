@@ -74,7 +74,7 @@ const FilmDetailsPage: React.FC = () => {
           page: 1,
           selectedCountry: "all",
           selectedGenre: "all",
-          selectedYear: "2025",
+          selectedYear: movie.year,
         });
         setMoviesSuggest(moviesSuggest.data.items);
       }

@@ -68,6 +68,7 @@ const WatchFilmPage: React.FC = () => {
   const [showAllEpisodes, setShowAllEpisodes] = useState(false);
   const { saveOrUpdateMovie } = useMyMovieContext();
   const [moviesSuggest, setMoviesSuggest] = useState<Movie[]>([]);
+  const videoPlayerRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -119,7 +120,7 @@ const WatchFilmPage: React.FC = () => {
           page: 1,
           selectedCountry: "all",
           selectedGenre: "all",
-          selectedYear: "2025",
+          selectedYear: movie.year,
         });
         setMoviesSuggest(moviesSuggest.data.items);
       }
@@ -137,32 +138,10 @@ const WatchFilmPage: React.FC = () => {
 
   const handleEpisodeChange = (index: number, embedUrl: string) => {
     setActiveEpisode(index);
-    const videoPlayer = document.getElementById(
-      "videoPlayer"
-    ) as HTMLIFrameElement;
-    if (videoPlayer) {
-      videoPlayer.src = embedUrl;
+    if (videoPlayerRef.current) {
+      videoPlayerRef.current.src = embedUrl;
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="bg-[#1a1a1a] flex items-center justify-center mt-10">
-        <Loader className="w-16 h-16 text-red-600 animate-spin" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4 text-white">Error</h1>
-          <p className="text-gray-400">{error}</p>
-        </div>
-      </div>
-    );
-  }
   const handleShare = async () => {
     await Share.share({
       title: "Chia sẻ link",
@@ -207,6 +186,24 @@ const WatchFilmPage: React.FC = () => {
     },
   };
 
+  if (isLoading) {
+    return (
+      <div className="bg-[#1a1a1a] flex items-center justify-center mt-10">
+        <Loader className="w-16 h-16 text-red-600 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-[#1a1a1a] py-10 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4 text-white">Error</h1>
+          <p className="text-gray-400">{error}</p>
+        </div>
+      </div>
+    );
+  }
   if (!movie) return null;
   return (
     <HelmetSEO
@@ -252,6 +249,7 @@ const WatchFilmPage: React.FC = () => {
                   <Loading />
                 ) : (
                   <iframe
+                    ref={videoPlayerRef}
                     id="videoPlayer"
                     src={
                       episodes[activeServer]?.server_data[activeEpisode]

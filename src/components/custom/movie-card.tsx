@@ -74,22 +74,26 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             <div className="lg:hidden">
               <div className="flex flex-wrap gap-2 mb-2">
                 {movie.category.map((cat, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                  >
-                    {cat.name}
-                  </span>
+                  <Link to={`/the-loai/${cat.slug}`} key={index}>
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
+                    >
+                      {cat.name}
+                    </span>
+                  </Link>
                 ))}
               </div>
               <div className="flex flex-wrap gap-2">
                 {movie.country.map((country, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                  >
-                    {country.name}
-                  </span>
+                  <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
+                    >
+                      {country.name}
+                    </span>
+                  </Link>
                 ))}
               </div>
               <div className="mt-4 grid grid-cols-2 gap-2 items-center justify-center">
@@ -156,22 +160,26 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
           </div>
           <div className="flex flex-wrap gap-2">
             {movie.category.map((cat, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-              >
-                {cat.name}
-              </span>
+              <Link to={`/the-loai/${cat.slug}`} key={index}>
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                >
+                  {cat.name}
+                </span>
+              </Link>
             ))}
           </div>
           <div className="flex flex-wrap gap-2">
             {movie.country.map((country, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-              >
-                {country.name}
-              </span>
+              <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                >
+                  {country.name}
+                </span>
+              </Link>
             ))}
           </div>
         </div>

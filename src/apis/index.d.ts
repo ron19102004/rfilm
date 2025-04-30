@@ -50,6 +50,7 @@ export interface MovieDetails {
 export interface Episode {
   name: string;
   link_embed: string;
+  link_m3u8:string
 }
 
 export interface Server {

@@ -5,7 +5,7 @@ import { useSystemContext } from "@/context";
 import { cn } from "@/lib/utils";
 import { Capacitor } from "@capacitor/core";
 const MainFooter: React.FC = () => {
-  const { contentSpecial, urlDownloadAppAndroid, versionAppCurrent, isMobile } =
+  const { contentSpecial, versionAppCurrent, isMobile ,downloadAndInstallApk} =
     useSystemContext();
   return (
     <footer className=" bg-[#1a1a1a]  text-gray-100 pb-16 pt-10 px-2 md:px-10">
@@ -14,8 +14,8 @@ const MainFooter: React.FC = () => {
           {/* About Section */}
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-700 rounded-full w-full md:w-fit justify-center">
-              <div className="bg-red-800 p-1 rounded-full">
-                <Star className="text-yellow-400 w-4 h-4  fill-yellow-400" />
+              <div className="bg-red-800 p-1 rounded-full ">
+                <Star className="w-4 h-4  fill-yellow-400 " />
               </div>
               <span className="text-white text-sm font-semibold">
                 Hoàng Sa &amp; Trường Sa là của Việt Nam!
@@ -25,7 +25,7 @@ const MainFooter: React.FC = () => {
               Thông báo
             </h3>
             <p className="text-gray-300 leading-relaxed">
-              <BellRing className="inline-block w-5 h-5 mr-2" />
+              <BellRing className="inline-block w-5 h-5 mr-2 text-red-500 fill-red-500" />
               {contentSpecial.length > 0 ? contentSpecial : "Không có"}
             </p>
             <div className="flex items-center space-x-2">
@@ -63,13 +63,13 @@ const MainFooter: React.FC = () => {
                   hidden: Capacitor.isNativePlatform(),
                 })}
               >
-                <a
-                  href={urlDownloadAppAndroid}
+                <button
+                  onClick={async() => await downloadAndInstallApk()}
                   className="inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-lg transition duration-300 mt-4 gap-2"
                 >
                   <Smartphone className="w-5 h-5" />
                   Tải ứng dụng tại đây
-                </a>
+                </button>
               </li>
             </ul>
           </div>
