@@ -41,7 +41,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                 }
                 alt={movie.name}
                 className={cn(
-                  "w-full h-60 xl:h-72 object-cover group-hover:opacity-90 transition-opacity",
+                  "w-full h-72 xl:h-96 object-cover group-hover:opacity-90 transition-opacity",
                   imgSize
                 )}
               />
@@ -64,59 +64,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
               <Link to={`/chi-tiet-phim/${movie.slug}`}>{movie.name}</Link>
             </h3>
             <p className="text-sm text-gray-400 mb-2">{movie.origin_name}</p>
-            <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-              <span>{movie.year}</span>
-              <span>•</span>
-              <span>{movie.time}</span>
-              <span>•</span>
-              <span>{movie.lang}</span>
-            </div>
-            <div className="lg:hidden">
-              <div className="flex flex-wrap gap-2 mb-2">
-                {movie.category.map((cat, index) => (
-                  <Link to={`/the-loai/${cat.slug}`} key={index}>
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                    >
-                      {cat.name}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {movie.country.map((country, index) => (
-                  <Link to={`/quoc-gia/${country.slug}`} key={index}>
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs"
-                    >
-                      {country.name}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-4 grid grid-cols-2 gap-2 items-center justify-center">
-                <Button className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
-                  <Link
-                    to={`/xem-phim/${movie.slug}`}
-                    className="flex items-center justify-center w-full space-x-2"
-                  >
-                    <Play className="w-5 h-5" />
-                    <span>Xem ngay</span>
-                  </Link>
-                </Button>
-                <Button className="w-full bg-[#3a3a3a] hover:bg-[#4a4a4a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
-                  <Link
-                    to={`/chi-tiet-phim/${movie.slug}`}
-                    className="flex items-center justify-center w-full space-x-2"
-                  >
-                    <Info className="w-5 h-5" />
-                    <span>Chi tiết</span>
-                  </Link>
-                </Button>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </HoverCardTrigger>
