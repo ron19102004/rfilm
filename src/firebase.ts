@@ -6,7 +6,7 @@ import { getStorage } from "firebase/storage";
 import { GenerateContentResponse, GoogleGenAI } from "@google/genai";
 
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyAX7Y-85uKEVyeq1ylu-lmQhhAIWav2-SA",
+  apiKey: "VITE_GEMINI_KEY",
 });
 export async function askGemini(
   prompt: string,
