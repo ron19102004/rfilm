@@ -336,7 +336,12 @@ const FilmDetailsPage: React.FC = () => {
           }
         >
           <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12 ">
-            <FilmRenderSection movies={moviesSuggest} title="Gợi ý" />
+            <FilmRenderSection
+              movies={moviesSuggest}
+              title="Gợi ý"
+              titleClassName="bg-gradient-to-r from-pink-400 via-white to-pink-300"
+              borderLeftColor="border-pink-400"
+            />
           </div>
         </Suspense>
         <Suspense
@@ -347,7 +352,12 @@ const FilmDetailsPage: React.FC = () => {
           }
         >
           <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
-            <FilmRenderSection movies={filmIntro} title="Phim mới cập nhật" />
+            <FilmRenderSection
+              movies={filmIntro}
+              title="Phim mới cập nhật"
+              titleClassName="bg-gradient-to-r from-blue-400 via-white to-blue-300"
+              borderLeftColor="border-blue-400"
+            />
           </div>
         </Suspense>
       </div>

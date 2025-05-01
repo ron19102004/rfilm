@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useFilmContext } from "@/context";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Country, Genre } from "@/apis";
+import { Country, Genre } from "@/apis/index.d";
 import Slider from "react-slick";
 import {
   HoverCard,
@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Info, Play } from "lucide-react";
 import { URL_IMG_KK } from "@/constant/api.constant";
+import { cn } from "@/lib/utils";
 
 const FilmIntroSlider: React.FC = () => {
   const { filmIntro } = useFilmContext();
@@ -32,7 +33,7 @@ const FilmIntroSlider: React.FC = () => {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 5,
     slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -203,9 +204,7 @@ const FilmIntroSlider: React.FC = () => {
   if (!filmIntro || filmIntro.length === 0) {
     return <SkeletonHero />;
   }
-
   const activeMovie = firstHalfMovies[activeIndex];
-
   return (
     <div className="mx-auto relative">
       <div className="w-full mx-auto relative">
@@ -390,11 +389,20 @@ const FilmIntroSlider: React.FC = () => {
         <Slider {...settings} dots={false}>
           {secondHalfMovies.map((movie, index) => (
             <HoverCard>
-              <HoverCardTrigger asChild>
-                <div key={index} className="px-2 py-4">
+              <HoverCardTrigger asChild className="border-0 outline-none">
+                <div key={index} className="px-2 py-4 relative">
                   <motion.div whileHover={{ scale: 1.05 }}>
-                    <div className="bg-[#2a2a2a] border border-[#3a3a3a] shadow-lg rounded-lg overflow-hidden group hover:shadow-2xl transition-all duration-300 ">
-                      <div className="relative transition-all">
+                    <div className="bg-[#1a1a1a] border-0 border-[#3a3a3a]/0 rounded-lg overflow-hidden group transition-all duration-300 ">
+                      <div
+                        className={cn(
+                          "relative transition-all rounded-2xl bg-[#1a1a1a] lg:border-[#1a1a1a] lg:group-hover:bg-yellow-500 border-4 border-yellow-500 lg:border-0 lg:group-hover:border-4 group-hover:border-yellow-500",
+                          {
+                            "clip-diagonal-wrap-top-left": index % 2 === 0,
+                            "clip-diagonal-wrap-top-right": index % 2 === 1,
+                          }
+                        )}
+                      >
+                        <div className="absolute top-0 left-0 w-full h-full lg:group-hover:bg-yellow-500/20 z-10"></div>
                         <img
                           src={
                             movie.thumb_url.startsWith("https") ||
@@ -403,10 +411,19 @@ const FilmIntroSlider: React.FC = () => {
                               : `${URL_IMG_KK}${movie.thumb_url}`
                           }
                           alt={movie.name}
-                          className="w-full h-64 object-cover group-hover:opacity-90 opacity-100 md:opacity-80 transition-all"
+                          className={cn(
+                            " w-full h-96 object-cover transition-all rounded-xl lg:rounded-2xl",
+                            {
+                              "clip-diagonal-top-left": index % 2 === 0,
+                              "clip-diagonal-top-right": index % 2 === 1,
+                            }
+                          )}
                         />
-                        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-                          {movie.year}
+                        <div className="absolute bottom-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                          {movie.quality} - {movie.year}
+                        </div>
+                        <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                          {movie.episode_current}
                         </div>
                       </div>
                       <div className="p-4">

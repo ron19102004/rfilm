@@ -63,9 +63,10 @@ const FilmDetailsCard: React.FC<FilmDetailsCardProps> = ({
             <h2 className="text-3xl font-bold mb-6 text-white">
               Nội dung phim
             </h2>
-            <p className="text-gray-300 leading-relaxed text-lg">
-              {movie.content}
-            </p>
+            <p
+              className="text-gray-300 leading-relaxed text-lg"
+              dangerouslySetInnerHTML={{ __html: movie.content }}
+            ></p>
           </div>
         </div>
 

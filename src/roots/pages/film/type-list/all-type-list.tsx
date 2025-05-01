@@ -23,11 +23,11 @@ const AllTypeListPage: React.FC = () => {
             )}
             render={(type, index) => {
               const bgColors = [
-                "bg-gradient-to-r from-red-600 to-orange-600",
-                "bg-gradient-to-r from-orange-600 to-amber-600",
-                "bg-gradient-to-r from-amber-600 to-yellow-600",
-                "bg-gradient-to-r from-yellow-600 to-orange-500",
-                "bg-gradient-to-r from-orange-500 to-red-500",
+                "bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-500",
+                "bg-gradient-to-r from-yellow-600 via-amber-600 to-orange-500",
+                "bg-gradient-to-r from-rose-700 via-red-600 to-pink-500",
+                "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600",
+                "bg-gradient-to-r from-purple-800 via-violet-700 to-fuchsia-600",
               ];
               return (
                 <Link
@@ -37,8 +37,7 @@ const AllTypeListPage: React.FC = () => {
                     bgColors[index % bgColors.length]
                   } px-6 rounded-lg 
                     hover:scale-105 transition-all duration-300 ease-in-out
-                    shadow-lg hover:shadow-red-500/20
-                    border border-red-900/30
+                    shadow-lg
                     whitespace-nowrap
                     text-white font-medium flex items-center justify-center py-10 md:px-20 flex-col`}
                 >

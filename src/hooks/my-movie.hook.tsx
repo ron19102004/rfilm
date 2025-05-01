@@ -105,7 +105,6 @@ const useMyMovie = (): MyMovieContextType => {
           watchedAt: new Date(),
           movie,
         });
-
         console.log("Added new movie to watched list.");
       }
      await loadMyMovies();

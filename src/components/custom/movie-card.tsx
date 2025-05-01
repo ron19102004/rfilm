@@ -11,6 +11,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface MovieCardProps {
   movie: Movie;
@@ -19,139 +20,163 @@ interface MovieCardProps {
 }
 const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
   return (
-    <HoverCard openDelay={1000} closeDelay={100}>
-      <HoverCardTrigger className="transition-all duration-300" asChild>
-        <Card
-          key={movie.slug}
-          className={cn(
-            "bg-[#2a2a2a] border-[#3a3a3a] overflow-hidden transition-all duration-300 hover:-translate-y-1 py-0 h-full shadow",
-            imgSize
-          )}
-          data-aos="fade-up"
-          data-aos-delay={index * 50}
+    <motion.div whileHover={{ scale: 1.05 }}>
+      <HoverCard openDelay={1000} closeDelay={100}>
+        <HoverCardTrigger
+          className="transition-all duration-300 shadow-none"
+          asChild
         >
-          <div className="relative group">
+          <Card
+            key={movie.slug}
+            className={cn(
+              "bg-[#1a1a1a] border-[#3a3a3a]/0 overflow-hidden transition-all duration-300 py-0 h-full gap-2",
+              imgSize
+            )}
+            data-aos="fade-up"
+            data-aos-delay={index * 50}
+          >
+            <div
+              className="relative group transition-all duration-300 
+            border-0 border-[#3a3a3a]/0 hover:bg-yellow-500/20 rounded-2xl lg:hover:border-4 lg:hover:border-yellow-500"
+            >
+              <Link
+                to={`/chi-tiet-phim/${movie.slug}`}
+                className="transition-all duration-300 overflow-hidden  rounded-2xl"
+              >
+                <img
+                  src={
+                    movie.poster_url.startsWith("https") ||
+                    movie.poster_url.startsWith("https")
+                      ? movie.poster_url
+                      : `${URL_IMG_KK}${movie.poster_url}`
+                  }
+                  alt={movie.name}
+                  className={cn(
+                    "w-full h-96 object-cover group-hover:opacity-70  overflow-hidden cursor-pointer rounded-2xl",
+                    imgSize
+                  )}
+                />
+              </Link>
+
+              <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                {movie.quality}
+              </div>
+              <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+                {movie.episode_current}
+              </div>
+              <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center">
+                <Link to={`/xem-phim/${movie.slug}`} className="">
+                  <Play className="w-24 h-24 text-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/60 rounded-2xl p-4 fill-yellow-500" />
+                </Link>
+              </div>
+            </div>
+            <CardContent className="px-4">
+              <h3 className="text-lg font-semibold text-white mb-2 truncate text-center">
+                <Link
+                  to={`/chi-tiet-phim/${movie.slug}`}
+                  className="lg:line-clamp-1"
+                >
+                  {movie.name}
+                </Link>
+              </h3>
+              <p className="text-sm text-gray-400 text-center lg:line-clamp-1">
+                {movie.origin_name}
+              </p>
+            </CardContent>
+          </Card>
+        </HoverCardTrigger>
+        <HoverCardContent
+          className="bg-[#1a1a1a] border-[#3a3a3a] w-96 hidden lg:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
+          sideOffset={5}
+        >
+          <div className="w-full pb-2 relative transition-all duration-300">
             <Link to={`/chi-tiet-phim/${movie.slug}`}>
               <img
                 src={
-                  movie.poster_url.startsWith("https") ||
-                  movie.poster_url.startsWith("https")
-                    ? movie.poster_url
-                    : `${URL_IMG_KK}${movie.poster_url}`
+                  movie.thumb_url.startsWith("https") ||
+                  movie.thumb_url.startsWith("https")
+                    ? movie.thumb_url
+                    : `${URL_IMG_KK}${movie.thumb_url}`
                 }
                 alt={movie.name}
-                className={cn(
-                  "w-full h-72 xl:h-96 object-cover group-hover:opacity-90 transition-opacity",
-                  imgSize
-                )}
+                className="w-full h-80 object-cover group-hover:opacity-90 rounded-2xl hover:scale-105 transition-all duration-300"
               />
             </Link>
-
             <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
               {movie.quality}
             </div>
-            <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
+            <div className="absolute top-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
               {movie.episode_current}
             </div>
-            <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center">
-              <Link to={`/xem-phim/${movie.slug}`} className="">
-                <Play className="w-24 h-24 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/80 rounded-2xl p-4 fill-amber-50" />
-              </Link>
-            </div>
           </div>
-          <CardContent className="p-4">
+          <div>
             <h3 className="text-lg font-semibold text-white mb-2 truncate">
               <Link to={`/chi-tiet-phim/${movie.slug}`}>{movie.name}</Link>
             </h3>
             <p className="text-sm text-gray-400 mb-2">{movie.origin_name}</p>
-          </CardContent>
-        </Card>
-      </HoverCardTrigger>
-      <HoverCardContent
-        className="bg-[#1a1a1a] border-[#3a3a3a] w-96 hidden lg:block space-y-4 absolute left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl"
-        sideOffset={5}
-      >
-        <div className="w-full pb-2 relative transition-all duration-300">
-          <Link to={`/chi-tiet-phim/${movie.slug}`}>
-            <img
-              src={
-                movie.thumb_url.startsWith("https") ||
-                movie.thumb_url.startsWith("https")
-                  ? movie.thumb_url
-                  : `${URL_IMG_KK}${movie.thumb_url}`
-              }
-              alt={movie.name}
-              className="w-full h-80 object-cover group-hover:opacity-90 rounded-2xl hover:scale-105 transition-all duration-300"
-            />
-          </Link>
-          <div className="absolute top-2 right-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
-            {movie.quality}
           </div>
-          <div className="absolute top-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
-            {movie.episode_current}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                {movie.year}
+              </span>
+              <span>•</span>
+              <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                {movie.time}
+              </span>
+              <span>•</span>
+              <span className="bg-[#2a2a2a] px-2 py-1 rounded">
+                {movie.lang}
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {movie.category.map((cat, index) => (
+                <Link to={`/the-loai/${cat.slug}`} key={index}>
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                  >
+                    {cat.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {movie.country.map((country, index) => (
+                <Link to={`/quoc-gia/${country.slug}`} key={index}>
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
+                  >
+                    {country.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold text-white mb-2 truncate">
-            <Link to={`/chi-tiet-phim/${movie.slug}`}>{movie.name}</Link>
-          </h3>
-          <p className="text-sm text-gray-400 mb-2">{movie.origin_name}</p>
-        </div>
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span className="bg-[#2a2a2a] px-2 py-1 rounded">{movie.year}</span>
-            <span>•</span>
-            <span className="bg-[#2a2a2a] px-2 py-1 rounded">{movie.time}</span>
-            <span>•</span>
-            <span className="bg-[#2a2a2a] px-2 py-1 rounded">{movie.lang}</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {movie.category.map((cat, index) => (
-              <Link to={`/the-loai/${cat.slug}`} key={index}>
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-                >
-                  {cat.name}
-                </span>
+          <div className="mt-4">
+            <Button className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+              <Link
+                to={`/xem-phim/${movie.slug}`}
+                className="flex items-center justify-center w-full space-x-2"
+              >
+                <Play className="w-5 h-5" />
+                <span>Xem ngay</span>
               </Link>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {movie.country.map((country, index) => (
-              <Link to={`/quoc-gia/${country.slug}`} key={index}>
-                <span
-                  key={index}
-                  className="px-3 py-1 bg-[#2a2a2a] text-gray-200 rounded-full text-xs hover:bg-[#3a3a3a] transition-colors"
-                >
-                  {country.name}
-                </span>
+            </Button>
+            <Button className="w-full mt-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
+              <Link
+                to={`/chi-tiet-phim/${movie.slug}`}
+                className="flex items-center justify-center w-full space-x-2"
+              >
+                <Info className="w-5 h-5" />
+                <span>Chi tiết</span>
               </Link>
-            ))}
+            </Button>
           </div>
-        </div>
-        <div className="mt-4">
-          <Button className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
-            <Link
-              to={`/xem-phim/${movie.slug}`}
-              className="flex items-center justify-center w-full space-x-2"
-            >
-              <Play className="w-5 h-5" />
-              <span>Xem ngay</span>
-            </Link>
-          </Button>
-          <Button className="w-full mt-2 bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white transition-all duration-300 flex items-center justify-center gap-2 py-2 rounded-lg shadow-md hover:shadow-lg">
-            <Link
-              to={`/chi-tiet-phim/${movie.slug}`}
-              className="flex items-center justify-center w-full space-x-2"
-            >
-              <Info className="w-5 h-5" />
-              <span>Chi tiết</span>
-            </Link>
-          </Button>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
+        </HoverCardContent>
+      </HoverCard>
+    </motion.div>
   );
 };
 

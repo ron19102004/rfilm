@@ -3,6 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Film,
+  Search,
   SlidersHorizontal,
 } from "lucide-react";
 import {
@@ -28,7 +29,8 @@ import { MenuFilter } from "@/roots/layouts/partials/main-header";
 import FilmRenderSection from "@/components/custom/film-render-section";
 
 const FilmPage: React.FC = () => {
-  const { filmKorean, filmChina } = useFilmContext();
+  const { filmKorean, filmChina, filmHistoryVietNam, filmSchool } =
+    useFilmContext();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -187,19 +189,19 @@ const FilmPage: React.FC = () => {
           <div ref={topRef} className="w-0 h-0" />
           {/* Lọc theo */}
           <div className="flex items-center gap-4 lg:hidden">
-            <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-gray-600 pl-4">
               <SlidersHorizontal className="w-8 h-8" />
-              <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
+              <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-gray-500 via-white to-gray-600">
                 Bộ lọc
               </span>
             </h1>
             <MenuFilter countries={countries} genres={genres} />
           </div>
           {/* Danh sách  */}
-          <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
-            <Film className="w-8 h-8" />
-            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
-              Danh sách
+          <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-gray-600 pl-4">
+            <Search className="w-8 h-8" />
+            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-gray-500 via-white to-gray-600">
+              Bạn đang quan tâm gì?
             </span>
           </h1>
           <div className="text-white overflow-hidden scrollbar-hide relative">
@@ -213,11 +215,11 @@ const FilmPage: React.FC = () => {
                 )}
                 render={(type, index) => {
                   const bgColors = [
-                    "bg-gradient-to-r from-red-600 to-rose-500",
-                    "bg-gradient-to-r from-rose-500 to-orange-500",
-                    "bg-gradient-to-r from-orange-500 to-amber-400",
-                    "bg-gradient-to-r from-amber-400 to-yellow-400",
-                    "bg-gradient-to-r from-yellow-400 to-orange-400",
+                    "bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-500",
+                    "bg-gradient-to-r from-yellow-600 via-amber-600 to-orange-500",
+                    "bg-gradient-to-r from-rose-700 via-red-600 to-pink-500",
+                    "bg-gradient-to-r from-slate-800 via-slate-700 to-slate-600",
+                    "bg-gradient-to-r from-purple-800 via-violet-700 to-fuchsia-600",
                   ];
                   return (
                     <Link
@@ -227,9 +229,7 @@ const FilmPage: React.FC = () => {
                         bgColors[index % bgColors.length]
                       } rounded-lg 
                     hover:scale-105 transition-all duration-300 ease-in-out
-                    shadow-lg hover:shadow-orange-500/20
-                    border border-orange-900/30
-                    whitespace-nowrap
+                    shadow-lg whitespace-nowrap
                     text-white font-medium items-start justify-center py-10 md:py-12 px-10 md:px-20 flex flex-col`}
                     >
                       <h3 className="text-2xl font-bold">
@@ -262,14 +262,41 @@ const FilmPage: React.FC = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
           </div>
+          {/* Chủ đề việt nam  */}
+          <FilmRenderSection
+            movies={filmHistoryVietNam}
+            title="Chiến Tranh Việt Nam"
+            titleClassName="bg-gradient-to-r from-blue-400 via-white to-blue-300"
+            borderLeftColor="border-blue-400"
+          />
+          {/* Chủ đề học đường  */}
+          <FilmRenderSection
+            href="/the-loai/hoc-duong"
+            movies={filmSchool}
+            title="Vườn Trường"
+            titleClassName="bg-gradient-to-r from-orange-400 via-white to-orange-300"
+            borderLeftColor="border-orange-400"
+          />
           {/* Chủ đề hàn quốc  */}
-          <FilmRenderSection movies={filmKorean} title="Hàn Quốc" />
+          <FilmRenderSection
+            href="/quoc-gia/han-quoc"
+            movies={filmKorean}
+            title="Hàn Quốc"
+            titleClassName="bg-gradient-to-r from-purple-400 via-white to-purple-300"
+            borderLeftColor="border-purple-400"
+          />
           {/* Chủ đề trung quốc  */}
-          <FilmRenderSection movies={filmChina} title="Trung Quốc" />
+          <FilmRenderSection
+            href="/quoc-gia/trung-quoc"
+            movies={filmChina}
+            title="Trung Quốc"
+            titleClassName="bg-gradient-to-r from-yellow-400 via-white to-yellow-500"
+            borderLeftColor="border-yellow-400"
+          />
           {/* Phim moi hom nay  */}
           <h1 className=" text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
             <Film className="w-8 h-8" />
-            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500">
+            <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-white/90 to-red-600">
               Phim Mới Hôm Nay
             </span>
           </h1>
@@ -387,7 +414,7 @@ const FilmPage: React.FC = () => {
           </div>
 
           {/* Movie Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {movies.length === 0 ? (
               <div
                 className="col-span-full text-center py-8"

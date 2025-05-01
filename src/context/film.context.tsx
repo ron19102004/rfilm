@@ -12,7 +12,9 @@ export const FilmContext = createContext<FilmContextType>({
   },
   filmIntro: [],
   filmKorean: [],
-  filmChina: []
+  filmChina: [],
+  filmHistoryVietNam:[],
+  filmSchool:[]
 });
 
 const FilmContextProvider = ({ children }: { children: React.ReactNode }) => {

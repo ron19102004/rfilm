@@ -127,9 +127,9 @@ const ProfilePage: React.FC = () => {
         {/* Watched Movies Section */}
         {movies && movies.length > 0 ? (
           <div className="mt-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-yellow-600 pl-4">
               <Film className="w-8 h-8" />
-              <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-yellow-400">
+              <span className="title-hover text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-white to-yellow-400">
                 Phim đã xem gần đây
               </span>
             </h1>

@@ -13,7 +13,9 @@ export interface FilmContextType {
   ) => Promise<void>;
   filmIntro: Movie[];
   filmKorean: Movie[];
-  filmChina:Movie[]
+  filmChina: Movie[];
+  filmHistoryVietNam: Movie[];
+  filmSchool: Movie[];
 }
 
 const useFilmHook = (): FilmContextType => {
@@ -22,7 +24,9 @@ const useFilmHook = (): FilmContextType => {
   const { setLoading } = useSystemContext();
   const [filmIntro, setFilmIntro] = useState<Movie[]>([]);
   const [filmKorean, setFilmKorean] = useState<Movie[]>([]);
-  const [filmChina,setFilmChina] = useState<Movie[]>([])
+  const [filmChina, setFilmChina] = useState<Movie[]>([]);
+  const [filmHistoryVietNam, setFilmHistoryVietNam] = useState<Movie[]>([]);
+  const [filmSchool, setFilmSchool] = useState<Movie[]>([]);
   const loadMoviesUpdate = async (
     page = 2,
     start?: () => void,
@@ -62,7 +66,25 @@ const useFilmHook = (): FilmContextType => {
       selectedGenre: "all",
       selectedYear: "all",
     });
-    setFilmChina(filmChi.data.items)
+    setFilmChina(filmChi.data.items);
+    const filmHistoryVietNam = await filmApi.getFilmsBy({
+      type: GetFilmsType.COUNTRY,
+      value: "viet-nam",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "chien-tranh",
+      selectedYear: "all",
+    });
+    setFilmHistoryVietNam(filmHistoryVietNam.data.items);
+    const filmSchool = await filmApi.getFilmsBy({
+      type: GetFilmsType.GENRE,
+      value: "hoc-duong",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "all",
+      selectedYear: "all",
+    });
+    setFilmSchool(filmSchool.data.items);
   }, []);
   const init = async () => {
     try {
@@ -82,7 +104,9 @@ const useFilmHook = (): FilmContextType => {
     loadMovies: loadMoviesUpdate,
     filmIntro: filmIntro,
     filmKorean: filmKorean,
-    filmChina:filmChina
+    filmChina: filmChina,
+    filmHistoryVietNam: filmHistoryVietNam,
+    filmSchool: filmSchool,
   };
 };
 

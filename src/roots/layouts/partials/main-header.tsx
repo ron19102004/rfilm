@@ -33,7 +33,7 @@ export const MenuFilter: React.FC<{
   return (
     <div className={cn("flex items-center gap-4", className)}>
       <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
+        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md p-1 lg:p-0">
           <div className="flex items-center gap-2">
             <Globe className="text-white" />
             <h1 className="text-white font-semibold lg:font-normal">
@@ -58,7 +58,7 @@ export const MenuFilter: React.FC<{
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md px-2 py-1 lg:p-0">
+        <DropdownMenuTrigger className="outline-none ring-0 focus:outline-none focus:ring-0 bg-[#2a2a2a] border-[#2a2a2a] lg:bg-transparent lg:border-0 rounded-md p-1 lg:p-0">
           <div className="flex items-center gap-2">
             <Library className="text-white" />
             <h1 className="text-white font-semibold lg:font-normal">
