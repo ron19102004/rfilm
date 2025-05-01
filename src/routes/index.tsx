@@ -4,6 +4,7 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
+import { KeepAwake } from "@capacitor-community/keep-awake";
 import FilmPage from "../roots/pages/film";
 import { index, layout, prefix, router } from "./index.custom";
 import FilmSearchPage from "@/roots/pages/film/search";
@@ -25,6 +26,7 @@ import NotFoundPage from "@/roots/pages/err/not_found";
 import FilmDetailsPage from "@/roots/pages/film/film-details";
 import FilterByCountry from "@/roots/pages/film/filter/by-country";
 import FilterByGenre from "@/roots/pages/film/filter/by-genre";
+import { Capacitor } from "@capacitor/core";
 const users: RouteObject[] = [
   layout(<MainLayout />, [
     prefix("/", [
@@ -36,9 +38,7 @@ const users: RouteObject[] = [
       router("/tat-ca-danh-sach", <AllTypeListPage />),
       router("/quoc-gia/:slug", <FilterByCountry />),
       router("/the-loai/:slug", <FilterByGenre />),
-      layout(<AuthSafeProvider />, [
-        router("/profile", <ProfilePage />),
-      ]),
+      layout(<AuthSafeProvider />, [router("/profile", <ProfilePage />)]),
       router("/login", <LoginPage />),
     ]),
   ]),
@@ -53,17 +53,22 @@ const RouterRoot: FC = () => {
       offset: 100,
     });
   }, []);
+  useEffect(() => {
+    if (Capacitor.getPlatform() === "android" || Capacitor.isNativePlatform()) {
+      // Giữ màn hình luôn sáng
+      KeepAwake.keepAwake();
+      return () => {
+        KeepAwake.allowSleep();
+      };
+    }
+  }, []);
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
       <SystemContextProvider>
         <FilmContextProvider>
           <MyMovieContextProvider>
-            <RouterProvider
-              router={createBrowserRouter([
-                ...users,
-              ])}
-            />
+            <RouterProvider router={createBrowserRouter([...users])} />
           </MyMovieContextProvider>
         </FilmContextProvider>
       </SystemContextProvider>
