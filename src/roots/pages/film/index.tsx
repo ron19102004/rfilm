@@ -27,10 +27,18 @@ import FilmIntroSlider from "@/components/custom/film-intro";
 import UpdateAppSheet from "@/components/custom/update-app-sheet";
 import { MenuFilter } from "@/roots/layouts/partials/main-header";
 import FilmRenderSection from "@/components/custom/film-render-section";
+import HelmetSEO from "@/components/custom/helmet-seo";
 
 const FilmPage: React.FC = () => {
-  const { filmKorean, filmChina, filmHistoryVietNam, filmSchool } =
-    useFilmContext();
+  const {
+    filmKorean,
+    filmChina,
+    filmHistoryVietNam,
+    filmSchool,
+    filmAnime,
+    filmCriminal,
+    filmHorrified,
+  } = useFilmContext();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -175,7 +183,7 @@ const FilmPage: React.FC = () => {
   };
 
   return (
-    <>
+    <HelmetSEO>
       <div className="min-h-screen">
         <PullToRefresh
           onRefresh={async () => {
@@ -186,7 +194,6 @@ const FilmPage: React.FC = () => {
         {loading ? <Loading /> : isLoadingSystem ? <Loading /> : null}
         <FilmIntroSlider />
         <main className="px-4">
-          <div ref={topRef} className="w-0 h-0" />
           {/* Lọc theo */}
           <div className="flex items-center gap-4 lg:hidden">
             <h1 className="text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-gray-600 pl-4">
@@ -293,6 +300,32 @@ const FilmPage: React.FC = () => {
             titleClassName="bg-gradient-to-r from-yellow-400 via-white to-yellow-500"
             borderLeftColor="border-yellow-400"
           />
+          {/* Chủ đề anime  */}
+          <FilmRenderSection
+            href="/danh-sach/hoat-hinh"
+            movies={filmAnime}
+            title="Anime"
+            titleClassName="bg-gradient-to-r from-purple-400 via-white to-purple-300"
+            borderLeftColor="border-purple-400"
+          />
+          {/* Chủ đề hình sự  */}
+          <FilmRenderSection
+            href="/the-loai/hinh-su"
+            movies={filmCriminal}
+            title="Hình Sự Gay Cấn"
+            titleClassName="bg-gradient-to-r from-gray-400 via-white to-gray-300"
+            borderLeftColor="border-gray-400"
+          />
+          {/* Chủ đề kinh dị  */}
+          <FilmRenderSection
+            href="/the-loai/kinh-di"
+            movies={filmHorrified}
+            title="Kinh Dị"
+            titleClassName="bg-gradient-to-r from-yellow-400 via-white to-yellow-300"
+            borderLeftColor="border-yellow-400"
+          />
+          {/* Scroll tới phim moi hom nay  */}
+          <div ref={topRef} className="w-0 h-0" />
           {/* Phim moi hom nay  */}
           <h1 className=" text-2xl md:text-3xl font-bold text-white py-4 flex items-center gap-2 border-l-4 border-red-600 pl-4 mb-2">
             <Film className="w-8 h-8" />
@@ -412,7 +445,6 @@ const FilmPage: React.FC = () => {
               </Select>
             </div>
           </div>
-
           {/* Movie Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {movies.length === 0 ? (
@@ -441,7 +473,7 @@ const FilmPage: React.FC = () => {
         </main>
       </div>
       <UpdateAppSheet />
-    </>
+    </HelmetSEO>
   );
 };
 

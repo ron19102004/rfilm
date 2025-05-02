@@ -13,6 +13,8 @@ interface FilmSlideProps {
   titleClassName?: ClassValue;
   borderLeftColor?: string;
   href?: string;
+  applyClipPath?: boolean;
+  clipPathFromRight?: boolean;
 }
 const FilmRenderSection: React.FC<FilmSlideProps> = ({
   movies,
@@ -20,6 +22,8 @@ const FilmRenderSection: React.FC<FilmSlideProps> = ({
   titleClassName,
   borderLeftColor = "border-red-600",
   href,
+  applyClipPath = false,
+  clipPathFromRight = false,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -98,14 +102,20 @@ const FilmRenderSection: React.FC<FilmSlideProps> = ({
           <div className="relative">
             <div
               ref={scrollContainerRef}
-              className="flex gap-4 overflow-x-auto py-4 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pl-2"
+              className="flex gap-4 overflow-x-auto scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-2 py-10"
               onScroll={checkScroll}
             >
               <ListView
                 data={movies}
                 render={(mo, index) => (
                   <div key={index}>
-                    <MovieCard movie={mo} key={index} imgSize="w-60" />
+                    <MovieCard
+                      movie={mo}
+                      key={index}
+                      imgSize="w-60"
+                      indexInRow={clipPathFromRight ? index + 1 : index}
+                      applyClipPath={applyClipPath}
+                    />
                   </div>
                 )}
               />

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 
 interface SEOProps {
@@ -23,17 +23,20 @@ interface HelmetSEOProps {
 
 const defaultSEO: SEOProps = {
   title: "R-Film - Xem phim online miễn phí chất lượng cao",
-  description: "R-Film là trang web xem phim online miễn phí với chất lượng cao, phụ đề tiếng Việt, cập nhật phim mới nhất. Xem phim online không giới hạn, không quảng cáo, tốc độ tải nhanh.",
-  keywords: "xem phim online, phim mới, phim hay, phim vietsub, phim thuyết minh, phim bộ, phim lẻ, phim hoạt hình, phim chiếu rạp, xem phim miễn phí",
+  description:
+    "R-Film là trang web xem phim online miễn phí với chất lượng cao, phụ đề tiếng Việt, cập nhật phim mới nhất. Xem phim online không giới hạn, không quảng cáo, tốc độ tải nhanh.",
+  keywords:
+    "xem phim online, phim mới, phim hay, phim vietsub, phim thuyết minh, phim bộ, phim lẻ, phim hoạt hình, phim chiếu rạp, xem phim miễn phí",
   author: "Ronial",
   ogTitle: "R-Film - Xem phim online miễn phí chất lượng cao",
-  ogDescription: "R-Film là trang web xem phim online miễn phí với chất lượng cao, phụ đề tiếng Việt, cập nhật phim mới nhất. Xem phim online không giới hạn, không quảng cáo, tốc độ tải nhanh.",
+  ogDescription:
+    "R-Film là trang web xem phim online miễn phí với chất lượng cao, phụ đề tiếng Việt, cập nhật phim mới nhất. Xem phim online không giới hạn, không quảng cáo, tốc độ tải nhanh.",
   ogImage: "/filmlogov3.png",
   ogType: "website",
   ogUrl: "https://rfilm.netlify.app/",
   ogSiteName: "R-Film",
   ogLocale: "vi_VN",
-  canonicalUrl: "https://rfilm.netlify.app"
+  canonicalUrl: "https://rfilm.netlify.app",
 };
 
 const HelmetSEO: React.FC<HelmetSEOProps> = ({ children, seo = {} }) => {
@@ -49,9 +52,9 @@ const HelmetSEO: React.FC<HelmetSEOProps> = ({ children, seo = {} }) => {
     ogUrl = defaultSEO.ogUrl,
     ogSiteName = defaultSEO.ogSiteName,
     ogLocale = defaultSEO.ogLocale,
-    canonicalUrl = defaultSEO.canonicalUrl
+    canonicalUrl = defaultSEO.canonicalUrl,
   } = seo;
-
+  useEffect(() => {}, [seo]);
   return (
     <Fragment>
       <Helmet>

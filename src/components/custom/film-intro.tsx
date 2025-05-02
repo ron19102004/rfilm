@@ -291,7 +291,7 @@ const FilmIntroSlider: React.FC = () => {
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white "
+                          className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 text-white fill-amber-50 "
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -397,8 +397,8 @@ const FilmIntroSlider: React.FC = () => {
                         className={cn(
                           "relative transition-all rounded-2xl bg-[#1a1a1a] lg:border-[#1a1a1a] lg:group-hover:bg-yellow-500 border-4 border-yellow-500 lg:border-0 lg:group-hover:border-4 group-hover:border-yellow-500",
                           {
-                            "clip-diagonal-wrap-top-left": index % 2 === 0,
-                            "clip-diagonal-wrap-top-right": index % 2 === 1,
+                            "clip-diagonal-wrap-top-left": index % 2 === 1,
+                            "clip-diagonal-wrap-top-right": index % 2 === 0,
                           }
                         )}
                       >
@@ -412,10 +412,10 @@ const FilmIntroSlider: React.FC = () => {
                           }
                           alt={movie.name}
                           className={cn(
-                            " w-full h-96 object-cover transition-all rounded-xl lg:rounded-2xl",
+                            " w-full h-96 object-cover transition-all rounded-xl lg:rounded-lg",
                             {
-                              "clip-diagonal-top-left": index % 2 === 0,
-                              "clip-diagonal-top-right": index % 2 === 1,
+                              "clip-diagonal-top-left": index % 2 === 1,
+                              "clip-diagonal-top-right": index % 2 === 0,
                             }
                           )}
                         />

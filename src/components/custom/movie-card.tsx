@@ -17,11 +17,19 @@ interface MovieCardProps {
   movie: Movie;
   index?: number;
   imgSize?: string;
+  applyClipPath?: boolean;
+  indexInRow?: number;
 }
-const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
+const MovieCard: React.FC<MovieCardProps> = ({
+  movie,
+  index = 1,
+  imgSize,
+  applyClipPath = false,
+  indexInRow = 1,
+}) => {
   return (
-    <motion.div whileHover={{ scale: 1.05 }}>
-      <HoverCard openDelay={1000} closeDelay={100}>
+    <motion.div whileHover={{ translateY: -10 }}>
+      <HoverCard openDelay={3000} closeDelay={100}>
         <HoverCardTrigger
           className="transition-all duration-300 shadow-none"
           asChild
@@ -36,9 +44,17 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
             data-aos-delay={index * 50}
           >
             <div
-              className="relative group transition-all duration-300 
-            border-0 border-[#3a3a3a]/0 hover:bg-yellow-500/20 rounded-2xl lg:hover:border-4 lg:hover:border-yellow-500"
+              className={cn(
+                "relative group transition-all duration-300  border-0 border-[#3a3a3a]/0 rounded-2xl lg:hover:bg-yellow-500 lg:hover:border-4 lg:hover:border-yellow-500",
+                applyClipPath
+                  ? {
+                      "clip-diagonal-wrap-top-left": indexInRow % 2 === 1,
+                      "clip-diagonal-wrap-top-right": indexInRow % 2 === 0,
+                    }
+                  : {}
+              )}
             >
+              <div className="absolute top-0 left-0 w-full h-full lg:group-hover:bg-yellow-500/10 z-10"></div>
               <Link
                 to={`/chi-tiet-phim/${movie.slug}`}
                 className="transition-all duration-300 overflow-hidden  rounded-2xl"
@@ -52,8 +68,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
                   }
                   alt={movie.name}
                   className={cn(
-                    "w-full h-96 object-cover group-hover:opacity-70  overflow-hidden cursor-pointer rounded-2xl",
-                    imgSize
+                    "w-full h-96 object-cover overflow-hidden cursor-pointer rounded-2xl lg:rounded-xl",
+                    imgSize,
+                    applyClipPath
+                      ? {
+                          "clip-diagonal-top-left": indexInRow % 2 === 1,
+                          "clip-diagonal-top-right": indexInRow % 2 === 0,
+                        }
+                      : {}
                   )}
                 />
               </Link>
@@ -64,9 +86,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, index = 1, imgSize }) => {
               <div className="absolute bottom-2 left-2 bg-black/75 text-white px-2 py-1 rounded text-sm">
                 {movie.episode_current}
               </div>
-              <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center">
+              <div className="absolute inset-0 transition-all duration-300 flex items-center justify-center z-10">
                 <Link to={`/xem-phim/${movie.slug}`} className="">
-                  <Play className="w-24 h-24 text-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/60 rounded-2xl p-4 fill-yellow-500" />
+                  <Play className="w-24 h-24 text-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#2a2a2a]/60 rounded-2xl p-4 fill-yellow-500 cursor-pointer" />
                 </Link>
               </div>
             </div>

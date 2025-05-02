@@ -11,6 +11,7 @@ import filmApi from "@/apis/filmKK.api";
 import Pagination from "@/components/custom/pagination";
 import { useSystemContext } from "@/context";
 import { debounce } from "@/utils/debounce.utils";
+import HelmetSEO from "@/components/custom/helmet-seo";
 
 const FilmSearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -20,7 +21,7 @@ const FilmSearchPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { scrollToTop } = useSystemContext();
-  const searchInputRef = useRef<string>("")
+  const searchInputRef = useRef<string>("");
 
   useEffect(() => {
     const keyword = searchParams.get("keyword") || "";
@@ -120,41 +121,43 @@ const FilmSearchPage: React.FC = () => {
   };
 
   return (
-    <section className="bg-[#1a1a1a] h-full pt-20">
-      <PullToRefresh
-        onRefresh={async () => {
-          window.location.reload();
-        }}
-      />
-      <div className=" px-4 py-8">
-        <div className="mb-8" data-aos="fade-down">
-          <div className="flex gap-2 max-w-2xl mx-auto">
-            <Input
-              type="text"
-              value={searchInput}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-                searchInputRef.current = e.target.value
-                searchDebounceCallback();
-              }}
-              className="flex-1 bg-[#2a2a2a] text-white placeholder-gray-400 border-none focus-visible:ring-red-600"
-              placeholder="Tìm kiếm phim..."
-            />
+    <HelmetSEO>
+      <section className="bg-[#1a1a1a] h-full pt-20">
+        <PullToRefresh
+          onRefresh={async () => {
+            window.location.reload();
+          }}
+        />
+        <div className=" px-4 py-8">
+          <div className="mb-8" data-aos="fade-down">
+            <div className="flex gap-2 max-w-2xl mx-auto">
+              <Input
+                type="text"
+                value={searchInput}
+                onChange={(e) => {
+                  setSearchInput(e.target.value);
+                  searchInputRef.current = e.target.value;
+                  searchDebounceCallback();
+                }}
+                className="flex-1 bg-[#2a2a2a] text-white placeholder-gray-400 border-none focus-visible:ring-red-600"
+                placeholder="Tìm kiếm phim..."
+              />
+            </div>
+          </div>
+
+          <div id="searchResults">
+            {isLoading ? renderSkeleton() : renderMovies()}
+            {!isLoading && movies.length > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                loadMovies={handlePagination}
+              />
+            )}
           </div>
         </div>
-
-        <div id="searchResults">
-          {isLoading ? renderSkeleton() : renderMovies()}
-          {!isLoading && movies.length > 0 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              loadMovies={handlePagination}
-            />
-          )}
-        </div>
-      </div>
-    </section>
+      </section>
+    </HelmetSEO>
   );
 };
 

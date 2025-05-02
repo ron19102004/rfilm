@@ -16,6 +16,9 @@ export interface FilmContextType {
   filmChina: Movie[];
   filmHistoryVietNam: Movie[];
   filmSchool: Movie[];
+  filmAnime: Movie[];
+  filmCriminal: Movie[];
+  filmHorrified: Movie[];
 }
 
 const useFilmHook = (): FilmContextType => {
@@ -27,6 +30,9 @@ const useFilmHook = (): FilmContextType => {
   const [filmChina, setFilmChina] = useState<Movie[]>([]);
   const [filmHistoryVietNam, setFilmHistoryVietNam] = useState<Movie[]>([]);
   const [filmSchool, setFilmSchool] = useState<Movie[]>([]);
+  const [filmAnime, setFilmAnime] = useState<Movie[]>([]);
+  const [filmCriminal, setFilmCriminal] = useState<Movie[]>([]);
+  const [filmHorrified, setFilmHorrified] = useState<Movie[]>([]);
   const loadMoviesUpdate = async (
     page = 2,
     start?: () => void,
@@ -49,6 +55,24 @@ const useFilmHook = (): FilmContextType => {
     setFilmIntro(filmIntro.items);
   }, []);
   const loadFilmResource = useCallback(async () => {
+    const filmHistoryVietNam = await filmApi.getFilmsBy({
+      type: GetFilmsType.COUNTRY,
+      value: "viet-nam",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "chien-tranh",
+      selectedYear: "all",
+    });
+    const filmSchool = await filmApi.getFilmsBy({
+      type: GetFilmsType.GENRE,
+      value: "hoc-duong",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "all",
+      selectedYear: "all",
+    });
+    setFilmSchool(filmSchool.data.items);
+    setFilmHistoryVietNam(filmHistoryVietNam.data.items);
     const filmKr = await filmApi.getFilmsBy({
       type: GetFilmsType.COUNTRY,
       value: "han-quoc",
@@ -67,24 +91,33 @@ const useFilmHook = (): FilmContextType => {
       selectedYear: "all",
     });
     setFilmChina(filmChi.data.items);
-    const filmHistoryVietNam = await filmApi.getFilmsBy({
-      type: GetFilmsType.COUNTRY,
-      value: "viet-nam",
+    const filmAnime = await filmApi.getFilmsBy({
+      type: GetFilmsType.LIST,
+      value: "hoat-hinh",
       page: 1,
-      selectedCountry: "all",
-      selectedGenre: "chien-tranh",
+      selectedCountry: "nhat-ban",
+      selectedGenre: "all",
       selectedYear: "all",
     });
-    setFilmHistoryVietNam(filmHistoryVietNam.data.items);
-    const filmSchool = await filmApi.getFilmsBy({
+    setFilmAnime(filmAnime.data.items);
+    const filmCriminal = await filmApi.getFilmsBy({
       type: GetFilmsType.GENRE,
-      value: "hoc-duong",
+      value: "hinh-su",
       page: 1,
       selectedCountry: "all",
       selectedGenre: "all",
       selectedYear: "all",
     });
-    setFilmSchool(filmSchool.data.items);
+    setFilmCriminal(filmCriminal.data.items);
+    const filmHorrified = await filmApi.getFilmsBy({
+      type: GetFilmsType.GENRE,
+      value: "kinh-di",
+      page: 1,
+      selectedCountry: "all",
+      selectedGenre: "all",
+      selectedYear: "all",
+    });
+    setFilmHorrified(filmHorrified.data.items);
   }, []);
   const init = async () => {
     try {
@@ -107,6 +140,9 @@ const useFilmHook = (): FilmContextType => {
     filmChina: filmChina,
     filmHistoryVietNam: filmHistoryVietNam,
     filmSchool: filmSchool,
+    filmAnime: filmAnime,
+    filmCriminal: filmCriminal,
+    filmHorrified: filmHorrified,
   };
 };
 

@@ -374,7 +374,7 @@ const WatchFilmPage: React.FC = () => {
                           key={index}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className={`px-4 py-2.5 rounded-lg border transition-all duration-200 ease-in-out ${
+                          className={`px-4 py-2.5 rounded-lg border transition-all duration-200 ease-in-out cursor-pointer ${
                             index === activeEpisode
                               ? "bg-gradient-to-r from-red-600 to-red-700 text-white border-red-600"
                               : "border-[#2a2a2a] text-gray-300 hover:bg-[#1a1a1a]"
@@ -391,7 +391,7 @@ const WatchFilmPage: React.FC = () => {
                   {episodes[activeServer]?.server_data.length > 12 && (
                     <motion.div
                       variants={itemVariants}
-                      className="mt-6 flex justify-center"
+                      className="mt-6 flex justify-center cursor-pointer"
                     >
                       <motion.button
                         whileHover={{ scale: 1.05 }}
@@ -429,6 +429,7 @@ const WatchFilmPage: React.FC = () => {
             >
               <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
                 <FilmRenderSection
+                  applyClipPath
                   movies={moviesSuggest}
                   title="Gợi ý"
                   titleClassName="bg-gradient-to-r from-blue-400 via-white to-blue-300"
@@ -443,8 +444,9 @@ const WatchFilmPage: React.FC = () => {
                 </div>
               }
             >
-              <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-12">
+              <div className="container mx-auto px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12">
                 <FilmRenderSection
+                  applyClipPath
                   movies={filmIntro}
                   title="Phim mới cập nhật"
                   titleClassName="bg-gradient-to-r from-pink-400 via-white to-pink-300"
